@@ -269,6 +269,33 @@ package net.play5d.game.bvn.fighter
          this._pauseShadowBySuper = true;
       }
       
+      public function disableShadow() : void
+      {
+         this._pauseShadowBySuper = true;
+         this.shadowIng = false;
+         if(this._shadowEffects)
+         {
+            for each(var s:ShadowEffectView in this._shadowEffects)
+            {
+               if(s)
+               {
+                  s.stopShadow = true;
+                  s.destory();
+               }
+            }
+            this._shadowEffects = new Dictionary();
+         }
+         if(this._shadowContainer)
+         {
+            this._shadowContainer.visible = false;
+            if(this._shadowContainer.parent)
+            {
+               this._shadowContainer.parent.removeChild(this._shadowContainer);
+            }
+            this._shadowContainer = null;
+         }
+      }
+      
       private function removeShadow(param1:ShadowEffectView) : void
       {
          if(!this._shadowEffects)

@@ -55,6 +55,8 @@ package net.play5d.game.bvn.data
 
       public var gameplayStyle:int = GameConfig.GAMEPLAY_STYLE_BVN;
 
+      public var assisterPartner:Boolean = true;
+
       public var extendConfig:IExtendConfig;
       
       public function ConfigVO()
@@ -83,65 +85,66 @@ package net.play5d.game.bvn.data
       
       public function toSaveObj() : Object
       {
-         var _loc1_:Object = {};
-         _loc1_.key_p1 = key_p1.toSaveObj();
-         _loc1_.key_p2 = key_p2.toSaveObj();
-         _loc1_.difficulty = difficulty;
-         _loc1_.player1 = player1;
-         _loc1_.player2 = player2;
-         _loc1_.rounds = rounds;
-         _loc1_.fighterHP = fighterHP;
-         _loc1_.fightTime = fightTime;
-         _loc1_.quality = quality;
-         _loc1_.keyInputMode = keyInputMode;
-         _loc1_.soundVolume = soundVolume;
-         _loc1_.bgmVolume = bgmVolume;
-         _loc1_.cameraZoomRate = cameraZoomRate;
-         _loc1_.cameraDistance = cameraDistance;
-         _loc1_.cameraStyle = cameraStyle;
-         _loc1_.legacyAssetScaleMode = legacyAssetScaleMode;
-         _loc1_.pixelStyleMode = pixelStyleMode;
-         _loc1_.shadowEnabled = shadowEnabled;
-         _loc1_.qiGainRate = qiGainRate;
-         _loc1_.bishaEnergyMax = bishaEnergyMax;
-         _loc1_.gameplayStyle = gameplayStyle;
+         var saveData:Object = {};
+         saveData.key_p1 = key_p1.toSaveObj();
+         saveData.key_p2 = key_p2.toSaveObj();
+         saveData.difficulty = difficulty;
+         saveData.player1 = player1;
+         saveData.player2 = player2;
+         saveData.rounds = rounds;
+         saveData.fighterHP = fighterHP;
+         saveData.fightTime = fightTime;
+         saveData.quality = quality;
+         saveData.keyInputMode = keyInputMode;
+         saveData.soundVolume = soundVolume;
+         saveData.bgmVolume = bgmVolume;
+         saveData.cameraZoomRate = cameraZoomRate;
+         saveData.cameraDistance = cameraDistance;
+         saveData.cameraStyle = cameraStyle;
+         saveData.legacyAssetScaleMode = legacyAssetScaleMode;
+         saveData.pixelStyleMode = pixelStyleMode;
+         saveData.shadowEnabled = shadowEnabled;
+         saveData.qiGainRate = qiGainRate;
+         saveData.bishaEnergyMax = bishaEnergyMax;
+         saveData.gameplayStyle = gameplayStyle;
+         saveData.assisterPartner = assisterPartner;
          if(extendConfig)
          {
-            _loc1_.extend_config = extendConfig.toSaveObj();
+            saveData.extend_config = extendConfig.toSaveObj();
          }
-         return _loc1_;
+         return saveData;
       }
       
-      public function readSaveObj(param1:Object) : void
+      public function readSaveObj(saveObj:Object) : void
       {
-         key_p1.readSaveObj(param1.key_p1);
-         key_p2.readSaveObj(param1.key_p2);
-         if(param1.extend_config && extendConfig)
+         key_p1.readSaveObj(saveObj.key_p1);
+         key_p2.readSaveObj(saveObj.key_p2);
+         if(saveObj.extend_config && extendConfig)
          {
-            extendConfig.readSaveObj(param1.extend_config);
+            extendConfig.readSaveObj(saveObj.extend_config);
          }
-         delete param1["key_p1"];
-         delete param1["key_p2"];
-         delete param1["forceFourByThreeViewport"];
-         if(param1.bishaEnergyMax == undefined && param1.bishaStart != undefined)
+         delete saveObj["key_p1"];
+         delete saveObj["key_p2"];
+         delete saveObj["forceFourByThreeViewport"];
+         if(saveObj.bishaEnergyMax == undefined && saveObj.bishaStart != undefined)
          {
-            param1.bishaEnergyMax = param1.bishaStart;
+            saveObj.bishaEnergyMax = saveObj.bishaStart;
          }
-         delete param1["bishaStart"];
-         KyoUtils.setValueByObject(this,param1);
+         delete saveObj["bishaStart"];
+         KyoUtils.setValueByObject(this,saveObj);
       }
       
-      public function getValueByKey(param1:String) : *
+      public function getValueByKey(key:String) : *
       {
-         if(this.hasOwnProperty(param1))
+         if(this.hasOwnProperty(key))
          {
-            return this[param1];
+            return this[key];
          }
          if(extendConfig)
          {
             try
             {
-               return extendConfig[param1];
+               return extendConfig[key];
             }
             catch(e:Error)
             {
@@ -150,12 +153,12 @@ package net.play5d.game.bvn.data
          return null;
       }
       
-      public function setValueByKey(param1:String, param2:*) : void
+      public function setValueByKey(key:String, value:*) : void
       {
-         if(this.hasOwnProperty(param1))
+         if(this.hasOwnProperty(key))
          {
-            this[param1] = param2;
-            switch(param1)
+            this[key] = value;
+            switch(key)
             {
                case "bgmVolume":
                   SoundCtrl.I.setBgmVolumn(bgmVolume);
@@ -172,7 +175,7 @@ package net.play5d.game.bvn.data
          {
             try
             {
-               extendConfig[param1] = param2;
+               extendConfig[key] = value;
             }
             catch(e:Error)
             {

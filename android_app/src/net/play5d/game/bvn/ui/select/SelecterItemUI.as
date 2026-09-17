@@ -57,6 +57,11 @@ package net.play5d.game.bvn.ui.select
          ui.mc.gotoAndStop(param1 == 1 ? 1 : 2);
       }
       
+      public function get playerType() : int
+      {
+         return _playerType;
+      }
+      
       public function selectFinish() : Boolean
       {
          return selectTimes >= selectTimesCount;
@@ -71,21 +76,39 @@ package net.play5d.game.bvn.ui.select
          return [selectVO.fighter1,selectVO.fighter2,selectVO.fighter3];
       }
       
-      public function setCurrentSelect(param1:Array) : void
+      public function setCurrentSelect(fighterIds:Array) : void
       {
          if(isSelectAssist)
          {
-            selectVO.fuzhu = param1[0];
-            group.updateFighter(AssisterModel.I.getAssister(selectVO.fuzhu));
+            selectVO.fuzhu = fighterIds[0];
+            if(group)
+            {
+               group.setAssist(AssisterModel.I.getAssister(selectVO.fuzhu));
+            }
          }
          else
          {
-            selectVO.fighter1 = param1[0];
-            selectVO.fighter2 = param1[1];
-            selectVO.fighter3 = param1[2];
-            group.updateFighter(FighterModel.I.getFighter(selectVO.fighter1));
-            group.addFighter(FighterModel.I.getFighter(selectVO.fighter2));
-            group.addFighter(FighterModel.I.getFighter(selectVO.fighter3));
+            selectVO.fighter1 = fighterIds[0];
+            selectVO.fighter2 = fighterIds[1];
+            selectVO.fighter3 = fighterIds[2];
+            var firstFighter:FighterVO = FighterModel.I.getFighter(selectVO.fighter1);
+            var secondFighter:FighterVO = FighterModel.I.getFighter(selectVO.fighter2);
+            var thirdFighter:FighterVO = FighterModel.I.getFighter(selectVO.fighter3);
+            if(selectTimesCount >= 3 && thirdFighter)
+            {
+               group.addFighter(firstFighter);
+               group.addFighter(secondFighter);
+               group.updateFighter(thirdFighter);
+            }
+            else if(selectTimesCount >= 2 && secondFighter)
+            {
+               group.addFighter(firstFighter);
+               group.updateFighter(secondFighter);
+            }
+            else if(firstFighter)
+            {
+               group.updateFighter(firstFighter);
+            }
          }
          selectTimes = selectTimesCount;
          enabled = false;
@@ -147,6 +170,10 @@ package net.play5d.game.bvn.ui.select
          if(isSelectAssist)
          {
             selectVO.fuzhu = currentFighter.id;
+            if(group)
+            {
+               group.setAssist(currentFighter);
+            }
          }
          else
          {
@@ -183,6 +210,51 @@ package net.play5d.game.bvn.ui.select
             }
          });
       }
+
+      public function cancelSelect() : Boolean
+      {
+         if(selectTimes <= 0)
+         {
+            return false;
+         }
+         selectTimes--;
+         if(isSelectAssist)
+         {
+            if(selectVO)
+            {
+               selectVO.fuzhu = null;
+            }
+            if(group)
+            {
+               group.clearAssist();
+            }
+         }
+         else
+         {
+            if(selectVO)
+            {
+               switch(selectTimes)
+               {
+                  case 0:
+                     selectVO.fighter1 = null;
+                     break;
+                  case 1:
+                     selectVO.fighter2 = null;
+                     break;
+                  case 2:
+                     selectVO.fighter3 = null;
+                     break;
+               }
+            }
+         }
+         if(group)
+         {
+            group.removeLastFighter();
+         }
+         enabled = true;
+         updateRandom();
+         return true;
+      }
       
       public function moveTo(param1:Number, param2:Number) : void
       {
@@ -214,17 +286,13 @@ package net.play5d.game.bvn.ui.select
       
       public function removeGroup() : void
       {
-         if(group && group.parent)
+         if(!group) return;
+         try { group.destory(); } catch(e:Error) {}
+         if(group.parent)
          {
-            try
-            {
-               group.parent.removeChild(group);
-            }
-            catch(e:Error)
-            {
-            }
-            group = null;
+            try { group.parent.removeChild(group); } catch(e:Error) {}
          }
+         group = null;
       }
       
       private function updateRandom() : void

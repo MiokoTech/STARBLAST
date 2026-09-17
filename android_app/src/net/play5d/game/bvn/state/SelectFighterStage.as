@@ -2,7 +2,9 @@ package net.play5d.game.bvn.state
 {
    import com.greensock.TweenLite;
    import com.greensock.easing.Back;
+   import com.greensock.easing.Quad;
    import flash.display.DisplayObject;
+   import flash.display.Loader;
    import flash.display.MovieClip;
    import flash.display.SimpleButton;
    import flash.display.Sprite;
@@ -13,8 +15,10 @@ package net.play5d.game.bvn.state
    import net.play5d.game.bvn.GameConfig;
    import net.play5d.game.bvn.MainGame;
    import net.play5d.game.bvn.ctrl.AssetManager;
+   import net.play5d.game.bvn.ctrl.GameLoader;
    import net.play5d.game.bvn.ctrl.GameLogic;
    import net.play5d.game.bvn.ctrl.GameRender;
+   import net.play5d.game.bvn.fighter.FighterMain;
    import net.play5d.game.bvn.ctrl.SoundCtrl;
    import net.play5d.game.bvn.ctrl.StateCtrl;
    import net.play5d.game.bvn.data.AssisterModel;
@@ -69,6 +73,14 @@ package net.play5d.game.bvn.state
       private var _backMenuBtn:Sprite;
       private var _moreFighterMap:Dictionary = new Dictionary();
       private var _moreFighterCache:Object = {};
+      private var _p1IdleContainer:Sprite;
+      private var _p2IdleContainer:Sprite;
+      private var _p1IdleFighter:FighterMain;
+      private var _p2IdleFighter:FighterMain;
+      private var _p1IdleLoader:Loader;
+      private var _p2IdleLoader:Loader;
+      private var _curP1FighterId:String;
+      private var _curP2FighterId:String;
 
       public function SelectFighterStage()
       {
@@ -85,6 +97,50 @@ package net.play5d.game.bvn.state
          _ui = ResUtils.I.createDisplayObject(ResUtils.swfLib.select,"stg_select") as MovieClip;
          _fighterListUI = new Sprite();
          _ui.addChild(_fighterListUI);
+
+         _p1IdleContainer = new Sprite();
+         _p1IdleContainer.mouseEnabled = false;
+         _p1IdleContainer.mouseChildren = false;
+         _p1IdleContainer.x = 302;
+         _p1IdleContainer.y = 660;
+
+         _p2IdleContainer = new Sprite();
+         _p2IdleContainer.mouseEnabled = false;
+         _p2IdleContainer.mouseChildren = false;
+         _p2IdleContainer.x = 978;
+         _p2IdleContainer.y = 660;
+
+         var anim124:DisplayObject = _ui.getChildByName("anim124_mc");
+         var anim103:DisplayObject = _ui.getChildByName("anim103_mc");
+
+         if(anim124 is MovieClip)
+         {
+            var anim124Mc:MovieClip = anim124 as MovieClip;
+            if(anim124Mc.totalFrames > 1)
+            {
+               anim124Mc.addFrameScript(anim124Mc.totalFrames - 1, anim124Mc.stop);
+            }
+         }
+
+         if (anim124 && anim103)
+         {
+            var baseIdx:int = Math.min(_ui.getChildIndex(anim124), _ui.getChildIndex(anim103));
+            _ui.setChildIndex(anim124, baseIdx);
+            _ui.addChildAt(_p1IdleContainer, baseIdx + 1);
+            _ui.addChildAt(_p2IdleContainer, baseIdx + 2);
+            _ui.setChildIndex(anim103, baseIdx + 3);
+         }
+         else if (anim103)
+         {
+            var idx103:int = _ui.getChildIndex(anim103);
+            _ui.addChildAt(_p1IdleContainer, idx103);
+            _ui.addChildAt(_p2IdleContainer, idx103 + 1);
+         }
+         else
+         {
+            _ui.addChild(_p1IdleContainer);
+            _ui.addChild(_p2IdleContainer);
+         }
          _config = GameData.I.config.select_config;
          GameRender.add(render);
          GameInputer.focus();
@@ -96,8 +152,23 @@ package net.play5d.game.bvn.state
          GameEvent.dispatchEvent(GameEvent.SELECT_FIGHTER);
       }
 
-      private function backMenuHandler(e:Event):void
+      private function backMenuHandler(e:Event = null):void
       {
+         if(_mapSelectUI && _mapSelectUI.enabled)
+         {
+            cancelMapSelect();
+            return;
+         }
+         if(_p2Slt && _p2Slt.enabled)
+         {
+            cancelP2Select();
+            return;
+         }
+         if(_p1Slt && _p1Slt.enabled && (_p1Slt.selectTimes > 0 || _curStep == 3))
+         {
+            cancelP1Select();
+            return;
+         }
          GameUI.confrim('BACK TITLE?', '返回到主菜单？', MainGame.I.goMenu);
          GameEvent.dispatchEvent(GameEvent.CONFRIM_BACK_MENU);
       }
@@ -187,12 +258,36 @@ package net.play5d.game.bvn.state
          setTimeout(initSelecter, _tweenTime);
       }
 
+      private function clearGridOnly() : void
+      {
+         if(_itemObj)
+         {
+            for each(var item:SelectFighterItem in _itemObj)
+            {
+               item.destory();
+            }
+            _itemObj = null;
+         }
+         while(_fighterListUI.numChildren > 0)
+         {
+            _fighterListUI.removeChildAt(0);
+         }
+      }
+
       private function initAssist() : void
       {
          TweenLite.to(_fighterListUI,0.2,{"x":0});
-         clear();
+         clearGridOnly();
          _selectState = SELECT_STATE_ASSIST;
          buildList(_config.assistList);
+         if(_p1Slt && _p1Slt.group)
+         {
+            _p1Slt.group.showAssistSlot();
+         }
+         if(_p2Slt && _p2Slt.group)
+         {
+            _p2Slt.group.showAssistSlot();
+         }
          GameInputer.enabled = false;
          setTimeout(initSelecter, _tweenTime);
       }
@@ -236,6 +331,37 @@ package net.play5d.game.bvn.state
          }
       }
 
+      private function clearSelectionGrid() : void
+      {
+         if(_itemObj)
+         {
+            for each(var item:SelectFighterItem in _itemObj)
+            {
+               item.destory();
+            }
+            _itemObj = null;
+         }
+         if(_fighterListUI)
+         {
+            _fighterListUI.visible = false;
+         }
+         if(_p1Slt)
+         {
+            _p1Slt.enabled = false;
+            _p1Slt.removeSelecter();
+         }
+         if(_p2Slt)
+         {
+            _p2Slt.enabled = false;
+            _p2Slt.removeSelecter();
+         }
+         if(_mapSelectUI)
+         {
+            _mapSelectUI.destory();
+            _mapSelectUI = null;
+         }
+      }
+
       private function clear() : void
       {
          if(_itemObj)
@@ -248,11 +374,27 @@ package net.play5d.game.bvn.state
          }
          if(_p1Slt)
          {
+            if(_p1Slt.group && _p1Slt.group.nameGroup && _p1Slt.group.nameGroup.parent)
+            {
+               try { _p1Slt.group.nameGroup.parent.removeChild(_p1Slt.group.nameGroup); } catch(e:Error) {}
+            }
+            if(_p1Slt.group && _p1Slt.group.slotGroup && _p1Slt.group.slotGroup.parent)
+            {
+               try { _p1Slt.group.slotGroup.parent.removeChild(_p1Slt.group.slotGroup); } catch(e:Error) {}
+            }
             _p1Slt.destory();
             _p1Slt = null;
          }
          if(_p2Slt)
          {
+            if(_p2Slt.group && _p2Slt.group.nameGroup && _p2Slt.group.nameGroup.parent)
+            {
+               try { _p2Slt.group.nameGroup.parent.removeChild(_p2Slt.group.nameGroup); } catch(e:Error) {}
+            }
+            if(_p2Slt.group && _p2Slt.group.slotGroup && _p2Slt.group.slotGroup.parent)
+            {
+               try { _p2Slt.group.slotGroup.parent.removeChild(_p2Slt.group.slotGroup); } catch(e:Error) {}
+            }
             _p2Slt.destory();
             _p2Slt = null;
          }
@@ -271,6 +413,8 @@ package net.play5d.game.bvn.state
             _p2SelectedGroup.destory();
             _p2SelectedGroup = null;
          }
+         clearIdleFighter(1);
+         clearIdleFighter(2);
       }
 
       private function buildList(param1:SelectCharListConfigVO) : void
@@ -364,27 +508,37 @@ package net.play5d.game.bvn.state
          {
             return;
          }
-         var _loc3_:SelecterItemUI = null;
-         if(_p1Slt && _p1Slt.enabled)
+         var activeSlt:SelecterItemUI = null;
+         if(_curStep == 2)
          {
-            _loc3_ = _p1Slt;
-         }
-         if(!_loc3_ && (_p2Slt && _p2Slt.enabled))
-         {
-            _loc3_ = _p2Slt;
-         }
-         if(!_loc3_)
-         {
-            return;
-         }
-         if(_loc3_.touchHoverItem == param2)
-         {
-            doSelect(param2);
-            _loc3_.touchHoverItem = null;
+            if(_p2Slt && _p2Slt.enabled)
+            {
+               activeSlt = _p2Slt;
+            }
          }
          else
          {
-            _loc3_.touchHoverItem = param2;
+            if(_p1Slt && _p1Slt.enabled)
+            {
+               activeSlt = _p1Slt;
+            }
+            else if(_p2Slt && _p2Slt.enabled)
+            {
+               activeSlt = _p2Slt;
+            }
+         }
+         if(!activeSlt)
+         {
+            return;
+         }
+         if(activeSlt.touchHoverItem == param2)
+         {
+            doSelect(param2);
+            activeSlt.touchHoverItem = null;
+         }
+         else
+         {
+            activeSlt.touchHoverItem = param2;
             doHover(param2);
          }
       }
@@ -500,6 +654,21 @@ package net.play5d.game.bvn.state
       
       private function initSelecterP1() : void
       {
+         if(_selectState == 1 && _p1Slt)
+         {
+            _p1Slt.isSelectAssist = true;
+            _p1Slt.selectTimesCount = 1;
+            _p1Slt.selectTimes = 0;
+            _fighterListUI.addChild(_p1Slt.ui);
+            _p1Slt.enabled = true;
+            if(_p1Slt.group)
+            {
+               _p1Slt.group.showAssistSlot();
+            }
+            moveSlt(_p1Slt,0,0);
+            return;
+         }
+
          _p1Slt = SelectUIFactory.createSelecter(1);
          _p1Slt.isSelectAssist = _selectState == 1;
          if (GameMode.currentMode == GameMode.WATCH || GameMode.currentMode == GameMode.VS_CPU || GameMode.isVsPeople())
@@ -510,21 +679,46 @@ package net.play5d.game.bvn.state
          {
             _p1Slt.selectTimesCount = GameMode.isTeamMode() && !_p1Slt.isSelectAssist ? 3 : 1;
          }
+         if (_p1Slt.group)
+         {
+            _p1Slt.group.initSlots(_p1Slt.selectTimesCount);
+         }
 
          _fighterListUI.addChild(_p1Slt.ui);
-         if (_fighterListUI && _ui.contains(_fighterListUI))
+         var anim124P1:DisplayObject = _ui.getChildByName("anim124_mc");
+         var idx124P1:int = anim124P1 ? _ui.getChildIndex(anim124P1) : 0;
+         if (_p1Slt.group)
          {
-            _ui.addChildAt(_p1Slt.group, _ui.getChildIndex(_fighterListUI));
-         }
-         else
-         {
-            _ui.addChild(_p1Slt.group);
+            _ui.addChildAt(_p1Slt.group, idx124P1);
+            if (_p1Slt.group.nameGroup)
+            {
+               _ui.addChild(_p1Slt.group.nameGroup);
+            }
+            if (_p1Slt.group.slotGroup)
+            {
+               _ui.addChild(_p1Slt.group.slotGroup);
+            }
          }
          moveSlt(_p1Slt,0,0);
       }
 
       private function initSelecterP2() : void
       {
+         if(_selectState == 1 && _p2Slt)
+         {
+            _p2Slt.isSelectAssist = true;
+            _p2Slt.selectTimesCount = 1;
+            _p2Slt.selectTimes = 0;
+            _fighterListUI.addChild(_p2Slt.ui);
+            _p2Slt.enabled = true;
+            if(_p2Slt.group)
+            {
+               _p2Slt.group.showAssistSlot();
+            }
+            moveSlt(_p2Slt,9,0);
+            return;
+         }
+
          _p2Slt = SelectUIFactory.createSelecter(2);
          _p2Slt.isSelectAssist = _selectState == 1;
          if (GameMode.currentMode == GameMode.WATCH || GameMode.currentMode == GameMode.VS_CPU || GameMode.isVsPeople())
@@ -535,15 +729,25 @@ package net.play5d.game.bvn.state
          {
             _p2Slt.selectTimesCount = GameMode.isTeamMode() && !_p2Slt.isSelectAssist ? 3 : 1;
          }
+         if (_p2Slt.group)
+         {
+            _p2Slt.group.initSlots(_p2Slt.selectTimesCount);
+         }
 
          _fighterListUI.addChild(_p2Slt.ui);
-         if (_fighterListUI && _ui.contains(_fighterListUI))
+         var anim124P2:DisplayObject = _ui.getChildByName("anim124_mc");
+         var idx124P2:int = anim124P2 ? _ui.getChildIndex(anim124P2) : 0;
+         if (_p2Slt.group)
          {
-            _ui.addChildAt(_p2Slt.group, _ui.getChildIndex(_fighterListUI));
-         }
-         else
-         {
-            _ui.addChild(_p2Slt.group);
+            _ui.addChildAt(_p2Slt.group, idx124P2);
+            if (_p2Slt.group.nameGroup)
+            {
+               _ui.addChild(_p2Slt.group.nameGroup);
+            }
+            if (_p2Slt.group.slotGroup)
+            {
+               _ui.addChild(_p2Slt.group.slotGroup);
+            }
          }
          moveSlt(_p2Slt,9,0);
       }
@@ -690,10 +894,29 @@ package net.play5d.game.bvn.state
          param1.currentFighter = param2.fighterData;
          if(param1.group)
          {
-            param1.group.updateFighter(param1.currentFighter);
+            if(param1.isSelectAssist)
+            {
+               param1.group.setAssist(param1.currentFighter);
+            }
+            else
+            {
+               param1.group.updateFighter(param1.currentFighter);
+            }
          }
          checkRandom(param1);
          showMoreFighters(param1,param2);
+         var playerIdx:int = (param1 == _p2Slt || (param1 && param1.playerType == 2)) ? 2 : 1;
+         if(!param1.isSelectAssist)
+         {
+            if(param1.randoms)
+            {
+               clearIdleFighter(playerIdx);
+            }
+            else
+            {
+               updateIdleSprite(playerIdx, param1.currentFighter);
+            }
+         }
       }
       
       private function moveToSelectFighterMore(param1:SelecterItemUI, param2:SelectFighterItem) : void
@@ -705,7 +928,19 @@ package net.play5d.game.bvn.state
          param1.currentFighter = param2.fighterData;
          if(param1.group)
          {
-            param1.group.updateFighter(param1.currentFighter);
+            if(param1.isSelectAssist)
+            {
+               param1.group.setAssist(param1.currentFighter);
+            }
+            else
+            {
+               param1.group.updateFighter(param1.currentFighter);
+            }
+         }
+         var playerIdxMore:int = (param1 == _p2Slt || (param1 && param1.playerType == 2)) ? 2 : 1;
+         if(!param1.isSelectAssist)
+         {
+            updateIdleSprite(playerIdxMore, param1.currentFighter);
          }
       }
       
@@ -975,92 +1210,128 @@ package net.play5d.game.bvn.state
       
       private function render() : void
       {
-         var _loc1_:String = null;
+         var inputType:String = null;
          if(GameUI.showingDialog())
          {
             return;
          }
+         if(_p1IdleFighter)
+         {
+            if(_p1IdleFighter.direct != 1)
+            {
+               _p1IdleFighter.direct = 1;
+            }
+            if(_p1IdleFighter.mc && _p1IdleFighter.mc.scaleX < 0)
+            {
+               _p1IdleFighter.mc.scaleX = Math.abs(_p1IdleFighter.mc.scaleX);
+            }
+         }
+         if(_p2IdleFighter)
+         {
+            if(_p2IdleFighter.direct != -1)
+            {
+               _p2IdleFighter.direct = -1;
+            }
+            if(_p2IdleFighter.mc && _p2IdleFighter.mc.scaleX > 0)
+            {
+               _p2IdleFighter.mc.scaleX = -Math.abs(_p2IdleFighter.mc.scaleX);
+            }
+         }
          if(_p1Slt && _p1Slt.enabled)
          {
             renderRandom(_p1Slt);
-            _loc1_ = _p1Slt.inputType;
-            if(GameInputer.up(_loc1_,1))
+            inputType = _p1Slt.inputType;
+            if(GameInputer.up(inputType,1))
             {
                moveSelecter(_p1Slt,0,-1);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.down(_loc1_,1))
+            if(GameInputer.down(inputType,1))
             {
                moveSelecter(_p1Slt,0,1);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.left(_loc1_,1))
+            if(GameInputer.left(inputType,1))
             {
                moveSelecter(_p1Slt,-1,0);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.right(_loc1_,1))
+            if(GameInputer.right(inputType,1))
             {
                moveSelecter(_p1Slt,1,0);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.jump(_loc1_,1))
+            if(GameInputer.jump(inputType,1))
             {
                _p1Slt.select(playerSeltBack);
                SoundCtrl.I.sndConfrim();
+               return;
             }
-            if(GameInputer.dash(_loc1_,1))
+            if(GameInputer.dash(inputType,1))
             {
-               MainGame.I.goMenu();
+               cancelP1Select();
+               return;
             }
          }
          if(_p2Slt && _p2Slt.enabled)
          {
-            _loc1_ = _p2Slt.inputType;
+            inputType = _p2Slt.inputType;
             renderRandom(_p2Slt);
-            if(GameInputer.up(_loc1_,1))
+            if(GameInputer.up(inputType,1))
             {
                moveSelecter(_p2Slt,0,-1);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.down(_loc1_,1))
+            if(GameInputer.down(inputType,1))
             {
                moveSelecter(_p2Slt,0,1);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.left(_loc1_,1))
+            if(GameInputer.left(inputType,1))
             {
                moveSelecter(_p2Slt,-1,0);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.right(_loc1_,1))
+            if(GameInputer.right(inputType,1))
             {
                moveSelecter(_p2Slt,1,0);
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.jump(_loc1_,1))
+            if(GameInputer.jump(inputType,1))
             {
                _p2Slt.select(playerSeltBack);
                SoundCtrl.I.sndConfrim();
+               return;
+            }
+            if(GameInputer.dash(inputType,1))
+            {
+               cancelP2Select();
+               return;
             }
          }
          if(_mapSelectUI && _mapSelectUI.enabled)
          {
-            _loc1_ = _mapSelectUI.inputType;
-            if(GameInputer.left(_loc1_,1))
+            var mapInputType:String = _mapSelectUI.inputType;
+            if(GameInputer.left(mapInputType,1))
             {
                _mapSelectUI.prev();
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.right(_loc1_,1))
+            if(GameInputer.right(mapInputType,1))
             {
                _mapSelectUI.next();
                SoundCtrl.I.sndSelect();
             }
-            if(GameInputer.jump(_loc1_,1))
+            if(GameInputer.select(mapInputType,1) || GameInputer.jump(mapInputType,1) || GameInputer.attack(mapInputType,1))
             {
                _mapSelectUI.select(onMapSelect);
                SoundCtrl.I.sndConfrim();
+               return;
+            }
+            if(GameInputer.dash(mapInputType,1))
+            {
+               cancelMapSelect();
+               return;
             }
          }
       }
@@ -1129,18 +1400,49 @@ package net.play5d.game.bvn.state
                   _p1Slt.removeSelecter();
                   _p1Slt.enabled = false;
                   initSelecterP2();
-                  _p2Slt.inputType = GameInputType.P1;
                   _curStep = 2;
+                  _p2Slt.inputType = GameInputType.P1;
                }
-               else
+               else if(GameData.I.config.assisterPartner)
                {
                   fadOutList(initAssist);
                   _curStep = 3;
                }
+               else
+               {
+                  GameData.I.p1Select.fuzhu = null;
+                  GameData.I.p2Select.fuzhu = null;
+                  if(GameMode.isVsPeople())
+                  {
+                     _curStep = 5;
+                     initMap();
+                  }
+                  else
+                  {
+                     if(GameMode.isAcrade())
+                     {
+                        startAcradeGame();
+                     }
+                     if(GameMode.currentMode == 100)
+                     {
+                        startMosouGame();
+                     }
+                  }
+               }
                break;
             case 2:
-               fadOutList(initAssist);
-               _curStep = 3;
+               if(GameData.I.config.assisterPartner)
+               {
+                  fadOutList(initAssist);
+                  _curStep = 3;
+               }
+               else
+               {
+                  GameData.I.p1Select.fuzhu = null;
+                  GameData.I.p2Select.fuzhu = null;
+                  _curStep = 5;
+                  initMap();
+               }
                break;
             case 3:
                if(GameMode.isVsCPU())
@@ -1153,8 +1455,8 @@ package net.play5d.game.bvn.state
                }
                else if(GameMode.isVsCPU() || GameMode.isVsPeople())
                {
-                  fadOutList(initMap);
                   _curStep = 5;
+                  initMap();
                }
                else
                {
@@ -1170,7 +1472,7 @@ package net.play5d.game.bvn.state
                break;
             case 4:
                _curStep = 5;
-               fadOutList(initMap);
+               initMap();
                break;
             case 5:
                selectFinish();
@@ -1179,36 +1481,63 @@ package net.play5d.game.bvn.state
 
       private function initMap() : void
       {
-         var oldX:Number;
-         var oldY:Number;
          trace("选择地图");
          GameEvent.dispatchEvent("SELECT_MAP");
-         clear();
-         GameInputer.enabled = false;
-         _mapSelectUI = new MapSelectUI();
-         _ui.addChild(_mapSelectUI);
-         oldX = _mapSelectUI.x;
-         oldY = _mapSelectUI.y;
-         _mapSelectUI.scaleX = 0;
-         _mapSelectUI.scaleY = 0;
-         _mapSelectUI.x = GameConfig.GAME_SIZE.x / 2;
-         _mapSelectUI.y = GameConfig.GAME_SIZE.y / 2;
-         TweenLite.to(_mapSelectUI,0.3,{
-            "x":oldX,
-            "y":oldY,
-            "scaleX":1,
-            "scaleY":1,
-            "ease":Back.easeOut,
-            "onComplete":function():void
+         if(_p1Slt)
+         {
+            _p1Slt.enabled = false;
+            _p1Slt.removeSelecter();
+         }
+         if(_p2Slt)
+         {
+            _p2Slt.enabled = false;
+            _p2Slt.removeSelecter();
+         }
+         for each(var f:ArrayMap in _moreFighterMap)
+         {
+            if(f)
             {
-               if(_mapSelectUI)
+               var idx:int = 0;
+               while(idx < f.length)
                {
-                  _mapSelectUI.addMouseEvents(mapPrevHandler,mapNextHandler,mapConfrimHandler);
-                  _mapSelectUI.inputType = GameInputType.P1;
-                  _mapSelectUI.enabled = true;
+                  var item:SelectFighterItem = f.getItemByIndex(idx);
+                  if(item) item.destory();
+                  idx++;
                }
-               GameInputer.enabled = true;
+               _moreFighterMap[f] = null;
             }
+         }
+         if(_fighterListUI)
+         {
+            _fighterListUI.visible = true;
+            _fighterListUI.mouseChildren = false;
+            _fighterListUI.mouseEnabled = false;
+            TweenLite.to(_fighterListUI, 0.22, {
+               "alpha": 0.22,
+               "ease": Quad.easeOut
+            });
+         }
+         if(_mapSelectUI)
+         {
+            _mapSelectUI.destory();
+            _mapSelectUI = null;
+         }
+         _mapSelectUI = new MapSelectUI();
+         _mapSelectUI.alpha = 0;
+         _ui.addChild(_mapSelectUI);
+         _mapSelectUI.addMouseEvents(mapPrevHandler,mapNextHandler,mapConfrimHandler);
+         _mapSelectUI.inputType = GameInputType.P1;
+         _mapSelectUI.enabled = false;
+         GameInputer.clearInput();
+         GameInputer.enabled = false;
+         _mapSelectUI.playOpenAnimation(function():void
+         {
+            if(_mapSelectUI)
+            {
+               _mapSelectUI.enabled = true;
+            }
+            GameInputer.clearInput();
+            GameInputer.enabled = true;
          });
       }
       
@@ -1230,6 +1559,219 @@ package net.play5d.game.bvn.state
       private function onMapSelect() : void
       {
          nextStep();
+      }
+
+      private function cancelMapSelect() : void
+      {
+         if(!_mapSelectUI)
+         {
+            return;
+         }
+         _mapSelectUI.destory();
+         _mapSelectUI = null;
+
+         if(_fighterListUI)
+         {
+            _fighterListUI.visible = true;
+            _fighterListUI.mouseChildren = true;
+            _fighterListUI.mouseEnabled = true;
+            TweenLite.to(_fighterListUI, 0.2, {
+               "alpha": 1,
+               "ease": Quad.easeOut
+            });
+         }
+
+         if(GameMode.isVsCPU())
+         {
+            if(GameData.I.config.assisterPartner)
+            {
+               _curStep = 4;
+            }
+            else
+            {
+               _curStep = 2;
+            }
+         }
+         else
+         {
+            _twoPlayerSelectFin = false;
+            _curStep = GameData.I.config.assisterPartner ? 3 : 1;
+         }
+
+         if(_p2Slt)
+         {
+            _fighterListUI.addChild(_p2Slt.ui);
+            _p2Slt.enabled = true;
+            _p2Slt.cancelSelect();
+            var itemP2:SelectFighterItem = getFighterItem(_p2Slt.x, _p2Slt.y);
+            if(itemP2)
+            {
+               moveToSelectFighter(_p2Slt, itemP2);
+            }
+         }
+         else if(_p1Slt)
+         {
+            _fighterListUI.addChild(_p1Slt.ui);
+            _p1Slt.enabled = true;
+            _p1Slt.cancelSelect();
+            var itemP1:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+            if(itemP1)
+            {
+               moveToSelectFighter(_p1Slt, itemP1);
+            }
+         }
+
+         SoundCtrl.I.sndSelect();
+         GameInputer.clearInput();
+         GameInputer.enabled = true;
+      }
+
+      private function cancelP2Select() : void
+      {
+         if(!_p2Slt)
+         {
+            return;
+         }
+
+         if(_curStep == 4)
+         {
+            _p2Slt.removeSelecter();
+            _p2Slt.enabled = false;
+            if(_p2Slt.group)
+            {
+               _p2Slt.group.clearAssist();
+            }
+            _curStep = 3;
+            if(_p1Slt)
+            {
+               _fighterListUI.addChild(_p1Slt.ui);
+               _p1Slt.enabled = true;
+               _p1Slt.cancelSelect();
+               var curItemP1Assist:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+               if(curItemP1Assist)
+               {
+                  moveToSelectFighter(_p1Slt, curItemP1Assist);
+               }
+            }
+            SoundCtrl.I.sndSelect();
+            GameInputer.clearInput();
+            GameInputer.enabled = true;
+            return;
+         }
+
+         if(_p2Slt.selectTimes > 0)
+         {
+            _p2Slt.cancelSelect();
+            var curItemP2:SelectFighterItem = getFighterItem(_p2Slt.x, _p2Slt.y);
+            if(curItemP2)
+            {
+               moveToSelectFighter(_p2Slt, curItemP2);
+            }
+            SoundCtrl.I.sndSelect();
+            return;
+         }
+
+         _p2Slt.removeSelecter();
+         _p2Slt.destory();
+         _p2Slt = null;
+         clearIdleFighter(2);
+
+         _curStep = 1;
+
+         if(_p1Slt)
+         {
+            _fighterListUI.addChild(_p1Slt.ui);
+            _p1Slt.enabled = true;
+            _p1Slt.cancelSelect();
+            var curItemP1:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+            if(curItemP1)
+            {
+               moveToSelectFighter(_p1Slt, curItemP1);
+            }
+         }
+         else
+         {
+            initSelecterP1();
+         }
+
+         SoundCtrl.I.sndSelect();
+         GameInputer.clearInput();
+         GameInputer.enabled = true;
+      }
+
+      private function cancelP1Select() : void
+      {
+         if(!_p1Slt)
+         {
+            MainGame.I.goMenu();
+            return;
+         }
+
+         if(_curStep == 3)
+         {
+            if(_p1Slt.group)
+            {
+               _p1Slt.group.clearAssist();
+            }
+            if(_p2Slt && _p2Slt.group)
+            {
+               _p2Slt.group.clearAssist();
+            }
+            clearGridOnly();
+            _selectState = SELECT_STATE_FIGHTER;
+            buildList(_config.charList);
+
+            if(GameMode.isVsCPU())
+            {
+               _curStep = 2;
+               if(_p2Slt)
+               {
+                  _p2Slt.isSelectAssist = false;
+                  _p2Slt.selectTimesCount = GameMode.isTeamMode() ? 3 : Math.max(1, GameData.I.config.player2);
+                  _fighterListUI.addChild(_p2Slt.ui);
+                  _p2Slt.enabled = true;
+                  _p2Slt.cancelSelect();
+                  var itemP2Char:SelectFighterItem = getFighterItem(_p2Slt.x, _p2Slt.y);
+                  if(itemP2Char)
+                  {
+                     moveToSelectFighter(_p2Slt, itemP2Char);
+                  }
+               }
+            }
+            else
+            {
+               _curStep = 1;
+               _p1Slt.isSelectAssist = false;
+               _p1Slt.selectTimesCount = GameMode.isTeamMode() ? 3 : Math.max(1, GameData.I.config.player1);
+               _fighterListUI.addChild(_p1Slt.ui);
+               _p1Slt.enabled = true;
+               _p1Slt.cancelSelect();
+               var itemP1Char:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+               if(itemP1Char)
+               {
+                  moveToSelectFighter(_p1Slt, itemP1Char);
+               }
+            }
+            SoundCtrl.I.sndSelect();
+            GameInputer.clearInput();
+            GameInputer.enabled = true;
+            return;
+         }
+
+         if(_p1Slt.selectTimes > 0)
+         {
+            _p1Slt.cancelSelect();
+            var curItemP1Fighter:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+            if(curItemP1Fighter)
+            {
+               moveToSelectFighter(_p1Slt, curItemP1Fighter);
+            }
+            SoundCtrl.I.sndSelect();
+            return;
+         }
+
+         SoundCtrl.I.sndSelect();
+         MainGame.I.goMenu();
       }
       
       private function startAcradeGame() : void
@@ -1263,9 +1805,241 @@ package net.play5d.game.bvn.state
       {
       }
       
+      private function updateIdleSprite(playerIndex:int, fighter:FighterVO) : void
+      {
+         if(_selectState != SELECT_STATE_FIGHTER)
+         {
+            return;
+         }
+         if(!fighter)
+         {
+            clearIdleFighter(playerIndex);
+            return;
+         }
+
+         var currentId:String = playerIndex == 1 ? _curP1FighterId : _curP2FighterId;
+         if(currentId == fighter.id)
+         {
+            return;
+         }
+
+         if(playerIndex == 1)
+         {
+            _curP1FighterId = fighter.id;
+         }
+         else
+         {
+            _curP2FighterId = fighter.id;
+         }
+
+         clearIdleFighter(playerIndex, false);
+
+         var targetFighterId:String = fighter.id;
+         var fileUrl:String = fighter.fileUrl;
+         if(!fileUrl)
+         {
+            var fv:FighterVO = FighterModel.I.getFighter(targetFighterId, true);
+            if(fv)
+            {
+               fileUrl = fv.fileUrl;
+            }
+         }
+         if(!fileUrl)
+         {
+            return;
+         }
+
+         var onFail:Function = function(msg:Object = null):void
+         {
+            var activeId:String = playerIndex == 1 ? _curP1FighterId : _curP2FighterId;
+            if(activeId == targetFighterId)
+            {
+               clearIdleFighter(playerIndex, false);
+            }
+         };
+
+         AssetManager.I.loadSWF(fileUrl, function(loadedLoader:Loader):void
+         {
+            var activeId:String = playerIndex == 1 ? _curP1FighterId : _curP2FighterId;
+            if(!loadedLoader || !loadedLoader.content || activeId != targetFighterId)
+            {
+               if(loadedLoader)
+               {
+                  try
+                  {
+                     loadedLoader.unloadAndStop(true);
+                  }
+                  catch(e:Error)
+                  {
+                     try
+                     {
+                        loadedLoader.unload();
+                     }
+                     catch(e2:Error)
+                     {
+                     }
+                  }
+               }
+               return;
+            }
+
+            clearIdleFighter(playerIndex, false);
+
+            if(playerIndex == 1)
+            {
+               _p1IdleLoader = loadedLoader;
+            }
+            else
+            {
+               _p2IdleLoader = loadedLoader;
+            }
+
+            try
+            {
+               var loadedFighter:FighterMain = new FighterMain(loadedLoader.content as MovieClip);
+               loadedFighter.data = fighter;
+               if(!loadedFighter.initlized())
+               {
+                  loadedFighter.initlize();
+               }
+               loadedFighter.scale = 5.2;
+               loadedFighter.direct = playerIndex == 1 ? 1 : -1;
+               loadedFighter.x = 0;
+               loadedFighter.y = 0;
+               loadedFighter.setVelocity(0, 0);
+               loadedFighter.setVec2(0, 0);
+               loadedFighter.isApplyG = false;
+               loadedFighter.isInAir = false;
+               loadedFighter.isTouchBottom = true;
+               loadedFighter.renderSelf();
+               loadedFighter.idle();
+               loadedFighter.disableShadow();
+
+               var container:Sprite = playerIndex == 1 ? _p1IdleContainer : _p2IdleContainer;
+               if(container && loadedFighter.mc)
+               {
+                  container.addChild(loadedFighter.mc);
+                  loadedFighter.disableShadow();
+               }
+
+               if(playerIndex == 1)
+               {
+                  _p1IdleFighter = loadedFighter;
+               }
+               else
+               {
+                  _p2IdleFighter = loadedFighter;
+               }
+            }
+            catch(err:Error)
+            {
+            }
+         }, onFail);
+      }
+
+      private function clearIdleFighter(playerIndex:int, resetId:Boolean = true) : void
+      {
+         if(playerIndex == 1)
+         {
+            if(resetId)
+            {
+               _curP1FighterId = null;
+            }
+            if(_p1IdleFighter)
+            {
+               try
+               {
+                  if(_p1IdleFighter.mc && _p1IdleFighter.mc.parent)
+                  {
+                     _p1IdleFighter.mc.parent.removeChild(_p1IdleFighter.mc);
+                  }
+                  _p1IdleFighter.destory();
+               }
+               catch(e:Error)
+               {
+               }
+               _p1IdleFighter = null;
+            }
+            if(_p1IdleLoader)
+            {
+               try
+               {
+                  _p1IdleLoader.unloadAndStop(true);
+               }
+               catch(e:Error)
+               {
+                  try
+                  {
+                     _p1IdleLoader.unload();
+                  }
+                  catch(e2:Error)
+                  {
+                  }
+               }
+               _p1IdleLoader = null;
+            }
+            if(_p1IdleContainer)
+            {
+               while(_p1IdleContainer.numChildren > 0)
+               {
+                  _p1IdleContainer.removeChildAt(0);
+               }
+            }
+         }
+         else
+         {
+            if(resetId)
+            {
+               _curP2FighterId = null;
+            }
+            if(_p2IdleFighter)
+            {
+               try
+               {
+                  if(_p2IdleFighter.mc && _p2IdleFighter.mc.parent)
+                  {
+                     _p2IdleFighter.mc.parent.removeChild(_p2IdleFighter.mc);
+                  }
+                  _p2IdleFighter.destory();
+               }
+               catch(e:Error)
+               {
+               }
+               _p2IdleFighter = null;
+            }
+            if(_p2IdleLoader)
+            {
+               try
+               {
+                  _p2IdleLoader.unloadAndStop(true);
+               }
+               catch(e:Error)
+               {
+                  try
+                  {
+                     _p2IdleLoader.unload();
+                  }
+                  catch(e2:Error)
+                  {
+                  }
+               }
+               _p2IdleLoader = null;
+            }
+            if(_p2IdleContainer)
+            {
+               while(_p2IdleContainer.numChildren > 0)
+               {
+                  _p2IdleContainer.removeChildAt(0);
+               }
+            }
+         }
+      }
+
       public function destory(param1:Function = null) : void
       {
          clear();
+         clearIdleFighter(1);
+         clearIdleFighter(2);
          GameRender.remove(render);
          GameInputer.enabled = false;
          SoundCtrl.I.BGM(null);
@@ -1275,6 +2049,22 @@ package net.play5d.game.bvn.state
             _backMenuBtn.removeEventListener("touchTap",backMenuHandler);
             _backMenuBtn.removeEventListener("click",backMenuHandler);
             _backMenuBtn.visible = false;
+         }
+         if(_p1IdleContainer)
+         {
+            if(_p1IdleContainer.parent)
+            {
+               _p1IdleContainer.parent.removeChild(_p1IdleContainer);
+            }
+            _p1IdleContainer = null;
+         }
+         if(_p2IdleContainer)
+         {
+            if(_p2IdleContainer.parent)
+            {
+               _p2IdleContainer.parent.removeChild(_p2IdleContainer);
+            }
+            _p2IdleContainer = null;
          }
       }
    }

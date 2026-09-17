@@ -335,6 +335,15 @@ package net.play5d.game.bvn.fighter
          return _fighterCtrl.getMcCtrl().getFighterMc();
       }
       
+      public function disableShadow() : void
+      {
+         var fmc:FighterMC = getMC();
+         if(fmc)
+         {
+            fmc.disableShadow();
+         }
+      }
+      
       public function initMosouFighter(param1:MosouFighterVO) : void
       {
          mosouPlayerData = param1;

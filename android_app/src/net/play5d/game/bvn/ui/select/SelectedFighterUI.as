@@ -1,19 +1,22 @@
 package net.play5d.game.bvn.ui.select
 {
    import flash.display.DisplayObject;
-   import flash.display.MovieClip
+   import flash.display.MovieClip;
    import flash.display.Sprite;
    import flash.events.Event;
    import flash.events.EventDispatcher;
    import flash.filters.GlowFilter;
    import flash.geom.Rectangle;
+   import flash.text.AntiAliasType;
+   import flash.text.Font;
+   import flash.text.TextField;
+   import flash.text.TextFormat;
+   import flash.text.TextFormatAlign;
+   import flash.utils.getQualifiedClassName;
    import net.play5d.game.bvn.GameConfig;
    import net.play5d.game.bvn.ctrl.AssetManager;
    import net.play5d.game.bvn.data.FighterVO;
-   import net.play5d.game.bvn.ui.GameUI;
-   import net.play5d.game.bvn.ui.UIUtils;
    import net.play5d.game.bvn.utils.ResUtils;
-   import net.play5d.kyo.display.BitmapText;
    
    public class SelectedFighterUI extends EventDispatcher
    {
@@ -27,57 +30,75 @@ package net.play5d.game.bvn.ui.select
       
       private var _fighter:FighterVO;
       
-      private var _text:BitmapText;
+      private var _nameTf:TextField;
       
       private var _uiWidth:Number;
       private var _isP1:Boolean = true;
       private static var _selectedItemP1:Class;
+      private static var _fontRegistered:Boolean = false;
       
-      public function SelectedFighterUI(itemSprite:Sprite)
+      public function SelectedFighterUI(itemSprite:Sprite, isP1:Boolean = true)
       {
          super();
          this.ui = itemSprite;
+         this._isP1 = isP1;
          itemSprite.mouseChildren = false;
          
-         if(!_selectedItemP1)
-         {
-            try
-            {
-               _selectedItemP1 = ResUtils.I.getItemClass(ResUtils.swfLib.select, "selected_item_p1_mc");
-            }
-            catch(e:Error)
-            {
-            }
-         }
-         _isP1 = _selectedItemP1 ? (itemSprite is _selectedItemP1) : true;
+         registerSelectFont();
          
-         if(GameUI.SHOW_CN_TEXT)
+         _nameTf = new TextField();
+         _nameTf.selectable = false;
+         _nameTf.mouseEnabled = false;
+         _nameTf.antiAliasType = AntiAliasType.ADVANCED;
+         _nameTf.filters = [new GlowFilter(0x000000, 1, 3, 3, 15, 3)];
+         _nameTf.width = 400;
+         _nameTf.height = 32;
+         _nameTf.y = 526;
+         if(_isP1)
          {
-            _text = new BitmapText(true,16777215,[new GlowFilter(0,1,3,3,3)]);
-            if(_isP1)
-            {
-               UIUtils.formatText(_text.textfield,{
-                  "color":16777215,
-                  "size":16,
-                  "align":"left"
-               });
-               _text.x = 25;
-               _text.width = 300;
-               _text.y = 350;
-            }
-            else
-            {
-               UIUtils.formatText(_text.textfield,{
-                  "color":16777215,
-                  "size":16,
-                  "align":"right"
-               });
-               _text.x = -325;
-               _text.width = 300;
-               _text.y = 350;
-            }
-            itemSprite.addChild(_text);
+            _nameTf.x = 30;
          }
+         else
+         {
+            _nameTf.x = 855;
+         }
+         itemSprite.addChild(_nameTf);
+      }
+      
+      private static function registerSelectFont() : void
+      {
+         if(_fontRegistered)
+         {
+            return;
+         }
+         try
+         {
+            var fontCls:Class = ResUtils.I.getItemClass(ResUtils.swfLib.select, "mbtl_font");
+            if(fontCls)
+            {
+               Font.registerFont(fontCls);
+               _fontRegistered = true;
+            }
+         }
+         catch(e:Error)
+         {
+         }
+      }
+      
+      private static function isAsciiOnly(text:String) : Boolean
+      {
+         if(!text)
+         {
+            return true;
+         }
+         for(var i:int = 0; i < text.length; i++)
+         {
+            if(text.charCodeAt(i) > 127)
+            {
+               return false;
+            }
+         }
+         return true;
       }
       
       public function mouseEnabled(enabled:Boolean) : void
@@ -109,6 +130,11 @@ package net.play5d.game.bvn.ui.select
          dispatchEvent(event);
       }
       
+      public function get nameTf() : TextField
+      {
+         return _nameTf;
+      }
+      
       // Nonaktifkan interaksi mouse/touch tanpa menghapus portrait
       public function freeze() : void
       {
@@ -119,10 +145,19 @@ package net.play5d.game.bvn.ui.select
       public function destory() : void
       {
          mouseEnabled(false);
-         if(_text)
+         if(_nameTf)
          {
-            _text.destory();
-            _text = null;
+            if(_nameTf.parent)
+            {
+               try
+               {
+                  _nameTf.parent.removeChild(_nameTf);
+               }
+               catch(e:Error)
+               {
+               }
+            }
+            _nameTf = null;
          }
          if(_face)
          {
@@ -148,9 +183,26 @@ package net.play5d.game.bvn.ui.select
             return;
          }
          _fighter = fighter;
-         if(_text)
+         if(_nameTf)
          {
-            _text.text = fighter.name;
+            registerSelectFont();
+            var isAscii:Boolean = isAsciiOnly(fighter.name);
+            var fontName:String = isAscii ? "MBTL_Name" : "SimHei";
+            var fontSize:int = isAscii ? 22 : 20;
+            var alignMode:String = _isP1 ? TextFormatAlign.RIGHT : TextFormatAlign.LEFT;
+            
+            var tfFormat:TextFormat = new TextFormat(fontName, fontSize, 0xFFFFFF, false, false, false, null, null, alignMode);
+            _nameTf.embedFonts = isAscii;
+            _nameTf.defaultTextFormat = tfFormat;
+            _nameTf.text = fighter.name;
+            _nameTf.setTextFormat(tfFormat);
+            _nameTf.filters = [new GlowFilter(0x000000, 1, 3, 3, 15, 3)];
+            _nameTf.visible = true;
+            
+            if(_nameTf.parent)
+            {
+               _nameTf.parent.setChildIndex(_nameTf, _nameTf.parent.numChildren - 1);
+            }
          }
          var ctOuter:Sprite = ui.getChildByName("ct") as Sprite;
          var ctInner:Sprite = ctOuter ? ctOuter.getChildByName("ct") as Sprite : null;
@@ -212,6 +264,10 @@ package net.play5d.game.bvn.ui.select
          }
          badgeMc.gotoAndStop(index);
          ui.addChild(badgeMc);
+         if(_nameTf && _nameTf.parent)
+         {
+            _nameTf.parent.setChildIndex(_nameTf, _nameTf.parent.numChildren - 1);
+         }
          if(_isP1)
          {
             badgeMc.x = 20;
@@ -233,6 +289,10 @@ package net.play5d.game.bvn.ui.select
          }
          badgeMc.gotoAndStop(4);
          ui.addChild(badgeMc);
+         if(_nameTf && _nameTf.parent)
+         {
+            _nameTf.parent.setChildIndex(_nameTf, _nameTf.parent.numChildren - 1);
+         }
          if(_isP1)
          {
             badgeMc.x = 20;
@@ -245,4 +305,3 @@ package net.play5d.game.bvn.ui.select
       }
    }
 }
-

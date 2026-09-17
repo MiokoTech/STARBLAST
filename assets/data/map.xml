@@ -12,13 +12,13 @@
 
 <map id="tower" name="Map tower ">
   <file url="stages/tower.swf" />
-  <img url="stages/tower.png" />
+  <img url="stages/tower.jpg" />
   <bgm url="bgm/bgm_map/tower.mp3"/>
 </map>
 
 <map id="map_1" name="Map 1">
   <file url="stages/map_1.swf" />
-  <img url="stages/map_1.png" />
+  <img url="stages/map_1.jpg" />
   <bgm url="bgm/bgm_map/map_1.mp3"/>
 </map>
 

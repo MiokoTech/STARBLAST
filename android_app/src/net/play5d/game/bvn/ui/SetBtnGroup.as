@@ -363,6 +363,13 @@ package net.play5d.game.bvn.ui
                      ],
                      optoinKey:"fightTime"
                   },
+                  { label: "Assister Partner", cn:"返回", cn_y: 200,
+                     options: [
+                        { label: "Enabled", cn: "fps", cn_y: 255, value: true },
+                        { label: "Disabled", cn: "fps", cn_y: 255, value: false }
+                     ],
+                     optoinKey:"assisterPartner"
+                  },
                   { label: "Camera Zoom Speed", cn:"返回", cn_y: 200,
                      options: [
                         { label: "50%", cn: "fps", cn_y: 255, value: 0.5 },
@@ -397,8 +404,8 @@ package net.play5d.game.bvn.ui
                setBtnData([
                   { label: "Assister Partner", cn:"返回", cn_y: 200,
                      options: [
-                        { label: "Enabled", cn: "fps", cn_y: 255, value: 30 },
-                        { label: "Disabled", cn: "fps", cn_y: 255, value: 60 }
+                        { label: "Enabled", cn: "fps", cn_y: 255, value: true },
+                        { label: "Disabled", cn: "fps", cn_y: 255, value: false }
                      ],
                      optoinKey:"assisterPartner"
                   },

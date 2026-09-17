@@ -158,16 +158,16 @@ package net.play5d.game.bvn.state
       
       public function gotoGame(param1:Array, param2:Array) : void
       {
-         var _loc4_:GameRunFighterGroup = GameCtrl.I.gameRunData.p1FighterGroup;
-         var _loc3_:GameRunFighterGroup = GameCtrl.I.gameRunData.p2FighterGroup;
-         _loc4_.fighter1 = FighterModel.I.getFighter(param1[0],true);
-         _loc4_.fighter2 = FighterModel.I.getFighter(param1[1],true);
-         _loc4_.fighter3 = FighterModel.I.getFighter(param1[2],true);
-         _loc4_.assister = AssisterModel.I.getAssister(GameData.I.p1Select.fuzhu,true);
-         _loc3_.fighter1 = FighterModel.I.getFighter(param2[0],true);
-         _loc3_.fighter2 = FighterModel.I.getFighter(param2[1],true);
-         _loc3_.fighter3 = FighterModel.I.getFighter(param2[2],true);
-         _loc3_.assister = AssisterModel.I.getAssister(GameData.I.p2Select.fuzhu,true);
+         var p1Group:GameRunFighterGroup = GameCtrl.I.gameRunData.p1FighterGroup;
+         var p2Group:GameRunFighterGroup = GameCtrl.I.gameRunData.p2FighterGroup;
+         p1Group.fighter1 = FighterModel.I.getFighter(param1[0],true);
+         p1Group.fighter2 = FighterModel.I.getFighter(param1[1],true);
+         p1Group.fighter3 = FighterModel.I.getFighter(param1[2],true);
+         p1Group.assister = GameData.I.config.assisterPartner && GameData.I.p1Select.fuzhu ? AssisterModel.I.getAssister(GameData.I.p1Select.fuzhu,true) : null;
+         p2Group.fighter1 = FighterModel.I.getFighter(param2[0],true);
+         p2Group.fighter2 = FighterModel.I.getFighter(param2[1],true);
+         p2Group.fighter3 = FighterModel.I.getFighter(param2[2],true);
+         p2Group.assister = GameData.I.config.assisterPartner && GameData.I.p2Select.fuzhu ? AssisterModel.I.getAssister(GameData.I.p2Select.fuzhu,true) : null;
          GameCtrl.I.gameRunData.map = MapModel.I.getMap(GameData.I.selectMap);
          GameEvent.dispatchEvent("FIGHT_LOADING_FINISH");
          StateCtrl.I.transIn(MainGame.I.goGame,false);
@@ -180,19 +180,23 @@ package net.play5d.game.bvn.state
       
       private function startLoad() : void
       {
-         var _loc1_:Array = [];
-         var _loc6_:Array = [];
-         var _loc2_:Array = [];
-         var _loc3_:Array = [];
-         _loc1_.push(GameData.I.selectMap);
-         var _loc5_:SelectVO = GameData.I.p1Select;
-         _loc6_.push(_loc5_.fighter1,_loc5_.fighter2,_loc5_.fighter3);
-         var _loc4_:SelectVO = GameData.I.p2Select;
-         _loc6_.push(_loc4_.fighter1,_loc4_.fighter2,_loc4_.fighter3);
-         _loc2_.push(_loc5_.fuzhu,_loc4_.fuzhu);
-         _loc3_ = _loc6_.concat([GameData.I.selectMap]);
+         var maps:Array = [];
+         var fighters:Array = [];
+         var assisters:Array = [];
+         var bgms:Array = [];
+         maps.push(GameData.I.selectMap);
+         var p1Select:SelectVO = GameData.I.p1Select;
+         fighters.push(p1Select.fighter1,p1Select.fighter2,p1Select.fighter3);
+         var p2Select:SelectVO = GameData.I.p2Select;
+         fighters.push(p2Select.fighter1,p2Select.fighter2,p2Select.fighter3);
+         if(GameData.I.config.assisterPartner)
+         {
+            if(p1Select.fuzhu) assisters.push(p1Select.fuzhu);
+            if(p2Select.fuzhu) assisters.push(p2Select.fuzhu);
+         }
+         bgms = fighters.concat([GameData.I.selectMap]);
          GameStageLoadCtrl.I.init(onLoadProcess,onLoadError);
-         GameStageLoadCtrl.I.loadGame(_loc1_,_loc6_,_loc2_,_loc3_,onLoadFinish);
+         GameStageLoadCtrl.I.loadGame(maps,fighters,assisters,bgms,onLoadFinish);
          GameEvent.dispatchEvent("FIGHT_LOADING");
       }
       

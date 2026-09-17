@@ -65,12 +65,20 @@ package net.play5d.game.bvn.factory
          return _loc3_;
       }
       
-      public static function createAssisterByData(param1:FighterVO, param2:String) : Assister
+      public static function createAssisterByData(fighterVO:FighterVO, teamId:String) : Assister
       {
-         var _loc3_:MovieClip = GameStageLoadCtrl.I.getAssisterMc(param1.fileUrl,param2);
-         var _loc4_:Assister = new Assister(_loc3_);
-         _loc4_.data = param1;
-         return _loc4_;
+         if(!fighterVO)
+         {
+            return null;
+         }
+         var assisterMc:MovieClip = GameStageLoadCtrl.I.getAssisterMc(fighterVO.fileUrl,teamId);
+         if(!assisterMc)
+         {
+            return null;
+         }
+         var assister:Assister = new Assister(assisterMc);
+         assister.data = fighterVO;
+         return assister;
       }
    }
 }

@@ -147,95 +147,98 @@ package net.play5d.game.bvn.ctrl.game_stage_loader
          return _mapCache[param1];
       }
       
-      public function loadGame(param1:Array, param2:Array, param3:Array, param4:Array, param5:Function = null) : void
+      public function loadGame(mapIds:Array, fighterIds:Array, assisterIds:Array, bgmIds:Array, onFinish:Function = null) : void
       {
-         var _loc14_:* = null;
-         var _loc7_:MapVO = null;
-         var _loc11_:FighterVO = null;
-         var _loc13_:FighterVO = null;
-         var _loc12_:BgmVO = null;
+         var itemId:* = null;
+         var mapVO:MapVO = null;
+         var fighterVO:FighterVO = null;
+         var assisterVO:FighterVO = null;
+         var bgmVO:BgmVO = null;
          _loadStep = 0;
          _loadStepLength = 0;
-         var _loc8_:Vector.<MapVO> = null;
-         var _loc9_:Vector.<FighterVO> = null;
-         var _loc10_:Vector.<FighterVO> = null;
-         var _loc6_:Vector.<BgmVO> = null;
+         var mapDatas:Vector.<MapVO> = null;
+         var fighterDatas:Vector.<FighterVO> = null;
+         var assisterDatas:Vector.<FighterVO> = null;
+         var bgmDatas:Vector.<BgmVO> = null;
          _loadStepLength++;
-         if(param1)
+         if(mapIds)
          {
-            param1 = unique(param1);
-            _loc8_ = new Vector.<MapVO>();
-            for each(_loc14_ in param1)
+            mapIds = unique(mapIds);
+            mapDatas = new Vector.<MapVO>();
+            for each(itemId in mapIds)
             {
-               _loc7_ = MapModel.I.getMap(_loc14_);
-               if(!_loc7_)
+               mapVO = MapModel.I.getMap(itemId);
+               if(!mapVO)
                {
                   throw new Error("获取地图数据失败！");
                }
-               _loc8_.push(_loc7_);
+               mapDatas.push(mapVO);
             }
          }
          _loadStepLength++;
-         if(param2)
+         if(fighterIds)
          {
-            param2 = unique(param2);
-            _loc9_ = new Vector.<FighterVO>();
-            for each(_loc14_ in param2)
+            fighterIds = unique(fighterIds);
+            fighterDatas = new Vector.<FighterVO>();
+            for each(itemId in fighterIds)
             {
-               _loc11_ = FighterModel.I.getFighter(_loc14_);
-               if(!_loc11_)
+               fighterVO = FighterModel.I.getFighter(itemId);
+               if(!fighterVO)
                {
                   throw new Error("获取角色数据失败！");
                }
-               _loc9_.push(_loc11_);
+               fighterDatas.push(fighterVO);
             }
          }
          _loadStepLength++;
-         if(param3)
+         if(assisterIds)
          {
-            param3 = unique(param3);
-            _loc10_ = new Vector.<FighterVO>();
-            for each(_loc14_ in param3)
+            assisterIds = unique(assisterIds);
+            assisterDatas = new Vector.<FighterVO>();
+            for each(itemId in assisterIds)
             {
-               _loc13_ = AssisterModel.I.getAssister(_loc14_);
-               if(!_loc13_)
+               if(!itemId)
                {
-                  throw new Error("获取辅助角色数据失败！");
+                  continue;
                }
-               _loc10_.push(_loc13_);
+               assisterVO = AssisterModel.I.getAssister(itemId);
+               if(assisterVO)
+               {
+                  assisterDatas.push(assisterVO);
+               }
             }
          }
          _loadStepLength++;
-         if(param4)
+         if(bgmIds)
          {
-            param4 = unique(param4);
-            _loc6_ = new Vector.<BgmVO>();
-            for each(_loc14_ in param4)
+            bgmIds = unique(bgmIds);
+            bgmDatas = new Vector.<BgmVO>();
+            for each(itemId in bgmIds)
             {
-               _loc12_ = FighterModel.I.getFighterBGM(_loc14_);
-               if(!_loc12_)
+               bgmVO = FighterModel.I.getFighterBGM(itemId);
+               if(!bgmVO)
                {
-                  _loc12_ = MapModel.I.getMapBGM(_loc14_);
+                  bgmVO = MapModel.I.getMapBGM(itemId);
                }
-               if(!_loc12_)
+               if(!bgmVO)
                {
-                  _loc12_ = FighterModel.I.getFighterBGM(_loc14_);
+                  bgmVO = FighterModel.I.getFighterBGM(itemId);
                }
-               if(!_loc12_)
+               if(!bgmVO)
                {
-                  _loc12_ = FighterModel.I.getBossBGM(_loc14_);
+                  bgmVO = FighterModel.I.getBossBGM(itemId);
                }
-               if(_loc12_)
+               if(bgmVO)
                {
-                  _loc6_.push(_loc12_);
+                  bgmDatas.push(bgmVO);
                }
             }
          }
-         _loadMapDatas = _loc8_;
-         _loadFighterDatas = _loc9_;
-         _loadAssisterDatas = _loc10_;
-         _loadBgmDatas = _loc6_;
-         _loadFinishBack = param5;
+         _loadMapDatas = mapDatas;
+         _loadFighterDatas = fighterDatas;
+         _loadAssisterDatas = assisterDatas;
+         _loadBgmDatas = bgmDatas;
+         _loadFinishBack = onFinish;
          _loadStep = 1;
          setTimeout(startLoadingMaps,300);
       }

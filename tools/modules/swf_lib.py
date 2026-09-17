@@ -234,6 +234,174 @@ SOUND_CLASS_TEMPLATE = """
 </item>
 """
 
+FONT_CLASS_TEMPLATE = SOUND_CLASS_TEMPLATE.replace(
+    "flash.media", "flash.text"
+).replace("Sound", "Font").replace("snd_menu1", "mbtl_font")
+
+
+MOVIECLIP_CLASS_TEMPLATE = """
+<item type="DoABC2Tag" flags="1" forceWriteAsLong="true" name="menu_preview_mc">
+      <abc type="ABC">
+        <version type="ABCVersion" major="46" minor="16" />
+        <constants type="AVM2ConstantPool">
+          <constant_int />
+          <constant_uint />
+          <constant_double />
+          <constant_decimal />
+          <constant_float />
+          <constant_float4 />
+          <constant_string>
+            <item isNull="true" />
+            <item>http://adobe.com/AS3/2006/builtin</item>
+            <item />
+            <item>menu_preview_mc</item>
+            <item>Object</item>
+            <item>MovieClip</item>
+            <item>flash.display</item>
+            <item>Sprite</item>
+            <item>DisplayObjectContainer</item>
+            <item>InteractiveObject</item>
+            <item>DisplayObject</item>
+            <item>EventDispatcher</item>
+            <item>flash.events</item>
+            <item>frame16</item>
+            <item>menu_preview_mc/frame16</item>
+            <item>stop</item>
+            <item>menu_preview_mc/menu_preview_mc</item>
+            <item>addFrameScript</item>
+            <item>flash.display:MovieClip</item>
+            <item>flash.display:Sprite</item>
+            <item>flash.display:DisplayObjectContainer</item>
+            <item>flash.display:InteractiveObject</item>
+            <item>flash.display:DisplayObject</item>
+            <item>flash.events:EventDispatcher</item>
+            <item>menu_preview_mc.as$0</item>
+          </constant_string>
+          <constant_namespace>
+            <item isNull="true" />
+            <item type="Namespace" kind="8" name_index="1" />
+            <item type="Namespace" kind="22" name_index="2" />
+            <item type="Namespace" kind="5" name_index="3" />
+            <item type="Namespace" kind="24" name_index="3" />
+            <item type="Namespace" kind="22" name_index="6" />
+            <item type="Namespace" kind="22" name_index="12" />
+            <item type="Namespace" kind="23" name_index="2" />
+            <item type="Namespace" kind="26" name_index="18" />
+            <item type="Namespace" kind="26" name_index="19" />
+            <item type="Namespace" kind="26" name_index="20" />
+            <item type="Namespace" kind="26" name_index="21" />
+            <item type="Namespace" kind="26" name_index="22" />
+            <item type="Namespace" kind="26" name_index="23" />
+            <item type="Namespace" kind="26" name_index="3" />
+            <item type="Namespace" kind="5" name_index="24" />
+          </constant_namespace>
+          <constant_namespace_set>
+            <item isNull="true" />
+            <item type="NamespaceSet">
+              <namespaces>
+                <item>2</item>
+              </namespaces>
+            </item>
+          </constant_namespace_set>
+          <constant_multiname>
+            <item isNull="true" />
+            <item type="Multiname" kind="7" name_index="3" namespace_index="2" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="4" namespace_index="2" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="9" name_index="3" namespace_index="0" namespace_set_index="1" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="5" namespace_index="5" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="7" namespace_index="5" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="8" namespace_index="5" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="9" namespace_index="5" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="10" namespace_index="5" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="11" namespace_index="6" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="13" namespace_index="7" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="15" namespace_index="2" namespace_set_index="0" qname_index="0" />
+            <item type="Multiname" kind="7" name_index="17" namespace_index="2" namespace_set_index="0" qname_index="0" />
+          </constant_multiname>
+        </constants>
+        <method_info>
+          <item type="MethodInfo" flags="0" name_index="2" ret_type="0">
+            <param_types />
+            <optional />
+            <paramNames />
+          </item>
+          <item type="MethodInfo" flags="0" name_index="14" ret_type="0">
+            <param_types />
+            <optional />
+            <paramNames />
+          </item>
+          <item type="MethodInfo" flags="0" name_index="16" ret_type="0">
+            <param_types />
+            <optional />
+            <paramNames />
+          </item>
+          <item type="MethodInfo" flags="0" name_index="2" ret_type="0">
+            <param_types />
+            <optional />
+            <paramNames />
+          </item>
+        </method_info>
+        <metadata_info />
+        <instance_info>
+          <item type="InstanceInfo" flags="8" iinit_index="2" name_index="1" protectedNS="4" super_index="4">
+            <interfaces />
+            <instance_traits type="Traits">
+              <traits>
+                <item type="TraitMethodGetterSetter" bytes="0a010001" deleted="false" disp_id="0" fileOffset="2776031" kindFlags="0" kindType="1" method_info="1" name_index="10">
+                  <metadata />
+                </item>
+              </traits>
+            </instance_traits>
+          </item>
+        </instance_info>
+        <class_info>
+          <item type="ClassInfo" cinit_index="3">
+            <static_traits type="Traits">
+              <traits />
+            </static_traits>
+          </item>
+        </class_info>
+        <script_info>
+          <item type="ScriptInfo" init_index="0">
+            <traits type="Traits">
+              <traits>
+                <item type="TraitClass" bytes="01040100" class_info="0" deleted="false" fileOffset="2776040" kindFlags="0" kindType="4" name_index="1" slot_id="1">
+                  <metadata />
+                </item>
+              </traits>
+            </traits>
+          </item>
+        </script_info>
+        <bodies>
+          <item type="MethodBody" codeBytes="d0305d03600230600930600830600730600630600530600430600458001d1d1d1d1d1d1d680147" init_scope_depth="1" max_regs="1" max_scope_depth="9" max_stack="2" method_info="0">
+            <exceptions />
+            <traits type="Traits">
+              <traits />
+            </traits>
+          </item>
+          <item type="MethodBody" codeBytes="d0305d0b4f0b0047" init_scope_depth="10" max_regs="1" max_scope_depth="11" max_stack="1" method_info="1">
+            <exceptions />
+            <traits type="Traits">
+              <traits />
+            </traits>
+          </item>
+          <item type="MethodBody" codeBytes="d030d049005d0c2400d0660a4f0c0247" init_scope_depth="10" max_regs="1" max_scope_depth="11" max_stack="3" method_info="2">
+            <exceptions />
+            <traits type="Traits">
+              <traits />
+            </traits>
+          </item>
+          <item type="MethodBody" codeBytes="d03047" init_scope_depth="9" max_regs="1" max_scope_depth="10" max_stack="1" method_info="3">
+            <exceptions />
+            <traits type="Traits">
+              <traits />
+            </traits>
+          </item>
+        </bodies>
+      </abc>
+    </item>
+"""
+
 
 class SwfXml:
     """Manipulator struktur tag XML SWF hasil dekompilasi FFDec."""
@@ -522,31 +690,41 @@ class SwfXml:
         if template_class and template_class in self.do_abc_tags:
             template_tag = self.do_abc_tags[template_class]
         elif self.do_abc_tags:
-            template_tag = next(iter(self.do_abc_tags.values()))
+            for t in self.do_abc_tags.values():
+                if t.attrib.get("name"):
+                    template_tag = t
+                    break
 
-        if template_tag is None:
-            raise RuntimeError("Template DoABC2Tag tidak ditemukan di SWF XML untuk dikloning")
-
-        orig_name = template_tag.attrib.get("name", "")
-        new_abc = copy.deepcopy(template_tag)
-        new_abc.attrib["name"] = class_name
-
-        for s in new_abc.findall(".//constant_string/item"):
-            if s.text:
-                if orig_name:
-                    s.text = s.text.replace(orig_name, class_name)
-                elif "frame" in s.text:
-                    pass
+        if template_tag is not None:
+            orig_name = template_tag.attrib.get("name", "")
+            new_abc = copy.deepcopy(template_tag)
+            new_abc.attrib["name"] = class_name
+            for s in new_abc.findall(".//constant_string/item"):
+                if s.text:
+                    if orig_name:
+                        s.text = s.text.replace(orig_name, class_name)
+                    elif "frame" in s.text:
+                        pass
+        else:
+            new_abc = ET.fromstring(MOVIECLIP_CLASS_TEMPLATE.strip())
+            new_abc.attrib["name"] = class_name
+            for s in new_abc.findall(".//constant_string/item"):
+                if s.text:
+                    s.text = s.text.replace("menu_preview_mc", class_name)
 
         if stop_on_frame is not None:
-            # 24 00 = pushbyte 0, 24 0f = pushbyte 15, dll.
             hex_byte = f"24{stop_on_frame:02x}"
             for mb in new_abc.findall(".//bodies/item"):
                 cb = mb.attrib.get("codeBytes", "")
                 if "24" in cb and "5d0c" in cb:
-                    # Ganti operand pushbyte
                     import re
                     mb.attrib["codeBytes"] = re.sub(r"24[0-9a-fA-F]{2}", hex_byte, cb, count=1)
+        else:
+            for mb in new_abc.findall(".//bodies/item"):
+                cb = mb.attrib.get("codeBytes", "")
+                if "24" in cb and "5d0c" in cb:
+                    mb.attrib["codeBytes"] = "d030d0490047"
+                    mb.attrib["max_stack"] = "1"
 
         self.remove_tag("DoABC2Tag", "name", class_name)
 
@@ -611,6 +789,27 @@ class SwfXml:
         new_abc.attrib["name"] = class_name
         for s in new_abc.findall(".//constant_string/item"):
             if s.text == "snd_menu1":
+                s.text = class_name
+
+        self.remove_tag("DoABC2Tag", "name", class_name)
+        insert_idx = self._get_insert_index()
+        self.tags_container.insert(insert_idx, new_abc)
+        self.do_abc_tags[class_name] = new_abc
+
+        self.register_symbol(symbol_id, class_name)
+        return new_abc
+
+    def add_as3_font_class(
+        self,
+        class_name: str,
+        symbol_id: int,
+    ) -> ET.Element:
+        """Sematkan bytecode kelas Font AS3 (DoABC2Tag) yang extend flash.text.Font."""
+        font_xml_str = FONT_CLASS_TEMPLATE.strip()
+        new_abc = ET.fromstring(font_xml_str)
+        new_abc.attrib["name"] = class_name
+        for s in new_abc.findall(".//constant_string/item"):
+            if s.text == "mbtl_font":
                 s.text = class_name
 
         self.remove_tag("DoABC2Tag", "name", class_name)

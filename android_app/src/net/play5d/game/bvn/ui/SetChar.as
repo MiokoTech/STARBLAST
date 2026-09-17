@@ -72,6 +72,13 @@ package net.play5d.game.bvn.ui
                ],
                optoinKey: "player2"
             },
+            { label: "Assister Partner", cn: "",
+               options: [
+                  { label: "Enabled", cn: "", value: true },
+                  { label: "Disabled", cn: "", value: false }
+               ],
+               optoinKey: "assisterPartner"
+            },
             { label: "Return", cn: "" },
             ]);
 

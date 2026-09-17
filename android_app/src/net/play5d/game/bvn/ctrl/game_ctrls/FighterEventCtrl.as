@@ -48,6 +48,10 @@ package net.play5d.game.bvn.ctrl.game_ctrls
          fighter.dispatchEvent(trainEvt);
          var group:GameRunFighterGroup = fighter.team.id == 1 ? GameCtrl.I.gameRunData.p1FighterGroup : GameCtrl.I.gameRunData.p2FighterGroup;
          var assister:Assister = group.currentAssister;
+         if(!assister)
+         {
+            return;
+         }
          assister.setOwner(fighter);
          assister.direct = fighter.direct;
          assister.x = fighter.x - 30 * assister.direct;
