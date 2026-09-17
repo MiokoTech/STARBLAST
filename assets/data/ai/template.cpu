@@ -1,0 +1,107 @@
+; ==============================================================
+; STARBLAST Character AI Profile Template (.cpu)
+; Format Resmi Logika AI Karakter STARBLAST
+;
+; Lokasi File (prioritas pencarian):
+; 1. STARBLAST/characters/<char_id>/ai.cpu        <-- UTAMA / DIREKOMENDASIKAN
+; 2. STARBLAST/characters/<char_id>/<char_id>.cpu
+; 3. STARBLAST/characters/<folder>/ai.cpu
+; 4. STARBLAST/ai/<char_id>.cpu                  (fallback global internal storage)
+; 5. assets/data/ai/<char_id>.cpu                (built-in default APK)
+; ==============================================================
+
+[AI]
+; Gaya bertarung: rushdown, zoner, balanced, aggressive, defensive
+style = balanced
+
+; Jarak ideal karakter dari musuh (dalam pixel)
+preferred_spacing = 56
+
+; Pengali agresivitas & pertahanan AI (1.0 = standar, > 1.0 = lebih agresif/defensif)
+aggression = 1.0
+defensiveness = 1.0
+
+; --------------------------------------------------------------
+; Fallback Action Ranges
+; Menentukan rentang jarak kapan tombol/jurus boleh digunakan
+; Format: action_name = min_jarak_x, max_jarak_x
+; --------------------------------------------------------------
+[Ranges]
+attack = 0, 130
+attackAIR = 0, 140
+skill1 = 0, 210
+skill2 = 0, 180
+zhao1 = 0, 220
+zhao2 = 0, 180
+zhao3 = 30, 240
+skillAIR = 0, 190
+bisha = 0, 250
+bishaUP = 0, 180
+bishaSUPER = 0, 260
+
+; --------------------------------------------------------------
+; Combo Chain Definitions
+; Urutan frame kombo dasar karakter
+; --------------------------------------------------------------
+[Combo]
+normal_chain = 砍1, 砍2, 砍3
+; cancel_skill1 = 砍1, 砍2
+
+; --------------------------------------------------------------
+; State & Action Rules (Mendukung Sintaks MUGEN/Ikemen & BVN)
+; Anda dapat membuat blok [State -1, Nama] atau [Rule, Nama]
+;
+; Daftar Action / Tombol:
+;   attack, attackAIR, skill1, skill2, zhao1, zhao2, zhao3,
+;   skillAIR, bisha, bishaUP, bishaSUPER, bishaAIR, dash, dash_back, defense
+;   (Atau nomor state MUGEN: 200=attack, 400=crouch, 600=air, 1000+=skills, 3000=bisha)
+;
+; Parameter Rule / Trigger yang didukung:
+;   trigger_action   / stateno        : Nama frame saat ini (contoh: "砍1", "stance", "sj循环")
+;   trigger_dist_x   / p2bodydist x   : Rentang jarak X ke musuh (min, max)
+;   trigger_dist_y   / p2bodydist y   : Rentang jarak Y ke musuh (min, max)
+;   trigger_hit      / movehit        : true / 1 jika serangan sebelumnya mengenai lawan
+;   trigger_qi       / power          : Minimal Qi (100 = 1 bar, 300 = 3 bar, atau MUGEN 1000 = 1 bar)
+;   statetype                         : S / C (ground) atau A (udara)
+;   p2movetype                        : A (musuh sedang menyerang -> trigger counter/guard)
+;   priority                          : Prioritas eksekusi (100 - 400). Semakin tinggi semakin diutamakan.
+;   chance           / random         : Peluang eksekusi (0.0 sampai 1.0 atau random < N)
+; --------------------------------------------------------------
+
+; Contoh 1: Kombo Cancel saat serangan mengenai lawan
+[State -1, Combo_Hit_Cancel]
+name = Hit_Confirm_To_Skill1
+trigger_action = 砍2
+trigger_dist_x = 0, 180
+trigger_hit = true
+action = skill1
+priority = 250
+chance = 0.90
+
+; Contoh 2: Stance loop follow-up jarak dekat
+[State -1, Stance_Followup]
+name = Stance_Close_Hit
+trigger_action = stance_loop
+trigger_dist_x = 0, 130
+action = attack
+priority = 260
+chance = 1.0
+
+; Contoh 3: Punish dengan Ultimate saat musuh dekat dan punya Qi
+[State -1, Super_Finisher]
+name = Super_Move_Punish
+trigger_dist_x = 0, 230
+trigger_qi = 100
+trigger_hit = true
+action = bisha
+priority = 350
+chance = 0.95
+
+; Contoh 4: Sintaks MUGEN Murni (ChangeState & Triggers)
+[State -1, Mugen_Counter_Attack]
+type = ChangeState
+value = 200
+triggerall = statetype != A
+trigger1 = p2bodydist x = [0, 90]
+trigger1 = p2movetype = A
+trigger1 = random < 800

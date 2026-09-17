@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension xmlns="http://ns.adobe.com/air/extension/50.0">
+    <id>com.miokotech.storageaccess</id>
+    <versionNumber>1.0.0</versionNumber>
+
+    <platforms>
+        <platform name="Android-ARM">
+            <applicationDeployment>
+                <nativeLibrary>StorageAccess.jar</nativeLibrary>
+                <initializer>com.miokotech.storageaccess.StorageAccessExtension</initializer>
+            </applicationDeployment>
+
+        </platform>
+    </platforms>
+</extension>

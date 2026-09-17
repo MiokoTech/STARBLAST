@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<fighter_config>
+<!--
+
+
+
+
+
+TOUHOU
+
+
+
+
+-->
+
+<fighter id="meirin" name="Hon Meirin" comic_type="0">
+  <file url="chars/touhou/meirin.swf" startFrame="1" />
+  <face url="Images/chars/bar/touhou/meirin.png"
+      bar_url="Images/chars/bar/touhou/meirin.png"
+      big_url="Images/chars/sampul/touhou/meirin.png"
+      win_url="Images/chars/sampul/touhou/meirin.png" />
+
+  <says>
+    <say_item>Youtube: MiokoTech</say_item>
+  </says>
+
+  <bgm url="bgm/.mp3" rate="0" />
+</fighter>
+
+
+<fighter id="flandre" name="Flandre Scarlet" comic_type="0">
+  <file url="chars/touhou/flandre.swf" startFrame="1" />
+  <face url="Images/chars/bar/touhou/flandre.png"
+      bar_url="Images/chars/bar/touhou/flandre.png"
+      big_url="Images/chars/sampul/touhou/flandre.png"
+      win_url="Images/chars/sampul/touhou/flandre.png" />
+
+  <says>
+    <say_item>Youtube: MiokoTech</say_item>
+  </says>
+
+  <bgm url="bgm/.mp3" rate="0" />
+</fighter>
+
+
+<fighter id="ibuki" name="Suika Ibuka" comic_type="0">
+  <file url="chars/touhou/ibuki.swf" startFrame="1" />
+  <face url="Images/chars/bar/touhou/ibuki.png"
+      bar_url="Images/chars/bar/touhou/ibuki.png"
+      big_url="Images/chars/sampul/touhou/ibuki.png"
+      win_url="Images/chars/sampul/touhou/ibuki.png" />
+
+  <says>
+    <say_item>Youtube: MiokoTech</say_item>
+  </says>
+
+  <bgm url="bgm/.mp3" rate="0" />
+</fighter>
+
+
+<fighter id="random" name="Random" comic_type="-1">
+	<face url="Images/chars/random.png"/>
+ </fighter>	
+	
+	
+	
+	<!-- ========================    Mosou Enemy   ==========================================================================================  -->
+	<fighter id="xb_ninja_1" name="忍者小兵1" comic_type="1">
+		<file url="fighter/xb/ninja1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_ninja_2" name="胖忍者兵" comic_type="1">
+		<file url="fighter/xb/ninja2.swf" startFrame="1"/>
+	</fighter>
+	
+	<fighter id="xb_ninja_earth1" name="土影小兵1" comic_type="1">
+		<file url="fighter/xb/ninja_earth1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_ninja_fire1" name="火影小兵1" comic_type="1">
+		<file url="fighter/xb/ninja_fire1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_ninja_fire2" name="火影小兵2" comic_type="1">
+		<file url="fighter/xb/ninja_fire2.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_ninja_sand1" name="风影小兵1" comic_type="1">
+		<file url="fighter/xb/ninja_sand1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_ninja_thunder1" name="雷影小兵1" comic_type="1">
+		<file url="fighter/xb/ninja_thunder1.swf" startFrame="1"/>
+	</fighter>
+	
+	<fighter id="xb_bear1" name="熊1" comic_type="1">
+		<file url="fighter/xb/bear1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_bird1" name="鸟1" comic_type="1">
+		<file url="fighter/xb/bird1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_dog1" name="狗1" comic_type="1">
+		<file url="fighter/xb/dog1.swf" startFrame="1"/>
+	</fighter>
+	<fighter id="xb_pig1" name="野猪1" comic_type="1">
+		<file url="fighter/xb/pig1.swf" startFrame="1"/>
+	</fighter>
+	
+	<!-- ========================    旧版角色   ==========================================================================================  -->
+	
+	
+</fighter_config>

@@ -1,0 +1,50 @@
+<mession>
+	<!-- 死神 TEAM 关卡 -->
+	<design comicType="0" gameMode="0">
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_11" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_12" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_1" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_2" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_3" attackRate="2" hpRate="2.5" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_4" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_7" attackRate="1.2" hpRate="1.5" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_8" attackRate="1.5" hpRate="2" />
+	</design>
+	
+	<!-- 死神 SINGLE 关卡 -->
+	<design comicType="0" gameMode="1">
+		<stage fighter="meirin" assister="shin" map="map_9" />
+		<stage fighter="flandre" assister="shin" map="map_10" />
+		<stage fighter="ibuki" assister="shin" map="map_7" />
+		<stage fighter="meirin" assister="shin" map="map_4" />
+		<stage fighter="flandre" assister="shin" map="map_3" hpRate="1.5" />
+		<stage fighter="ibuki" assister="shin" map="map_2" />
+		<stage fighter="meirin" assister="shin" map="map_1" />
+		<stage fighter="ibuki" assister="shin" map="map_8" hpRate="1.2" />
+	</design>
+	
+	<!-- 火影 TEAM 关卡 -->
+	<design comicType="1" gameMode="0">
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_11" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_12" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_1" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_2" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_3" attackRate="2" hpRate="2.5" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_4" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_7" attackRate="1.2" hpRate="1.5" />
+		<stage fighter="meirin,flandre,ibuki" assister="shin" map="map_8" attackRate="1.5" hpRate="2" />
+	</design>
+	
+	<!-- 火影 SINGLE 关卡 -->
+	<design comicType="1" gameMode="1">
+		<stage fighter="meirin" assister="shin" map="map_9" />
+		<stage fighter="flandre" assister="shin" map="map_10" />
+		<stage fighter="ibuki" assister="shin" map="map_7" />
+		<stage fighter="meirin" assister="shin" map="map_4" />
+		<stage fighter="flandre" assister="shin" map="map_3" hpRate="1.5" />
+		<stage fighter="ibuki" assister="shin" map="map_2" />
+		<stage fighter="meirin" assister="shin" map="map_1" />
+		<stage fighter="ibuki" assister="shin" map="map_8" hpRate="1.2" />
+	</design>
+	
+</mession>

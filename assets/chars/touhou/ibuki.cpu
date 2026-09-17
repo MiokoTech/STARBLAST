@@ -1,0 +1,95 @@
+; ==============================================================
+; STARBLAST Character AI Profile (.cpu)
+; Character: Suika Ibuki (Touhou Project)
+; ==============================================================
+
+[AI]
+style = rushdown
+preferred_spacing = 45
+aggression = 1.25
+defensiveness = 1.0
+
+; --------------------------------------------------------------
+; Fallback Hit Ranges
+; --------------------------------------------------------------
+[Ranges]
+attack = 0, 130
+attackAIR = 0, 140
+skill1 = 0, 210
+skill2 = 0, 170
+zhao1 = 0, 250
+zhao2 = 0, 190
+zhao3 = 30, 270
+skillAIR = 0, 190
+bisha = 0, 240
+bishaUP = 0, 180
+bishaSUPER = 0, 260
+
+; --------------------------------------------------------------
+; Combo Chain Definitions
+; --------------------------------------------------------------
+[Combo]
+normal_chain = 砍1, 砍2, 砍3, 砍4, 砍5
+skip_cancel = 砍2, 砍3
+
+; --------------------------------------------------------------
+; State & Stance Rules
+; --------------------------------------------------------------
+
+; Stance SJ loop close follow-up: Normal attack
+[State -1, Stance Close Followup]
+name = Stance_SJ_Close_Followup
+trigger_action = sj循环
+trigger_dist_x = 0, 140
+trigger_dist_y = -40, 40
+action = attack
+priority = 280
+chance = 0.95
+
+; Stance SJ loop far projectile: Zhao1 gourd projectile
+[State -1, Stance Far Projectile]
+name = Stance_SJ_Far_Projectile
+trigger_action = sj循环
+trigger_dist_x = 141, 300
+trigger_dist_y = -50, 50
+action = zhao1
+priority = 260
+chance = 0.90
+
+; Stance SJ loop exit / recovery when far away
+[State -1, Stance Exit Recovery]
+name = Stance_SJ_Exit_Recover
+trigger_action = sj循环
+trigger_dist_x = 301, 800
+action = skill1
+priority = 120
+chance = 0.80
+
+; Combo cancel into Skill2 on hit confirm
+[State -1, 5-Hit Skip Cancel]
+name = Hit_Confirm_Branch_Smash
+trigger_action = 砍2, 砍3
+trigger_dist_x = 0, 170
+trigger_hit = true
+action = skill2
+priority = 230
+chance = 0.85
+
+; Vortex vacuum finisher cancel into Bisha
+[State -1, Vortex Finisher]
+name = Vortex_Vacuum_Finisher
+trigger_action = wu真命中
+trigger_dist_x = 0, 240
+trigger_qi = 100
+action = bisha
+priority = 360
+chance = 0.95
+
+; Air dive earthquake follow-up
+[State -1, Air Dive Earthquake]
+name = Air_Dive_Earthquake
+trigger_action = ku下落
+trigger_dist_x = 0, 200
+action = skillAIR
+priority = 200
+chance = 0.90

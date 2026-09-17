@@ -1,0 +1,20 @@
+<preload>
+   <bgm path="sound/system">
+      <item>loading.mp3</item>
+      <item>menu.mp3</item>
+      <item>select.mp3</item>
+      <item>continue.mp3</item>
+      <item>option.mp3</item>
+      <item>congratulations.mp3</item>
+      <item>title.mp3</item>
+      <item>win.mp3</item>
+      <item>winloop.mp3</item>
+      <item>credits.mp3</item>
+   </bgm>
+	
+   <sound path="sound">
+      <item>step1.mp3</item>
+      <item>step2.mp3</item>
+      <item>step3.mp3</item>
+   </sound>
+</preload>

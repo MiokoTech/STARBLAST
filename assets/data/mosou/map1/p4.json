@@ -1,0 +1,93 @@
+{
+    "id":"p4",
+    "name":"p4_ms",
+    
+    "missions":[
+        {
+            "id": "1",
+            "map":"map_11",
+            "time":180,
+            "enemyLevel": 35,
+            "waves":[
+                {
+                    "hold":15,
+                    "enemies":[
+                        { "id":"flandre", "amount":1, "isBoss":true,"hp":15000 }
+                    ]
+                },
+                {
+                    "hold":15,
+                    "enemies":[
+                        { "id":"ibuki", "amount":1, "isBoss":true,"hp":18000 }
+                    ]
+                },
+                {
+                    "hold":10,
+                    "enemies":[
+                        { "id":"meirin", "amount":1, "isBoss":true,"hp":20000 }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "2",
+            "map":"map_11",
+            "time":180,
+            "enemyLevel": 38,
+            "waves":[
+                {
+                    "hold":15,
+                    "enemies":[
+                        { "id":"ibuki", "amount":1, "isBoss":true,"hp":25000 }
+                    ]
+                },
+                {
+                    "hold":30,
+                    "enemies":[
+                        { "id":"meirin", "amount":1, "isBoss":true,"hp":25000 }
+                    ]
+                },
+                {
+                    "hold":15,
+                    "enemies":[
+                        { "id":"ibuki", "amount":1, "isBoss":true,"hp":30000 }
+                    ]
+                }
+            ]
+        },
+
+        {
+            "id": "3",
+            "map":"map_6",
+            "time": 180,
+            "enemyLevel": 42,
+            "waves":[
+                {
+                    "hold":10,
+                    "enemies":[
+                        { "id":"flandre", "amount":1, "isBoss":true,"hp":30000 }
+                    ]
+                },
+                {
+                    "hold":30,
+                    "enemies":[
+                        { "id":"meirin", "amount":1, "isBoss":true,"hp":35000 }
+                    ]
+                },
+                {
+                    "hold":15,
+                    "enemies":[
+                        { "id":"ibuki", "amount":1, "isBoss":true,"hp":40000 }
+                    ]
+                },
+                {
+                    "hold":15,
+                    "enemies":[
+                        { "id":"meirin", "amount":1, "isBoss":true,"hp":50000 }
+                    ]
+                }
+            ]
+        }
+    ]
+}

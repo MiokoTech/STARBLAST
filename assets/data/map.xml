@@ -1,0 +1,91 @@
+<map_config>
+
+	<map id="random" name="Random">
+		<img url="stages/random.png" />
+	</map>
+
+<map id="university_opera" name="University Opera">
+  <file url="stages/university_opera.swf" />
+  <img url="stages/university_opera.png" />
+  <bgm url="bgm/bgm_map/tower.mp3"/>
+</map>
+
+<map id="tower" name="Map tower ">
+  <file url="stages/tower.swf" />
+  <img url="stages/tower.png" />
+  <bgm url="bgm/bgm_map/tower.mp3"/>
+</map>
+
+<map id="map_1" name="Map 1">
+  <file url="stages/map_1.swf" />
+  <img url="stages/map_1.png" />
+  <bgm url="bgm/bgm_map/map_1.mp3"/>
+</map>
+
+<map id="map_2" name="Map 2">
+  <file url="stages/map_2.swf" />
+  <img url="stages/map_2.png" />
+  <bgm url="bgm/bgm_map/map_2.mp3"/>
+</map>
+
+<map id="map_3" name="Map 3">
+  <file url="stages/map_3.swf" />
+  <img url="stages/map_3.png" />
+  <bgm url="bgm/bgm_map/map_3.mp3"/>
+</map>
+
+<map id="map_4" name="Map 4">
+  <file url="stages/map_4.swf" />
+  <img url="stages/map_4.png" />
+  <bgm url="bgm/bgm_map/map_4.mp3"/>
+</map>
+
+<map id="map_5" name="Map 5">
+  <file url="stages/map_5.swf" />
+  <img url="stages/map_5.png" />
+  <bgm url="bgm/bgm_map/map_5.mp3"/>
+</map>
+
+<map id="map_6" name="Map 6">
+  <file url="stages/map_6.swf" />
+  <img url="stages/map_6.png" />
+  <bgm url="bgm/bgm_map/map_6.mp3"/>
+</map>
+
+<map id="map_7" name="Map 7">
+  <file url="stages/map_7.swf" />
+  <img url="stages/map_7.png" />
+  <bgm url="bgm/bgm_map/map_7.mp3"/>
+</map>
+
+<map id="map_8" name="Map 8">
+  <file url="stages/map_8.swf" />
+  <img url="stages/map_8.png" />
+  <bgm url="bgm/bgm_map/map_8.mp3"/>
+</map>
+
+<map id="map_9" name="Map 9">
+  <file url="stages/map_9.swf" />
+  <img url="stages/map_9.png" />
+  <bgm url="bgm/bgm_map/map_9.mp3"/>
+</map>
+
+<map id="map_10" name="Map 10">
+  <file url="stages/map_10.swf" />
+  <img url="stages/map_10.png" />
+  <bgm url="bgm/bgm_map/map_10.mp3"/>
+</map>
+
+<map id="map_11" name="Map 11">
+  <file url="stages/map_11.swf" />
+  <img url="stages/map_11.png" />
+  <bgm url="bgm/bgm_map/map_11.mp3"/>
+</map>
+
+<map id="map_12" name="Map 12">
+  <file url="stages/map_12.swf" />
+  <img url="stages/map_12.png" />
+  <bgm url="bgm/bgm_map/map_12.mp3"/>
+</map>
+	
+</map_config>

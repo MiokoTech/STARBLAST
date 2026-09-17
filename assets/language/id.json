@@ -1,0 +1,50 @@
+{
+   "credits": {
+      "author_game": "5DPlay",
+      "modders": "MiokoTech",
+      "version_release": "STARBLAST"
+   },
+   "main_menu": {
+      "//": "------------------------------------------------------------",
+      "menu_text": {
+         "single_play": {
+            "txt": "Mainkan beragam mode di single play."
+         },
+         "musou": {
+            "txt": "Dalam prosess pengerjaan!"
+         },
+         "survival": {
+            "txt": "Bersainglah untuk meraih kemenangan beruntun terpanjang dengan waktu hidup yang terbatas."
+         },
+         "training": {
+            "txt": "Berlatihlah secara menyeluruh mengenai gerakan karakter di mode ini."
+         },
+         "watch": {
+            "txt": "Lihat pertarungan antar CPU.\nLihat bagaimana CPU mengendalikan karakter dan periksa pergerakan karakter."
+         },
+         "option": {
+            "txt": "Ubah pengaturan dalam permainan dalam mode ini.\nSesuaikan berbagai pengaturan seperti tingkat kesulitan permainan, volume, dan lainnya."
+         },
+         "credits": {
+            "txt": "Orang orang yang menciptakan permainan dan membuat mod ini."
+         },
+         "exit": {
+            "txt": "Keluar dari permainan."
+         }
+      },
+      "menu_single": {
+         "arcade": {
+             "txt": "Selesaikan arcade dan catat record permainanmu.\nSetiap kamu menyelesaikan stage musuh di stage berikutnya semakin kuat!"
+          },
+          "team_arcade": {
+             "txt": "Selesaikan tag arcade dan catat record permainanmu.\nSetiap kamu menyelesaikan stage musuh di stage berikutnya semakin kuat!"
+          },
+          "versus": {
+             "txt": "Kontrol karakter-karakter favoritmu di single mode ini."
+          },
+          "back": {
+             "txt": "Kembali ke menu utama."
+          }
+      }
+   }
+}

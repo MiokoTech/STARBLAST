@@ -1,0 +1,95 @@
+{
+   "system": {
+       "//": "------------------------------------------------------------",
+       "game_dev": "5DPlay",
+       "modders": "MiokoTech",
+       "version_release": "STARBLAST",
+       "//": "------------------------------------------------------------"
+    },
+    "loading": {
+        "preload": {
+            "assets": {
+                "sounds": "Sounds",
+                "effecf": "Effects",
+                "fonts": "Fonts",
+                "bitmaps": "Bitmaps"
+             },
+             "message": {
+                 "resources": "Loading Game: Preparing Resources",
+                 "resource_fail": "Loading Game: Preparing Resources... Failed!",
+                 "loading_config": "Starting Game: Loading Settings",
+                 "loading_config_fail": "Game Start Failed: Failed To Load Settings File!",
+                 "loading_game": "Starting loading...",
+                 "loading_assets": "Load Game: Preparing Assets"
+             }
+         }
+     },
+    "menu": {
+        "single_play": {
+            "label": "SINGLE PLAY",
+            "str": "Control your favorite charactere in this Single Play mode.",
+            "child": {
+               "arcade": {
+                   "label": "ARCADE PLAY",
+                   "str": "Challenge yourself in arcade mode.\nWith high difficulty and limited time."
+               },
+               "musou": {
+                   "label": "MUSOU ARCADE",
+                   "str": "Test your skills by defeating large numbers of enemies,\nand defeating bosses in each place."
+               },
+               "survival": {
+                   "label": "SURVIVAL",
+                   "str": "Compete for the longest win streak with a limited amount of life."
+               }
+            }
+        },
+        "versus": {
+            "label": "VERSUS",
+            "str": "Batlle againts the cpu or watch cpu battle.",
+            "child": {
+                "vs_cpu": {
+                    "label": "VS CPU",
+                    "str": "Thoroughly practice character moves in this mode."
+                },
+                "watch": {
+                    "label": "WATCH",
+                    "str": "View battles beetwen CPUs.\nSee how the CPU controls the characters and check character moves."
+                },
+                "network": {
+                    "label": "NETWORK",
+                    "str": "Multiplayer mode"
+                }
+            }
+        },
+        "training": {
+            "label": "TRAINING",
+            "str": "Thoroughly practice character moves in this mode."
+        },
+        "option": {
+           "label": "OPTION",
+           "str": "Change in-game settings in this mode.\nAdjust various settings such as game difficulty, volume, and more.",
+           "child": {
+              "setting": {
+                   "label": "SETTING",
+                   "str": "Change display game, including quality settings, fps, effect."
+              },
+              "config": {
+                   "label": "CONFIG",
+                   "str": "Change configuration game for play battle, like difficulty, time set, and more."
+              },
+              "rules": {
+                   "label": "RULES",
+                   "str": "Setting the rules in battle mode"
+              }
+           }
+        },
+       "credits": {
+          "label": "CREDITS",
+          "str": "The people who created the game and created made this mod."
+        },
+        "exit_game": {
+           "label": "EXIT GAME",
+           "str": "Exit the game."
+        }
+    }
+}

@@ -1,0 +1,83 @@
+<mosou>
+	<!-- 死神关卡 -->
+	<design comicType="0">
+		<stage map="map_9" time="120">
+			<wave hold="10">
+				<enemy id="xb_ninja_1" hp="100" amount="20" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="xb_ninja_1" hp="100" amount="20" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="xb_ninja_1" hp="100" amount="50" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="xb_ninja_1" hp="100" amount="50" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="meirin" hp="1000" amount="1" isBoss="true" />
+				<repeat type="1" hold="2">
+					<enemy id="xb_ninja_1" hp="100" amount="2" isBoss="false" />
+				</repeat>
+			</wave>
+		</stage>
+
+		<stage map="map_6" time="120">
+			<wave hold="10">
+				<enemy id="ibuki" hp="100" amount="30" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="ibuki" hp="100" amount="20" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="ibuki" hp="100" amount="20" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="ibuki" hp="100" amount="20" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="meirin" hp="1000" amount="10" isBoss="true" />
+			</wave>
+		</stage>
+	</design>
+
+	<!-- 火影关卡 -->
+	<design comicType="1">
+		<stage map="map_7" time="120">
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="1" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="3" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="5" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="5" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="meirin" hp="1000" amount="1" isBoss="true" />
+			</wave>
+		</stage>
+
+		<stage map="map_5" time="120">
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="1" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="1" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="1" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="flandre" hp="100" amount="1" isBoss="false" />
+			</wave>
+			<wave hold="10">
+				<enemy id="meirin" hp="1000" amount="1" isBoss="true" />
+			</wave>
+		</stage>
+	</design>
+
+</mosou>

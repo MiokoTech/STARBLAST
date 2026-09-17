@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<select_config>
+   <stage_setting>
+      <layout x="0" y="0" width="2560" height="720" left="47" right="0" top="0" bottom="0"/>
+   </stage_setting>
+
+   <char_list>
+      
+      
+      
+      <row offset="0,390">
+         <item>meirin</item>
+         <item>flandre</item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         
+         <!-- Page 2, Line 1 -->
+         <item></item>
+         <item>ibuki</item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+      </row>
+
+
+
+
+
+      <row offset="0,273">
+         <item></item>
+         <item></item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         
+         <!-- Page 2, Line 2 -->
+         <item></item>
+         <item></item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+      </row>
+      
+      
+      
+      
+      
+      <row offset="0,156">
+         <item></item>
+         <item></item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         
+         <!-- Page 2, Line 3 -->
+         <item></item>
+         <item></item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+      </row>
+      
+      
+      
+      
+      
+      
+      <row offset="0,40">
+         <item></item>
+         <item></item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         
+         <!-- Page 2, Line 4 -->
+         <item></item>
+         <item></item>	
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+         <item></item>
+      </row>
+      
+      
+      
+      
+      <row offset="0,-30">
+         <item offset="400,0">random</item>
+         <item offset="750,0">random</item>
+         
+         <item offset="1600,0">random</item>
+         <item offset="1900,0">random</item>
+      
+      </row>
+      
+      
+      
+      
+
+
+   </char_list>
+	
+   <assist_list>
+      <row offset="0,390">
+         <item>shin</item>
+         <item>call</item>
+         <item>random</item>
+         <item/>
+         <item/>
+         <item/>
+         <item/>
+      </row>
+   </assist_list>
+</select_config>

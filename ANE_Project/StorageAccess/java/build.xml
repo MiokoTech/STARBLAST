@@ -1,0 +1,27 @@
+<project name="StorageAccessANE" basedir="." default="build">
+
+    <property file="local.properties"/>
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="../bin"/>
+    <property name="jar.name" value="StorageAccess.jar"/>
+
+    <path id="classpath">
+        <pathelement location="${android.sdk}/platforms/android-33/android.jar"/>
+        <pathelement location="${air.sdk}/lib/android/FlashRuntimeExtensions.jar"/>
+        <pathelement location="core-1.12.0.jar"/>
+    </path>
+
+    <target name="build">
+        <mkdir dir="${build.dir}"/>
+        <javac includeantruntime="false" source="1.8" target="1.8"
+               srcdir="${src.dir}" destdir="${build.dir}" classpathref="classpath">
+            <compilerarg value="-parameters"/>
+        </javac>
+        <jar destfile="${build.dir}/${jar.name}">
+           <fileset dir="../bin">
+              <exclude name="StorageAccess.jar"/>
+           </fileset>
+        </jar>
+    </target>
+</project>
+
