@@ -1,14 +1,4 @@
 #!/usr/bin/env python3
-"""
-STARBLAST Main Menu SWF Builder (build_menu_swf.py)
-High-performance script to embed:
-  1. Synchronized 1280x720 background images (Sprite 29, random_bg -> bg_mc)
-  2. Preview illustrations (Sprite 120, menu_preview_mc)
-  3. Character voice sound clips (DefineSoundTag IDs 121-126)
-  4. ActionScript 3 (AVM2) bytecode definitions for all embedded classes
-with smart caching, asset auto-discovery, benchmarking, and zero dead asset residue.
-"""
-
 import sys
 import time
 import json
@@ -19,12 +9,11 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Any
 from PIL import Image
 
-# Add project root to path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from tools.swf_lib import SwfCompiler, SwfXml
+from tools.modules.swf_lib import SwfCompiler, SwfXml
 
 ORIG_SWF = PROJECT_ROOT / "common/swf/menu.swf"
 BACKUP_SWF = PROJECT_ROOT / "common/swf/menu.swf.orig"
@@ -39,7 +28,7 @@ SRC_PREVIEW_DIR = PROJECT_ROOT / "tools/menu"
 SRC_BG_DIR = PROJECT_ROOT / "tools/menu/background"
 SRC_SOUND_DIR = PROJECT_ROOT / "tools/menu/sound"
 
-# (label, prefix, default_file, char_id, shape_id)
+# (label, prefix, file_default, char_id, shape_id)
 PREVIEW_MAPPING = [
     ("single", "01", "01.png", 101, 102),
     ("versus", "02", "02.png", 103, 104),
@@ -49,7 +38,7 @@ PREVIEW_MAPPING = [
     ("option", "06", "06.png", 111, 112),
 ]
 
-# (label, prefix, default_file, bitmap_char_id, shape_id)
+# (label, prefix, file_default, bitmap_char_id, shape_id)
 BG_MAPPING = [
     ("single", "01", "01.jpg", 7, 8),
     ("versus", "02", "02.jpg", 9, 10),
@@ -59,7 +48,7 @@ BG_MAPPING = [
     ("option", "06", "06.jpg", 17, 18),
 ]
 
-# (label, prefix, default_file, sound_id, class_name)
+# (label, prefix, file_default, sound_id, class_name)
 SOUND_MAPPING = [
     ("single", "01", "01_1.mp3", 121, "menu_snd_01"),
     ("versus", "02", "02_1.mp3", 122, "menu_snd_02"),
@@ -74,14 +63,8 @@ PREVIEW_MAX_H = 720
 BG_W = 1280
 BG_H = 720
 
-
 def resolve_asset_file(directory: Path, prefix: str, default_name: str, allowed_exts: Tuple[str, ...]) -> Path:
-    """
-    Intelligently resolve asset file:
-    1. Exact default_name
-    2. Prefix with allowed extension (e.g., 01.png, 01.jpg)
-    3. Prefix wildcard variation (e.g., 01_1.mp3, 01_v2.png)
-    """
+    """Cari file aset berdasarkan nama default atau prefix."""
     exact = directory / default_name
     if exact.exists():
         return exact
@@ -118,13 +101,13 @@ def save_cache_meta(meta: Dict[str, Any]):
 
 
 def prepare_base_xml(force: bool = False, clean: bool = False) -> Path:
-    """Ensure original SWF backup exists and base XML snapshot is cached."""
+    """Pastikan backup SWF tersedia dan snapshot XML baseline siap."""
     if clean and WORK_DIR.exists():
-        print(f"[*] Cleaning working directory: {WORK_DIR}...")
+        print(f"[*] Membersihkan direktori kerja: {WORK_DIR}...")
         shutil.rmtree(WORK_DIR, ignore_errors=True)
 
     if not BACKUP_SWF.exists():
-        print(f"[*] Creating backup of original menu.swf -> {BACKUP_SWF.name}...")
+        print(f"[*] Membuat backup menu.swf asli -> {BACKUP_SWF.name}...")
         shutil.copy2(ORIG_SWF, BACKUP_SWF)
 
     source_swf = BACKUP_SWF if BACKUP_SWF.exists() else ORIG_SWF
@@ -137,7 +120,6 @@ def prepare_base_xml(force: bool = False, clean: bool = False) -> Path:
             force=True,
         )
 
-    # Fresh copy to working XML_FILE for 100% deterministic build
     WORK_DIR.mkdir(parents=True, exist_ok=True)
     shutil.copy2(BASE_XML, XML_FILE)
     ASSETS_DIR.mkdir(parents=True, exist_ok=True)
@@ -146,11 +128,8 @@ def prepare_base_xml(force: bool = False, clean: bool = False) -> Path:
 
 
 def process_backgrounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """
-    Resize background images to 1280x720 (cover crop) and replace old backgrounds
-    in XML (IDs 7, 9, 11, 13, 15, 17) and Sprite 29 without leaving old residue.
-    """
-    print("[*] Processing & replacing background images (1280x720)...")
+    """Ubah ukuran latar ke 1280x720 dan perbarui Sprite 29 serta XML."""
+    print("[*] Memproses dan mengganti gambar background (1280x720)...")
     target_ratio = BG_W / BG_H
     info_list = []
 
@@ -198,7 +177,7 @@ def process_backgrounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dic
             "source_mtime": src_path.stat().st_mtime,
         }
 
-        # Update external file path in DefineBitsJPEG2Tag
+        # Perbarui jalur file eksternal pada DefineBitsJPEG2Tag
         cid_str = str(cid)
         rel_path = f"menu_assets/images/{cid}.jpg"
         for tag in swf_xml.tags_container.findall(".//item"):
@@ -213,8 +192,8 @@ def process_backgrounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dic
             "size_kb": dest_jpg.stat().st_size / 1024,
         })
 
-    # Rebuild Sprite 29 with frame labels matching preview labels
-    print("[*] Updating Sprite 29 (random_bg / bg_mc) with deterministic frame labels...")
+    # Susun ulang Sprite 29
+    print("[*] Memperbarui Sprite 29 (random_bg / bg_mc) dengan frame label...")
     sprite29 = swf_xml.tags_container.find(".//item[@type='DefineSpriteTag'][@spriteId='29']")
     if sprite29 is not None:
         subtags = sprite29.find("subTags")
@@ -248,17 +227,17 @@ def process_backgrounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dic
                     "forceWriteAsLong": "false"
                 })
 
-    # Give Sprite 29 the instance name 'bg_mc' inside Sprite 30 (front_game)
+    # Beri nama instance 'bg_mc' pada Sprite 29 di dalam Sprite 30 (front_game)
     sprite30 = swf_xml.tags_container.find(".//item[@type='DefineSpriteTag'][@spriteId='30']")
     if sprite30 is not None:
         p29 = sprite30.find(".//subTags/item[@type='PlaceObject2Tag'][@characterId='29']")
         if p29 is not None:
             p29.attrib["placeFlagHasName"] = "true"
             p29.attrib["name"] = "bg_mc"
-            print("  [+] Set instance name 'bg_mc' on Sprite 29 in front_game (Sprite 30)")
+            print("  [+] Set instance name 'bg_mc' pada Sprite 29 di front_game (Sprite 30)")
 
-    # Replace random_bg DoABC2Tag with clean constructor (stop on frame 1)
-    print("[*] Injecting deterministic DoABC2Tag for 'random_bg'...")
+    # Ganti DoABC2Tag random_bg dengan constructor bersih (stop di frame 1)
+    print("[*] Menyematkan DoABC2Tag untuk 'random_bg'...")
     swf_xml.add_as3_class(
         class_name="random_bg",
         symbol_id=29,
@@ -268,8 +247,8 @@ def process_backgrounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dic
 
 
 def process_previews(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Process and inject preview illustrations into Sprite 120 and DoABC2Tag."""
-    print("[*] Processing preview illustrations...")
+    """Proses dan sematkan gambar preview ke Sprite 120 dan DoABC2Tag."""
+    print("[*] Memproses ilustrasi preview...")
     frame_specs = []
     info_list = []
 
@@ -330,12 +309,12 @@ def process_previews(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[s
             "size_kb": dest_png.stat().st_size / 1024,
         })
 
-    # Inject Sprite 120 (menu_preview_mc)
-    print("[*] Injecting Sprite 120 (menu_preview_mc)...")
+    # Sematkan Sprite 120 (menu_preview_mc)
+    print("[*] Menyematkan Sprite 120 (menu_preview_mc)...")
     swf_xml.add_multi_frame_sprite(sprite_id=120, frame_specs=frame_specs)
 
-    # Inject DoABC2Tag for menu_preview_mc
-    print("[*] Injecting ActionScript 3 class (DoABC2Tag) for 'menu_preview_mc'...")
+    # Sematkan DoABC2Tag untuk menu_preview_mc
+    print("[*] Menyematkan kelas ActionScript 3 (DoABC2Tag) untuk 'menu_preview_mc'...")
     swf_xml.add_as3_class(
         class_name="menu_preview_mc",
         symbol_id=120,
@@ -345,8 +324,8 @@ def process_previews(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[s
 
 
 def process_sounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[str, Any]]:
-    """Embed character voice clips into menu.swf as DefineSoundTags and AS3 Sound classes."""
-    print("[*] Processing character voice sounds...")
+    """Sematkan klip suara karakter ke menu.swf sebagai DefineSoundTag dan kelas Sound AS3."""
+    print("[*] Memproses audio suara karakter...")
     SOUNDS_DIR.mkdir(parents=True, exist_ok=True)
     info_list = []
 
@@ -355,7 +334,7 @@ def process_sounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[str
         dest_mp3 = SOUNDS_DIR / f"{sound_id}.mp3"
 
         if not src_path.exists():
-            raise FileNotFoundError(f"Voice sound for '{label}' not found in {SRC_SOUND_DIR}")
+            raise FileNotFoundError(f"File suara untuk '{label}' tidak ditemukan di {SRC_SOUND_DIR}")
 
         snd_meta = cache_meta.get("sounds", {}).get(label, {})
         needs_copy = True
@@ -370,10 +349,10 @@ def process_sounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[str
         if needs_copy:
             shutil.copy2(src_path, dest_mp3)
             size_kb = dest_mp3.stat().st_size / 1024
-            print(f"  [+] Copied sound {label:<8} ({src_path.name}) -> {dest_mp3.name} ({size_kb:.1f} KB)")
+            print(f"  [+] Salin suara {label:<8} ({src_path.name}) -> {dest_mp3.name} ({size_kb:.1f} KB)")
         else:
             size_kb = dest_mp3.stat().st_size / 1024
-            print(f"  [cached] Sound {label:<8} ({src_path.name}) -> {dest_mp3.name}")
+            print(f"  [cached] Suara {label:<8} ({src_path.name}) -> {dest_mp3.name}")
 
         cache_meta.setdefault("sounds", {})[label] = {
             "source_name": src_path.name,
@@ -381,14 +360,14 @@ def process_sounds(swf_xml: SwfXml, cache_meta: Dict[str, Any]) -> List[Dict[str
             "source_mtime": src_path.stat().st_mtime,
         }
 
-        # Inject DefineSoundTag
+        # Sematkan DefineSoundTag
         swf_xml.add_sound(
             src_sound_path=dest_mp3,
             dest_sounds_dir=SOUNDS_DIR,
             sound_id=sound_id,
         )
 
-        # Inject AS3 Sound class
+        # Sematkan kelas Sound AS3
         swf_xml.add_as3_sound_class(
             class_name=class_name,
             symbol_id=sound_id,
@@ -412,42 +391,42 @@ def print_report(
     total_time: float,
     swf_size_kb: float,
 ):
-    """Print clean summary report table."""
+    """Tampilkan tabel laporan ringkasan aset."""
     print("\n" + "=" * 78)
-    print("                STARBLAST MAIN MENU ASSET INVENTORY REPORT")
+    print("                LAPORAN INVENTARIS ASET MENU UTAMA STARBLAST")
     print("=" * 78)
 
-    print(f"\n[1] SYNCHRONIZED BACKGROUNDS (1280x720 HD)")
+    print(f"\n[1] BACKGROUND TERSIKRONISASI (1280x720 HD)")
     print(f"{'-'*78}")
-    print(f"{'Label':<10} {'Source File':<16} {'IDs (Bmp/Shp)':<16} {'Resolution':<14} {'Size':<10}")
+    print(f"{'Label':<10} {'File Sumber':<16} {'IDs (Bmp/Shp)':<16} {'Resolusi':<14} {'Ukuran':<10}")
     print(f"{'-'*78}")
     for b in bg_info:
         ids_str = f"{b['cid']}/{b['sid']}"
         print(f"{b['label']:<10} {b['source']:<16} {ids_str:<16} 1280x720       {b['size_kb']:.1f} KB")
 
-    print(f"\n[2] PREVIEW ILLUSTRATIONS (Sprite 120: menu_preview_mc)")
+    print(f"\n[2] ILUSTRASI PREVIEW (Sprite 120: menu_preview_mc)")
     print(f"{'-'*78}")
-    print(f"{'Label':<10} {'Source File':<16} {'IDs (Bmp/Shp)':<16} {'Resolution':<14} {'Size':<10}")
+    print(f"{'Label':<10} {'File Sumber':<16} {'IDs (Bmp/Shp)':<16} {'Resolusi':<14} {'Ukuran':<10}")
     print(f"{'-'*78}")
     for p in preview_info:
         ids_str = f"{p['cid']}/{p['sid']}"
         dim_str = f"{p['width']}x{p['height']}"
         print(f"{p['label']:<10} {p['source']:<16} {ids_str:<16} {dim_str:<14} {p['size_kb']:.1f} KB")
 
-    print(f"\n[3] CHARACTER VOICE SOUNDS (flash.media.Sound)")
+    print(f"\n[3] KLIP SUARA KARAKTER (flash.media.Sound)")
     print(f"{'-'*78}")
-    print(f"{'Label':<10} {'Source File':<16} {'Sound ID':<10} {'AS3 Class':<20} {'Size':<10}")
+    print(f"{'Label':<10} {'File Sumber':<16} {'Sound ID':<10} {'Kelas AS3':<20} {'Ukuran':<10}")
     print(f"{'-'*78}")
     for s in sound_info:
         print(f"{s['label']:<10} {s['source']:<16} {s['sound_id']:<10} {s['class_name']:<20} {s['size_kb']:.1f} KB")
 
     print(f"\n{'-'*78}")
-    print(f"Total Compilation Time: {total_time:.2f}s | Output SWF: {ORIG_SWF.name} ({swf_size_kb:.1f} KB)")
+    print(f"Total Waktu Kompilasi: {total_time:.2f}s | Output SWF: {ORIG_SWF.name} ({swf_size_kb:.1f} KB)")
     print("=" * 78 + "\n")
 
 
 def build_menu_swf(force: bool = False, clean: bool = False, report: bool = False, verify: bool = True):
-    """Complete build pipeline for menu.swf."""
+    """Alur build lengkap untuk menu.swf."""
     start_time = time.time()
     print("=== STARBLAST Menu SWF Builder ===")
 
@@ -457,37 +436,37 @@ def build_menu_swf(force: bool = False, clean: bool = False, report: bool = Fals
 
     cache_meta = {} if clean or force else load_cache_meta()
 
-    print("[*] Parsing SWF XML definitions...")
+    print("[*] Membaca definisi XML SWF...")
     swf_xml = SwfXml(xml_path)
 
-    # 1. Backgrounds
+    # 1. Background
     t0 = time.time()
     bg_info = process_backgrounds(swf_xml, cache_meta)
     bg_time = time.time() - t0
 
-    # 2. Previews
+    # 2. Preview
     t0 = time.time()
     preview_info = process_previews(swf_xml, cache_meta)
     preview_time = time.time() - t0
 
-    # 3. Sounds
+    # 3. Suara
     t0 = time.time()
     sound_info = process_sounds(swf_xml, cache_meta)
     sound_time = time.time() - t0
 
-    # 4. Save modified XML and cache metadata
+    # 4. Simpan XML termodifikasi dan metadata cache
     swf_xml.save()
     save_cache_meta(cache_meta)
-    print(f"[SUCCESS] Saved modified XML: {XML_FILE}")
+    print(f"[OK] Berhasil menyimpan XML: {XML_FILE}")
 
-    # 5. Compile to common/swf/menu.swf
+    # 5. Kompilasi ke common/swf/menu.swf
     t0 = time.time()
     out_swf = SwfCompiler.build_swf(xml_path=XML_FILE, out_swf_path=ORIG_SWF)
     compile_time = time.time() - t0
 
-    # 6. Verification
+    # 6. Verifikasi kelas AS3
     if verify:
-        print("[*] Verifying compiled AS3 classes in SWF...")
+        print("[*] Memverifikasi kelas AS3 pada SWF terkompilasi...")
         classes = SwfCompiler.dump_as3(out_swf)
         expected = [
             "front_game", "random_bg", "menu_gameSet", "menu_preview_mc",
@@ -496,51 +475,51 @@ def build_menu_swf(force: bool = False, clean: bool = False, report: bool = Fals
         verified_count = 0
         for exp in expected:
             if any(exp in c for c in classes):
-                print(f"  [OK] Class '{exp}' verified in AS3 runtime")
+                print(f"  [OK] Kelas '{exp}' terverifikasi di runtime AS3")
                 verified_count += 1
             else:
-                print(f"  [WARNING] Class '{exp}' NOT found in AS3 dump!")
+                print(f"  [PERINGATAN] Kelas '{exp}' TIDAK ditemukan di dump AS3!")
 
-        print(f"  ==> Verified: {verified_count}/{len(expected)} classes active.")
+        print(f"  ==> Terverifikasi: {verified_count}/{len(expected)} kelas aktif.")
 
     total_time = time.time() - start_time
     size_kb = out_swf.stat().st_size / 1024
 
     print(f"\n[BENCHMARK]")
-    print(f"  - Preparation:  {prep_time:.2f}s")
-    print(f"  - Backgrounds:  {bg_time:.2f}s")
-    print(f"  - Previews:     {preview_time:.2f}s")
-    print(f"  - Sounds:       {sound_time:.2f}s")
+    print(f"  - Persiapan:    {prep_time:.2f}s")
+    print(f"  - Background:   {bg_time:.2f}s")
+    print(f"  - Preview:      {preview_time:.2f}s")
+    print(f"  - Suara:        {sound_time:.2f}s")
     print(f"  - XML2SWF:      {compile_time:.2f}s")
-    print(f"  - Total Elapsed:{total_time:.2f}s")
+    print(f"  - Total Waktu:  {total_time:.2f}s")
 
     if report:
         print_report(bg_info, preview_info, sound_info, total_time, size_kb)
 
-    print(f"\n[ALL DONE] Built {out_swf.name} ({size_kb:.1f} KB) in {total_time:.2f}s successfully!")
+    print(f"\n[OK] Berhasil membangun {out_swf.name} ({size_kb:.1f} KB) dalam {total_time:.2f}s!")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="STARBLAST Menu SWF Builder & Asset Embedder")
+    parser = argparse.ArgumentParser(description="Builder otomatis menu.swf STARBLAST")
     parser.add_argument(
         "-f", "--force",
         action="store_true",
-        help="Force full re-export from original SWF instead of using cached XML snapshot",
+        help="Paksa ekspor ulang baseline XML dari menu.swf.orig",
     )
     parser.add_argument(
         "-c", "--clean",
         action="store_true",
-        help="Clean scratch working directory before building",
+        help="Bersihkan direktori kerja sebelum build",
     )
     parser.add_argument(
         "-r", "--report",
         action="store_true",
-        help="Print detailed asset inventory report after building",
+        help="Tampilkan laporan inventaris aset setelah build",
     )
     parser.add_argument(
         "--no-verify",
         action="store_true",
-        help="Skip AVM2 ActionScript 3 bytecode verification",
+        help="Lewati verifikasi bytecode kelas AVM2",
     )
     args = parser.parse_args()
     build_menu_swf(

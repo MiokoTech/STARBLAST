@@ -12,66 +12,79 @@ package net.play5d.game.bvn.ui.select
       
       private var _curUI:SelectedFighterUI;
       
-      public function SelectedFighterGroup(param1:Class)
+      public function SelectedFighterGroup(uiClass:Class)
       {
          super();
-         _uiClass = param1;
+         _uiClass = uiClass;
       }
       
+      // Bersihkan seluruh slot tampilan karakter
       public function destory() : void
       {
-         if(_curUI)
+         for each(var item:SelectedFighterUI in _uis)
          {
-            _curUI.destory();
-            _curUI = null;
+            if(item)
+            {
+               item.destory();
+            }
          }
+         _uis = [];
+         _curUI = null;
       }
       
-      public function addFighter(param1:FighterVO) : void
+      // Tambahkan slot karakter baru ke tumpukan grup
+      public function addFighter(fighter:FighterVO = null) : void
       {
-         var _loc2_:SelectedFighterUI = null;
-         var _loc7_:int = 0;
-         var _loc3_:Number = 20 - (_uis.length - 1) * 3;
-         var _loc4_:Number = _uis.length * -20;
-         var _loc5_:Number = 0.7 - (_uis.length - 1) * 0.3;
-         var _loc6_:Number = 0.85 - (_uis.length - 1) * 0.15;
-         while(_loc7_ < _uis.length)
+         // Kunci slot sebelumnya agar tidak terhapus dan tidak menerima hover baru
+         if(_curUI)
          {
-            _loc2_ = _uis[_loc7_];
-            TweenLite.to(_loc2_.ui,0.1,{
-               "y":_loc4_,
-               "alpha":_loc5_,
-               "scaleX":_loc6_,
-               "scaleY":_loc6_
+            if(fighter)
+            {
+               _curUI.setFighter(fighter);
+            }
+            _curUI.freeze();
+            _curUI = null;
+         }
+
+         var prevUI:SelectedFighterUI = null;
+         var i:int = 0;
+         var stepY:Number = 20 - (_uis.length - 1) * 3;
+         var startY:Number = _uis.length * -20;
+         var startAlpha:Number = 0.7 - (_uis.length - 1) * 0.3;
+         var startScale:Number = 0.85 - (_uis.length - 1) * 0.15;
+         while(i < _uis.length)
+         {
+            prevUI = _uis[i];
+            TweenLite.to(prevUI.ui,0.1,{
+               "y":startY,
+               "alpha":startAlpha,
+               "scaleX":startScale,
+               "scaleY":startScale
             });
-            _loc4_ += _loc3_;
-            _loc5_ += 0.3;
-            _loc6_ += 0.15;
-            _loc7_++;
+            startY += stepY;
+            startAlpha += 0.3;
+            startScale += 0.15;
+            i++;
          }
-         _loc2_ = new SelectedFighterUI(new _uiClass());
-         if(param1)
-         {
-            _loc2_.setFighter(param1);
-         }
-         _loc2_.ui.y = 50;
-         TweenLite.to(_loc2_.ui,0.1,{
+
+         var newUI:SelectedFighterUI = new SelectedFighterUI(new _uiClass());
+         newUI.ui.y = 50;
+         TweenLite.to(newUI.ui,0.1,{
             "y":0,
             "delay":0.05
          });
-         addChild(_loc2_.ui);
-         _uis.push(_loc2_);
-         if(_curUI)
-         {
-            _curUI.destory();
-            _curUI = null;
-         }
-         _curUI = _loc2_;
+         addChild(newUI.ui);
+         _uis.push(newUI);
+         _curUI = newUI;
       }
       
-      public function updateFighter(param1:FighterVO) : void
+      // Perbarui preview karakter yang sedang diarahkan kursor
+      public function updateFighter(fighter:FighterVO) : void
       {
-         _curUI.setFighter(param1);
+         if(_curUI)
+         {
+            _curUI.setFighter(fighter);
+         }
       }
    }
 }

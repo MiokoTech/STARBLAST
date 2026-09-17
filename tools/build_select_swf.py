@@ -1,15 +1,4 @@
 #!/usr/bin/env python3
-"""
-STARBLAST Select Screen SWF Builder (build_select_swf.py)
-Automated script to:
-  1. Export baseline XML from original select.swf if not cached
-  2. Remove rectangular clipping mask (characterId 34) from Sprite 36 (ctmc)
-  3. Remove card frame borders (Shape 41 in Sprite 42 for P1, Shape 38 in Sprite 39 for P2)
-  4. Reset sprite placement matrices to identity for unconstrained Big Standing Portraits
-  5. Compile select.xml -> common/swf/select.swf with FFDec
-  6. Verify ActionScript 3 (AVM2) classes and bytecode integrity
-"""
-
 import sys
 import time
 import shutil
@@ -18,12 +7,11 @@ import xml.etree.ElementTree as ET
 from pathlib import Path
 from typing import List
 
-# Add project root to path
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
-from tools.swf_lib import SwfCompiler
+from tools.modules.swf_lib import SwfCompiler
 
 ORIG_SWF = PROJECT_ROOT / "common/swf/select.swf"
 BACKUP_SWF = PROJECT_ROOT / "common/swf/select.swf.orig"
@@ -49,24 +37,22 @@ EXPECTED_CLASSES = [
     "stg_selectmap",
 ]
 
-
 def prepare_base_xml(force: bool = False, clean: bool = False) -> Path:
-    """Ensure original SWF backup exists and baseline XML snapshot is prepared."""
     if clean and WORK_DIR.exists():
-        print(f"[*] Cleaning working directory: {WORK_DIR}...")
+        print(f"[*] Membersihkan direktori kerja: {WORK_DIR}...")
         shutil.rmtree(WORK_DIR, ignore_errors=True)
 
     if not BACKUP_SWF.exists():
         if ORIG_SWF.exists():
-            print(f"[*] Creating backup of original select.swf -> {BACKUP_SWF.name}...")
+            print(f"[*] Membuat backup select.swf asli -> {BACKUP_SWF.name}...")
             shutil.copy2(ORIG_SWF, BACKUP_SWF)
         else:
-            raise FileNotFoundError(f"Neither {ORIG_SWF} nor {BACKUP_SWF} exists!")
+            raise FileNotFoundError(f"File {ORIG_SWF} maupun {BACKUP_SWF} tidak ditemukan!")
 
     source_swf = BACKUP_SWF
 
     if force or not BASE_XML.exists():
-        print(f"[*] Exporting baseline XML snapshot from {source_swf.name}...")
+        print(f"[*] Ekspor snapshot XML baseline dari {source_swf.name}...")
         SwfCompiler.export_xml(
             swf_path=source_swf,
             out_xml_path=BASE_XML,
@@ -75,11 +61,11 @@ def prepare_base_xml(force: bool = False, clean: bool = False) -> Path:
         )
 
     WORK_DIR.mkdir(parents=True, exist_ok=True)
-    print(f"[*] Copying {BASE_XML.name} -> {XML_FILE.name}...")
+    print(f"[*] Menyalin {BASE_XML.name} -> {XML_FILE.name}...")
     shutil.copy2(BASE_XML, XML_FILE)
 
     if BASE_ASSETS_DIR.exists():
-        print(f"[*] Copying {BASE_ASSETS_DIR.name} -> {WORK_ASSETS_DIR.name}...")
+        print(f"[*] Menyalin {BASE_ASSETS_DIR.name} -> {WORK_ASSETS_DIR.name}...")
         shutil.copytree(BASE_ASSETS_DIR, WORK_ASSETS_DIR, dirs_exist_ok=True)
         with open(XML_FILE, "r", encoding="utf-8") as f:
             xml_text = f.read()
@@ -91,23 +77,21 @@ def prepare_base_xml(force: bool = False, clean: bool = False) -> Path:
 
 
 def clean_background_black_boxes():
-    """
-    Remove baked-in semi-transparent black boxes from select screen background (75.png).
-    """
+    """Hapus kotak hitam transparan pada background select screen (75.png)."""
     img_path = WORK_ASSETS_DIR / "images" / "75.png"
     if not img_path.exists():
-        print(f"    [!] Warning: {img_path} not found, skipping background box cleaning")
+        print(f"    [!] Peringatan: {img_path} tidak ditemukan, lewati pembersihan kotak")
         return
 
-    print(f"[*] Cleaning old face big black boxes from {img_path.name}...")
+    print(f"[*] Membersihkan kotak hitam foto karakter lama dari {img_path.name}...")
     from PIL import Image
     im = Image.open(img_path).convert("RGBA")
     pixels = im.load()
     w, h = im.size
 
     cleaned_count = 0
-    # P1 box area: X=[30..360], Y=[50..380]
-    # P2 box area: X=[920..1260], Y=[50..380]
+    # Area kotak P1: X=[30..360], Y=[50..380]
+    # Area kotak P2: X=[920..1260], Y=[50..380]
     for y in range(50, 380):
         for x in range(w):
             if (30 <= x <= 360) or (920 <= x <= 1260):
@@ -117,11 +101,10 @@ def clean_background_black_boxes():
                     cleaned_count += 1
 
     im.save(img_path)
-    print(f"    [SUCCESS] Removed {cleaned_count} black frame pixels from {img_path.name}!")
+    print(f"    [OK] Dihapus {cleaned_count} pixel bingkai hitam dari {img_path.name}!")
 
 
 def set_identity_matrix(place_obj: ET.Element):
-    """Ensure PlaceObject2Tag has a valid 1:1 identity matrix."""
     place_obj.set("placeFlagHasMatrix", "true")
     mat = place_obj.find("matrix")
     if mat is None:
@@ -159,18 +142,11 @@ def set_identity_matrix(place_obj: ET.Element):
 
 
 def patch_select_xml(xml_path: Path):
-    """
-    Apply automated transformations to select.xml:
-      1. Unmask Sprite 36 (ctmc) by removing Character 34.
-      2. Remove card frame border Shape 38 from Sprite 39 (P2).
-      3. Remove card frame border Shape 41 from Sprite 42 (P1).
-      4. Reset matrices to 1:1 identity.
-    """
-    print(f"[*] Patching select screen XML structure in {xml_path.name}...")
+    print(f"[*] Patching struktur XML select screen di {xml_path.name}...")
     tree = ET.parse(xml_path)
     root = tree.getroot()
 
-    # 1. Sprite 36 (ctmc): remove characterId 34 (clipping mask)
+    # Sprite 36 (ctmc): hapus characterId 34 (clipping mask)
     s36 = root.find(".//item[@type='DefineSpriteTag'][@spriteId='36']")
     if s36 is not None:
         subtags = s36.find("subTags")
@@ -178,16 +154,16 @@ def patch_select_xml(xml_path: Path):
             for child in list(subtags):
                 if child.get("characterId") == "34":
                     subtags.remove(child)
-                    print("    [-] Removed rectangular clipping mask (characterId 34) from Sprite 36")
+                    print("    [-] Hapus rectangular clipping mask (characterId 34) dari Sprite 36")
                 elif child.get("characterId") == "35":
                     child.set("depth", "1")
                     child.set("placeFlagHasClipDepth", "false")
                     if "clipDepth" in child.attrib:
                         del child.attrib["clipDepth"]
                     set_identity_matrix(child)
-                    print("    [+] Unconstrained and aligned portrait container in Sprite 36 (depth 1, identity matrix)")
+                    print("    [+] Sesuaikan kontainer portrait di Sprite 36 (depth 1, matriks identitas)")
 
-    # 2. Sprite 39 (selected_item_p2_mc): remove card frame Shape 38
+    # Sprite 39 (selected_item_p2_mc): hapus border kartu Shape 38
     s39 = root.find(".//item[@type='DefineSpriteTag'][@spriteId='39']")
     if s39 is not None:
         subtags = s39.find("subTags")
@@ -195,13 +171,13 @@ def patch_select_xml(xml_path: Path):
             for child in list(subtags):
                 if child.get("characterId") == "38":
                     subtags.remove(child)
-                    print("    [-] Removed P2 card frame border (Shape 38) from Sprite 39")
+                    print("    [-] Hapus border kartu P2 (Shape 38) dari Sprite 39")
                 elif child.get("characterId") == "36":
                     child.set("depth", "1")
                     set_identity_matrix(child)
-                    print("    [+] Aligned P2 portrait container in Sprite 39 (depth 1, identity matrix)")
+                    print("    [+] Sesuaikan kontainer portrait P2 di Sprite 39 (depth 1, matriks identitas)")
 
-    # 3. Sprite 42 (selected_item_p1_mc): remove card frame Shape 41
+    # Sprite 42 (selected_item_p1_mc): hapus border kartu Shape 41
     s42 = root.find(".//item[@type='DefineSpriteTag'][@spriteId='42']")
     if s42 is not None:
         subtags = s42.find("subTags")
@@ -209,36 +185,29 @@ def patch_select_xml(xml_path: Path):
             for child in list(subtags):
                 if child.get("characterId") == "41":
                     subtags.remove(child)
-                    print("    [-] Removed P1 card frame border (Shape 41) from Sprite 42")
+                    print("    [-] Hapus border kartu P1 (Shape 41) dari Sprite 42")
                 elif child.get("characterId") == "36":
                     child.set("depth", "1")
                     set_identity_matrix(child)
-                    print("    [+] Aligned P1 portrait container in Sprite 42 (depth 1, identity matrix)")
+                    print("    [+] Sesuaikan kontainer portrait P1 di Sprite 42 (depth 1, matriks identitas)")
 
     tree.write(xml_path, encoding="utf-8", xml_declaration=True)
-    print(f"[SUCCESS] Successfully saved patched XML to {xml_path}")
+    print(f"[OK] Berhasil menyimpan XML yang telah di-patch ke {xml_path}")
 
 
 def prune_dead_assets(xml_path: Path):
-    """
-    Find and remove all unreferenced Bitmaps and Shapes (dead assets)
-    using BFS reachability analysis starting from SymbolClassTag root classes.
-    Also deletes dead image files from disk.
-    """
-    print(f"[*] Analyzing & pruning dead assets in {xml_path.name}...")
+    print(f"[*] Analisis & bersihkan aset mati di {xml_path.name}...")
     tree = ET.parse(xml_path)
     root = tree.getroot()
     tags = root.find("tags")
     if tags is None:
         return
 
-    # 1. Root entry points from SymbolClassTag
     entry_cids = set()
     for sym in tags.findall("./item[@type='SymbolClassTag']//tags/item"):
         if sym.text:
             entry_cids.add(sym.text)
 
-    # 2. Dependency graph
     children_map = {}
     tag_by_id = {}
 
@@ -263,7 +232,6 @@ def prune_dead_assets(xml_path: Path):
                     deps.add(bm)
             children_map[cid] = deps
 
-    # 3. Reachability traversal (BFS)
     reachable = set(entry_cids)
     queue = list(entry_cids)
     while queue:
@@ -273,7 +241,6 @@ def prune_dead_assets(xml_path: Path):
                 reachable.add(dep)
                 queue.append(dep)
 
-    # 4. Identify dead tags
     dead_cids = set(tag_by_id.keys()) - reachable
     removed_tags_count = 0
     removed_files_count = 0
@@ -283,7 +250,7 @@ def prune_dead_assets(xml_path: Path):
         tag_type = it.get("type", "")
         ext_file = it.get("_externalFile", "")
 
-        # Only prune Bitmaps and Shapes (never fonts or classes)
+        # Hanya bersihkan Bitmap dan Shape
         if "Bits" in tag_type or "Shape" in tag_type:
             tags.remove(it)
             removed_tags_count += 1
@@ -299,26 +266,25 @@ def prune_dead_assets(xml_path: Path):
                         removed_files_count += 1
 
     tree.write(xml_path, encoding="utf-8", xml_declaration=True)
-    print(f"    [SUCCESS] Pruned {removed_tags_count} dead tags and deleted {removed_files_count} unused files!")
+    print(f"    [OK] Dihapus {removed_tags_count} tag tak terpakai dan {removed_files_count} file sisa!")
 
 
 def verify_as3(swf_path: Path):
-    """Verify all expected AVM2 classes exist in the built SWF."""
-    print(f"[*] Verifying ActionScript 3 classes in {swf_path.name}...")
+    print(f"[*] Verifikasi kelas ActionScript 3 di {swf_path.name}...")
     raw_lines = SwfCompiler.dump_as3(swf_path)
     classes = [line.split()[0] for line in raw_lines if line.strip()]
     missing = [c for c in EXPECTED_CLASSES if c not in classes]
     if missing:
-        raise RuntimeError(f"Verification FAILED! Missing AVM2 classes in {swf_path.name}: {missing}")
-    print(f"[SUCCESS] All {len(classes)} AVM2 classes verified in {swf_path.name}!")
+        raise RuntimeError(f"Verifikasi GAGAL! Kelas AVM2 hilang di {swf_path.name}: {missing}")
+    print(f"[OK] Seluruh {len(classes)} kelas AVM2 terverifikasi di {swf_path.name}!")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="STARBLAST select.swf automated builder")
-    parser.add_argument("--force", action="store_true", help="Force re-export baseline XML from select.swf.orig")
-    parser.add_argument("--clean", action="store_true", help="Clean scratch/select_xml before building")
-    parser.add_argument("--no-verify", action="store_true", help="Skip AVM2 bytecode class verification")
-    parser.add_argument("--output", type=str, default=str(ORIG_SWF), help="Destination path for select.swf")
+    parser = argparse.ArgumentParser(description="Builder otomatis select.swf STARBLAST")
+    parser.add_argument("--force", action="store_true", help="Paksa ekspor ulang baseline XML dari select.swf.orig")
+    parser.add_argument("--clean", action="store_true", help="Bersihkan scratch/select_xml sebelum build")
+    parser.add_argument("--no-verify", action="store_true", help="Lewati verifikasi bytecode kelas AVM2")
+    parser.add_argument("--output", type=str, default=str(ORIG_SWF), help="Jalur file tujuan select.swf")
     args = parser.parse_args()
 
     start_time = time.time()
@@ -328,31 +294,22 @@ def main():
     print("STARBLAST Select Screen SWF Builder")
     print("=" * 60)
 
-    # 1. Prepare base XML snapshot
     xml_path = prepare_base_xml(force=args.force, clean=args.clean)
-
-    # 2. Clean baked-in black box frames from background
     clean_background_black_boxes()
-
-    # 3. Patch XML for Big Standing Portraits
     patch_select_xml(xml_path)
-
-    # 4. Prune unreferenced dead bitmaps and shapes
     prune_dead_assets(xml_path)
 
-    # 5. Build SWF
-    print(f"[*] Compiling {xml_path.name} -> {out_swf.name}...")
+    print(f"[*] Kompilasi {xml_path.name} -> {out_swf.name}...")
     SwfCompiler.build_swf(xml_path=xml_path, out_swf_path=out_swf)
 
-    # 4. Verify AVM2 classes
     if not args.no_verify:
         verify_as3(out_swf)
 
     elapsed = time.time() - start_time
     file_size_kb = out_swf.stat().st_size / 1024
     print("=" * 60)
-    print(f"[SUCCESS] select.swf built successfully in {elapsed:.2f}s ({file_size_kb:.1f} KB)")
-    print(f"Destination: {out_swf}")
+    print(f"[OK] select.swf berhasil dibangun dalam {elapsed:.2f}s ({file_size_kb:.1f} KB)")
+    print(f"Tujuan: {out_swf}")
     print("=" * 60)
 
 

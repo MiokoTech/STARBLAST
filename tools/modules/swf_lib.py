@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-STARBLAST SWF Manipulation Engine & Toolkit (swf_lib.py)
-Provides high-performance, modular utilities for SWF <-> XML conversion,
-asset injection (lossless bitmaps, shapes, sprites), ActionScript 3 (AVM2)
-DoABC bytecode generation, and SymbolClass binding via FFDec.
-"""
-
 import os
 import sys
 import copy
@@ -28,11 +21,11 @@ def get_ffdec_jar() -> Path:
     env_jar = os.environ.get("FFDEC_JAR")
     if env_jar and Path(env_jar).exists():
         return Path(env_jar)
-    raise FileNotFoundError(f"ffdec.jar not found at {DEFAULT_FFDEC_JAR} or via FFDEC_JAR env var")
+    raise FileNotFoundError(f"ffdec.jar tidak ditemukan di {DEFAULT_FFDEC_JAR} atau melalui env var FFDEC_JAR")
 
 
 class SwfCompiler:
-    """Wrapper around FFDec CLI for high-performance conversions and inspections."""
+    """Wrapper CLI FFDec untuk konversi dan inspeksi SWF/XML."""
 
     @staticmethod
     def run_cmd(args: List[str], check: bool = True) -> subprocess.CompletedProcess:
@@ -41,7 +34,7 @@ class SwfCompiler:
         res = subprocess.run(cmd, capture_output=True, text=True)
         if check and res.returncode != 0:
             err = res.stderr.strip() or res.stdout.strip()
-            raise RuntimeError(f"FFDec command failed (code {res.returncode}): {' '.join(cmd)}\n{err}")
+            raise RuntimeError(f"Perintah FFDec gagal (kode {res.returncode}): {' '.join(cmd)}\n{err}")
         return res
 
     @classmethod
@@ -52,9 +45,10 @@ class SwfCompiler:
         external: bool = True,
         force: bool = False,
     ) -> Path:
+        """Ekspor SWF ke XML dan ekstrak aset eksternal."""
         swf = Path(swf_path).resolve()
         if not swf.exists():
-            raise FileNotFoundError(f"SWF not found: {swf}")
+            raise FileNotFoundError(f"SWF tidak ditemukan: {swf}")
 
         if out_xml_path is None:
             out_xml = swf.parent / f"{swf.stem}.xml"
@@ -63,19 +57,18 @@ class SwfCompiler:
 
         out_xml.parent.mkdir(parents=True, exist_ok=True)
 
-        # Smart caching: Skip re-export if XML exists and is newer than SWF
         if not force and out_xml.exists():
             if out_xml.stat().st_mtime >= swf.stat().st_mtime:
-                print(f"[INFO] Using cached XML: {out_xml.name} (pass force=True to re-export)")
+                print(f"[INFO] Menggunakan XML cache: {out_xml.name} (gunakan force=True untuk ekspor ulang)")
                 return out_xml
 
-        print(f"[*] Exporting SWF -> XML: {swf.name} -> {out_xml.name}...")
+        print(f"[*] Mengekspor SWF -> XML: {swf.name} -> {out_xml.name}...")
         args = ["-swf2xml"]
         if external:
             args.extend(["-external", "all"])
         args.extend([str(swf), str(out_xml)])
         cls.run_cmd(args)
-        print(f"[SUCCESS] Exported: {out_xml}")
+        print(f"[OK] Berhasil diekspor: {out_xml}")
         return out_xml
 
     @classmethod
@@ -84,9 +77,10 @@ class SwfCompiler:
         xml_path: Union[str, Path],
         out_swf_path: Optional[Union[str, Path]] = None,
     ) -> Path:
+        """Kompilasi XML kembali menjadi file SWF."""
         xml_file = Path(xml_path).resolve()
         if not xml_file.exists():
-            raise FileNotFoundError(f"XML not found: {xml_file}")
+            raise FileNotFoundError(f"XML tidak ditemukan: {xml_file}")
 
         if out_swf_path is None:
             out_swf = xml_file.parent / f"{xml_file.stem}.swf"
@@ -94,18 +88,19 @@ class SwfCompiler:
             out_swf = Path(out_swf_path).resolve()
 
         out_swf.parent.mkdir(parents=True, exist_ok=True)
-        print(f"[*] Compiling XML -> SWF: {xml_file.name} -> {out_swf.name}...")
+        print(f"[*] Kompilasi XML -> SWF: {xml_file.name} -> {out_swf.name}...")
         args = ["-xml2swf", str(xml_file), str(out_swf)]
         cls.run_cmd(args)
         size_kb = out_swf.stat().st_size / 1024
-        print(f"[SUCCESS] Built {out_swf.name} ({size_kb:.1f} KB)")
+        print(f"[OK] Selesai membangun {out_swf.name} ({size_kb:.1f} KB)")
         return out_swf
 
     @classmethod
     def dump_as3(cls, swf_path: Union[str, Path]) -> List[str]:
+        """Ekstrak daftar nama kelas AS3 yang terdaftar pada file SWF."""
         swf = Path(swf_path).resolve()
         if not swf.exists():
-            raise FileNotFoundError(f"SWF not found: {swf}")
+            raise FileNotFoundError(f"SWF tidak ditemukan: {swf}")
         res = cls.run_cmd(["-dumpAS3", str(swf)], check=False)
         classes = []
         for line in res.stdout.strip().splitlines():
@@ -241,23 +236,23 @@ SOUND_CLASS_TEMPLATE = """
 
 
 class SwfXml:
-    """High-level ElementTree manipulator for FFDec SWF XML definitions."""
+    """Manipulator struktur tag XML SWF hasil dekompilasi FFDec."""
 
     def __init__(self, xml_path: Union[str, Path]):
         self.xml_path = Path(xml_path).resolve()
         if not self.xml_path.exists():
-            raise FileNotFoundError(f"XML not found: {self.xml_path}")
+            raise FileNotFoundError(f"XML tidak ditemukan: {self.xml_path}")
         self.tree = ET.parse(self.xml_path)
         self.root = self.tree.getroot()
         self.tags_container = self.root.find("tags")
         if self.tags_container is None:
-            raise ValueError("Invalid SWF XML: missing <tags> container")
+            raise ValueError("SWF XML tidak valid: tag <tags> tidak ditemukan")
         self._index_tags()
 
     def _index_tags(self):
         self.used_ids = set()
         self.symbol_class_tag = None
-        self.symbol_map: Dict[str, str] = {}  # id -> class_name
+        self.symbol_map: Dict[str, str] = {}  # id -> nama_kelas
         self.do_abc_tags: Dict[str, ET.Element] = {}
 
         for tag in self.tags_container:
@@ -285,7 +280,7 @@ class SwfXml:
                     self.do_abc_tags[name] = tag
 
     def remove_tag(self, tag_type: str, attr_name: str, attr_val: str) -> bool:
-        """Remove tags matching a specific type and attribute value."""
+        """Hapus tag yang sesuai dengan tipe dan nilai atribut."""
         removed = False
         to_remove = []
         for tag in self.tags_container:
@@ -299,6 +294,7 @@ class SwfXml:
         return removed
 
     def get_next_available_id(self, start_id: int = 100) -> int:
+        """Dapatkan ID numerik berikutnya yang belum digunakan."""
         cur = start_id
         while cur in self.used_ids:
             cur += 1
@@ -314,9 +310,10 @@ class SwfXml:
         max_width: Optional[int] = None,
         max_height: Optional[int] = None,
     ) -> Dict[str, Union[int, str]]:
+        """Sematkan gambar lossless (DefineBitsLossless2Tag + DefineShape2Tag)."""
         src_path = Path(src_image_path).resolve()
         if not src_path.exists():
-            raise FileNotFoundError(f"Image not found: {src_path}")
+            raise FileNotFoundError(f"File gambar tidak ditemukan: {src_path}")
 
         dest_dir = Path(dest_assets_dir).resolve()
         dest_dir.mkdir(parents=True, exist_ok=True)
@@ -333,7 +330,6 @@ class SwfXml:
 
         dest_png = dest_dir / f"{char_id}.png"
 
-        # Resize & optimize
         with Image.open(src_path) as im:
             orig_w, orig_h = im.size
             if max_width and max_height and (orig_w > max_width or orig_h > max_height):
@@ -347,7 +343,6 @@ class SwfXml:
                 im.save(dest_png, "PNG", optimize=True)
                 final_w, final_h = orig_w, orig_h
 
-        # Compute relative path from XML dir
         try:
             rel_path = dest_png.relative_to(self.xml_path.parent).as_posix()
         except ValueError:
@@ -358,14 +353,14 @@ class SwfXml:
         w_twips = str(final_w * 20)
         h_twips = str(final_h * 20)
 
-        # 1. DefineBitsLossless2Tag
+        # DefineBitsLossless2Tag
         bmp_tag = ET.Element("item", {
             "type": "DefineBitsLossless2Tag",
             "_externalFile": rel_path,
             "characterID": cid_str
         })
 
-        # 2. DefineShape2Tag
+        # DefineShape2Tag
         shape_tag = ET.Element("item", {
             "type": "DefineShape2Tag",
             "forceWriteAsLong": "false",
@@ -447,11 +442,9 @@ class SwfXml:
         })
         ET.SubElement(shape_records, "item", {"type": "EndShapeRecord", "endOfShape": "0"})
 
-        # Remove existing tags with matching IDs if re-injecting
         self.remove_tag("DefineBitsLossless2Tag", "characterID", cid_str)
         self.remove_tag("DefineShape2Tag", "shapeId", sid_str)
 
-        # Insert before SymbolClassTag
         insert_idx = self._get_insert_index()
         self.tags_container.insert(insert_idx, bmp_tag)
         self.tags_container.insert(insert_idx + 1, shape_tag)
@@ -471,6 +464,7 @@ class SwfXml:
         sprite_id: int,
         frame_specs: List[Dict[str, Union[str, int]]],
     ) -> ET.Element:
+        """Sematkan MovieClip multi-frame (DefineSpriteTag)."""
         self.used_ids.add(sprite_id)
         sprite_tag = ET.Element("item", {
             "type": "DefineSpriteTag",
@@ -510,7 +504,6 @@ class SwfXml:
                 "forceWriteAsLong": "false"
             })
 
-        # Remove existing sprite if re-injecting
         self.remove_tag("DefineSpriteTag", "spriteId", str(sprite_id))
 
         insert_idx = self._get_insert_index()
@@ -524,7 +517,7 @@ class SwfXml:
         stop_on_frame: Optional[int] = 0,
         template_class: Optional[str] = None,
     ) -> ET.Element:
-        # Search for a suitable template DoABC2Tag
+        """Sematkan bytecode kelas MovieClip AS3 (DoABC2Tag)."""
         template_tag = None
         if template_class and template_class in self.do_abc_tags:
             template_tag = self.do_abc_tags[template_class]
@@ -532,13 +525,12 @@ class SwfXml:
             template_tag = next(iter(self.do_abc_tags.values()))
 
         if template_tag is None:
-            raise RuntimeError("No template DoABC2Tag found in SWF XML to clone")
+            raise RuntimeError("Template DoABC2Tag tidak ditemukan di SWF XML untuk dikloning")
 
         orig_name = template_tag.attrib.get("name", "")
         new_abc = copy.deepcopy(template_tag)
         new_abc.attrib["name"] = class_name
 
-        # Replace class name across constant strings
         for s in new_abc.findall(".//constant_string/item"):
             if s.text:
                 if orig_name:
@@ -546,18 +538,16 @@ class SwfXml:
                 elif "frame" in s.text:
                     pass
 
-        # If stop_on_frame is specified, set addFrameScript(stop_on_frame, stop)
         if stop_on_frame is not None:
-            # 24 00 = pushbyte 0, 24 0f = pushbyte 15, etc.
+            # 24 00 = pushbyte 0, 24 0f = pushbyte 15, dll.
             hex_byte = f"24{stop_on_frame:02x}"
             for mb in new_abc.findall(".//bodies/item"):
                 cb = mb.attrib.get("codeBytes", "")
                 if "24" in cb and "5d0c" in cb:
-                    # Replace pushbyte operand
+                    # Ganti operand pushbyte
                     import re
                     mb.attrib["codeBytes"] = re.sub(r"24[0-9a-fA-F]{2}", hex_byte, cb, count=1)
 
-        # Remove existing DoABC2Tag if re-injecting
         self.remove_tag("DoABC2Tag", "name", class_name)
 
         insert_idx = self._get_insert_index()
@@ -575,12 +565,10 @@ class SwfXml:
         dest_sounds_dir: Union[str, Path],
         sound_id: int,
     ) -> Dict[str, Union[int, str]]:
-        """
-        Embed an MP3 sound file as DefineSoundTag in the SWF.
-        """
+        """Sematkan file audio MP3 sebagai DefineSoundTag."""
         src_path = Path(src_sound_path).resolve()
         if not src_path.exists():
-            raise FileNotFoundError(f"Sound file not found: {src_path}")
+            raise FileNotFoundError(f"File suara tidak ditemukan: {src_path}")
 
         dest_dir = Path(dest_sounds_dir).resolve()
         dest_dir.mkdir(parents=True, exist_ok=True)
@@ -617,10 +605,7 @@ class SwfXml:
         class_name: str,
         symbol_id: int,
     ) -> ET.Element:
-        """
-        Inject ActionScript 3 bytecode (DoABC2Tag) declaring a class extending
-        flash.media.Sound and register it in SymbolClassTag.
-        """
+        """Sematkan bytecode kelas Sound AS3 (DoABC2Tag) yang extend flash.media.Sound."""
         snd_xml_str = SOUND_CLASS_TEMPLATE.strip()
         new_abc = ET.fromstring(snd_xml_str)
         new_abc.attrib["name"] = class_name
@@ -637,6 +622,7 @@ class SwfXml:
         return new_abc
 
     def register_symbol(self, tag_id: int, class_name: str):
+        """Daftarkan relasi symbol_id ke nama kelas pada SymbolClassTag."""
         tid_str = str(tag_id)
         if self.symbol_class_tag is None:
             self.symbol_class_tag = ET.SubElement(self.tags_container, "item", {
@@ -648,7 +634,6 @@ class SwfXml:
         tags_elem = self.symbol_class_tag.find("tags")
         names_elem = self.symbol_class_tag.find("names")
 
-        # Check if already present
         existing_tags = [t.text for t in tags_elem.findall("item")]
         if tid_str in existing_tags:
             idx = existing_tags.index(tid_str)
@@ -661,12 +646,14 @@ class SwfXml:
         self.used_ids.add(tag_id)
 
     def _get_insert_index(self) -> int:
+        """Cari indeks penyisipan sebelum SymbolClassTag."""
         for i, tag in enumerate(self.tags_container):
             if tag.get("type") == "SymbolClassTag":
                 return i
         return len(self.tags_container) - 1
 
     def save(self, out_xml_path: Optional[Union[str, Path]] = None) -> Path:
+        """Simpan perubahan dokumen XML ke file."""
         target = Path(out_xml_path or self.xml_path).resolve()
         self.tree.write(target, encoding="UTF-8", xml_declaration=True)
         return target

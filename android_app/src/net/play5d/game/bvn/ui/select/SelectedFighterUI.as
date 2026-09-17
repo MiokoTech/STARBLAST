@@ -30,17 +30,31 @@ package net.play5d.game.bvn.ui.select
       private var _text:BitmapText;
       
       private var _uiWidth:Number;
-      private var _selectedItemP1:Class = ResUtils.I.getItemClass(ResUtils.swfLib.select, "selected_item_p1_mc");
+      private var _isP1:Boolean = true;
+      private static var _selectedItemP1:Class;
       
       public function SelectedFighterUI(itemSprite:Sprite)
       {
          super();
          this.ui = itemSprite;
          itemSprite.mouseChildren = false;
+         
+         if(!_selectedItemP1)
+         {
+            try
+            {
+               _selectedItemP1 = ResUtils.I.getItemClass(ResUtils.swfLib.select, "selected_item_p1_mc");
+            }
+            catch(e:Error)
+            {
+            }
+         }
+         _isP1 = _selectedItemP1 ? (itemSprite is _selectedItemP1) : true;
+         
          if(GameUI.SHOW_CN_TEXT)
          {
             _text = new BitmapText(true,16777215,[new GlowFilter(0,1,3,3,3)]);
-            if(itemSprite is _selectedItemP1)
+            if(_isP1)
             {
                UIUtils.formatText(_text.textfield,{
                   "color":16777215,
@@ -95,14 +109,16 @@ package net.play5d.game.bvn.ui.select
          dispatchEvent(event);
       }
       
+      // Nonaktifkan interaksi mouse/touch tanpa menghapus portrait
+      public function freeze() : void
+      {
+         mouseEnabled(false);
+      }
+      
+      // Bersihkan seluruh aset UI dan event listener
       public function destory() : void
       {
-         if(ui)
-         {
-            ui.removeEventListener("touchTap",mouseHandler);
-            ui.removeEventListener("mouseOver",mouseHandler);
-            ui.removeEventListener("click",mouseHandler);
-         }
+         mouseEnabled(false);
          if(_text)
          {
             _text.destory();
@@ -124,6 +140,7 @@ package net.play5d.game.bvn.ui.select
          }
       }
       
+      // Tampilkan data petarung dan ilustrasi big portrait
       public function setFighter(fighter:FighterVO) : void
       {
          if(!fighter)
@@ -137,13 +154,14 @@ package net.play5d.game.bvn.ui.select
          }
          var ctOuter:Sprite = ui.getChildByName("ct") as Sprite;
          var ctInner:Sprite = ctOuter ? ctOuter.getChildByName("ct") as Sprite : null;
-         if(ctInner)
+         var container:Sprite = ctInner ? ctInner : ctOuter;
+         if(container)
          {
             if(_face)
             {
                try
                {
-                  ctInner.removeChild(_face);
+                  container.removeChild(_face);
                }
                catch(e:Error)
                {
@@ -155,19 +173,21 @@ package net.play5d.game.bvn.ui.select
             {
                _face = faceObj;
                _face.y = 0;
-               var isP1:Boolean = (ui is _selectedItemP1);
-               if(isP1)
+               if(_isP1)
                {
+                  container.x = 0;
+                  _face.scaleX = Math.abs(_face.scaleX);
                   _face.x = 0;
-                  ctInner.scrollRect = new Rectangle(0, 0, 550, 720);
                }
                else
                {
+                  // Geser container P2 ke kiri dan mirror portrait agar tampil di tepi kanan layar
+                  container.x = -550;
                   _face.scaleX = -Math.abs(_face.scaleX);
-                  _face.x = 0;
-                  ctInner.scrollRect = new Rectangle(-550, 0, 550, 720);
+                  _face.x = 550;
                }
-               ctInner.addChild(_face);
+               container.scrollRect = new Rectangle(0, 0, 550, 720);
+               container.addChild(_face);
             }
          }
       }
@@ -192,8 +212,7 @@ package net.play5d.game.bvn.ui.select
          }
          badgeMc.gotoAndStop(index);
          ui.addChild(badgeMc);
-         var isP1:Boolean = (ui is _selectedItemP1);
-         if(isP1)
+         if(_isP1)
          {
             badgeMc.x = 20;
          }
@@ -214,8 +233,7 @@ package net.play5d.game.bvn.ui.select
          }
          badgeMc.gotoAndStop(4);
          ui.addChild(badgeMc);
-         var isP1:Boolean = (ui is _selectedItemP1);
-         if(isP1)
+         if(_isP1)
          {
             badgeMc.x = 20;
          }

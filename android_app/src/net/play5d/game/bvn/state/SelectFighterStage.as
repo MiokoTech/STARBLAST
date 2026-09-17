@@ -502,7 +502,7 @@ package net.play5d.game.bvn.state
       {
          _p1Slt = SelectUIFactory.createSelecter(1);
          _p1Slt.isSelectAssist = _selectState == 1;
-         if (GameMode.currentMode == GameMode.WATCH || GameMode.currentMode == GameMode.VS_CPU)
+         if (GameMode.currentMode == GameMode.WATCH || GameMode.currentMode == GameMode.VS_CPU || GameMode.isVsPeople())
          {
             _p1Slt.selectTimesCount = !_p1Slt.isSelectAssist ? Math.max(1, GameData.I.config.player1) : 1;
          }
@@ -527,7 +527,7 @@ package net.play5d.game.bvn.state
       {
          _p2Slt = SelectUIFactory.createSelecter(2);
          _p2Slt.isSelectAssist = _selectState == 1;
-         if (GameMode.currentMode == GameMode.WATCH || GameMode.currentMode == GameMode.VS_CPU)
+         if (GameMode.currentMode == GameMode.WATCH || GameMode.currentMode == GameMode.VS_CPU || GameMode.isVsPeople())
          {
             _p2Slt.selectTimesCount = !_p2Slt.isSelectAssist ? Math.max(1, GameData.I.config.player2) : 1;
          }
@@ -1105,12 +1105,13 @@ package net.play5d.game.bvn.state
             {
                nextStep();
             }
-            selt.destory();
+            selt.removeSelecter();
+            selt.enabled = false;
          }
          else if(!selt.randoms)
          {
-            var move:int = selt == _p1Slt == 1 ? 1 : -1;
-            moveSlt(selt,selt.x + move,selt.y,true);
+            var moveDirection:int = (selt == _p1Slt) ? 1 : -1;
+            moveSlt(selt,selt.x + moveDirection,selt.y,true);
          }
       }
       
