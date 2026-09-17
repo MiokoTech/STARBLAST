@@ -1,0 +1,10 @@
+*.py linguist-language=Python
+*.as linguist-language=ActionScript
+*.java linguist-language=Java
+*.sh linguist-language=Shell
+
+# Compiled/binary files
+*.class linguist-generated
+*.swf linguist-generated
+*.swc linguist-generated
+*.ane linguist-generated
