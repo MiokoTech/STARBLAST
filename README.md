@@ -10,6 +10,9 @@ Base version using BvN 3.7
 - [ ] OpenGL Renderer For Sprite [ANE]
 - [ ] Multiplayer - LAN - ONLINE
 - [ ] Addition of a wider state fighter
+- [ ] New Modes
+- [ ] Support Gamepad Controller
+- [ ] Finish
 
 ## offcial repository
 [Bleach Vs Naruto 5Dplay](https://github.com/5DPLAY-Game-Studio/BleachVsNaruto)
