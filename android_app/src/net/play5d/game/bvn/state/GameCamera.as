@@ -4,6 +4,7 @@ package net.play5d.game.bvn.state
    import flash.geom.Point;
    import flash.geom.Rectangle;
    import net.play5d.game.bvn.GameConfig;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    
    public class GameCamera
    {
@@ -24,6 +25,22 @@ package net.play5d.game.bvn.state
       public var autoZoomMin:Number = 1;
       
       public var autoZoomMax:Number = 3;
+      
+      public var stageCameraMode:Boolean = false;
+      public var stageBoundLeft:Number = -500;
+      public var stageBoundRight:Number = 500;
+      public var stageBoundHigh:Number = -1000;
+      public var stageBoundLow:Number = 0;
+      public var stageTension:Number = 60;
+      public var stageFloorTension:Number = 0;
+      public var stageVerticalFollow:Number = 0.9;
+      public var stageZoomMin:Number = 0.68;
+      public var stageZoomMax:Number = 0.75;
+      public var stageStartZoom:Number = NaN;
+      public var stageLocalScaleX:Number = 1.0;
+      public var stageLocalScaleY:Number = 1.0;
+      public var stagePlayerBottom:Number = 640.0;
+      public var stageHalfWidth:Number = 640.0;
       
       private var _zoom:Number = 1;
       
@@ -120,6 +137,18 @@ package net.play5d.game.bvn.state
          }
       }
       
+      public function setZoomInitial(param1:Number) : void
+      {
+         _zoom = param1;
+         _stageScale = param1;
+         _noTweenRect.width = _screenSize.x / _zoom;
+         _noTweenRect.height = _screenSize.y / _zoom;
+         _rect.width = _noTweenRect.width;
+         _rect.height = _noTweenRect.height;
+         _foffsetX = _screenSize.x / 2 / _zoom;
+         _foffsetY = _screenSize.y / 2 / _zoom;
+      }
+      
       public function focus(param1:Array, param2:Boolean = false) : void
       {
          var _loc3_:int = 0;
@@ -182,61 +211,91 @@ package net.play5d.game.bvn.state
          _stage.scaleX = _stage.scaleY = _stageScale;
       }
       
-      private function renderTwo(param1:DisplayObject, param2:DisplayObject) : void
+      private function renderTwo(p1Display:DisplayObject, p2Display:DisplayObject) : void
       {
-         var _loc3_:* = null;
-         var _loc9_:* = null;
-         var _loc4_:* = null;
-         var _loc5_:* = null;
-         var _loc11_:Number = NaN;
-         var _loc10_:Number = NaN;
-         var _loc6_:Number = NaN;
-         var _loc8_:Number = 0;
-         var _loc7_:Number = 0;
+         var rightObj:DisplayObject = null;
+         var leftObj:DisplayObject = null;
+         var bottomObj:DisplayObject = null;
+         var topObj:DisplayObject = null;
+         var zoomTargetX:Number = NaN;
+         var zoomTargetY:Number = NaN;
+         var targetZoom:Number = NaN;
+         var distX:Number = 0;
+         var distY:Number = 0;
+         
+         if(stageCameraMode)
+         {
+            var pLeftX:Number = Math.min(p1Display.x, p2Display.x);
+            var pRightX:Number = Math.max(p1Display.x, p2Display.x);
+            var playerDistX:Number = pRightX - pLeftX;
+            _point.x = (pLeftX + pRightX) * 0.5;
+            
+            var pTopY:Number = Math.min(p1Display.y, p2Display.y);
+            _point.y = pTopY;
+            
+            if(autoZoom)
+            {
+               var tensionX:Number = Math.max(0, stageTension * stageLocalScaleX);
+               var targetSpanX:Number = playerDistX + tensionX * 2.0;
+               var effectiveZoomMin:Number = stageZoomMin;
+               var effectiveZoomMax:Number = stageZoomMax;
+               if(effectiveZoomMin >= 1.0 && effectiveZoomMax <= 1.0)
+               {
+                  effectiveZoomMin = 0.625;
+                  effectiveZoomMax = 1.0;
+               }
+               var idealZoom:Number = _screenSize.x / Math.max(targetSpanX, _screenSize.x / effectiveZoomMax);
+               targetZoom = Math.min(Math.max(idealZoom, effectiveZoomMin), effectiveZoomMax);
+               renderAutoZoom(targetZoom);
+            }
+            return;
+         }
+         
          if(focusX)
          {
-            if(param1.x < param2.x)
+            if(p1Display.x < p2Display.x)
             {
-               _loc9_ = param1;
-               _loc3_ = param2;
+               leftObj = p1Display;
+               rightObj = p2Display;
             }
             else
             {
-               _loc9_ = param2;
-               _loc3_ = param1;
+               leftObj = p2Display;
+               rightObj = p1Display;
             }
-            _loc8_ = _loc3_.x - _loc9_.x;
-            _point.x = _loc9_.x + _loc8_ / 2;
+            distX = rightObj.x - leftObj.x;
+            _point.x = leftObj.x + distX / 2;
          }
          if(focusY)
          {
-            if(param1.y < param2.y)
+            if(p1Display.y < p2Display.y)
             {
-               _loc5_ = param1;
-               _loc4_ = param2;
+               topObj = p1Display;
+               bottomObj = p2Display;
             }
             else
             {
-               _loc5_ = param2;
-               _loc4_ = param1;
+               topObj = p2Display;
+               bottomObj = p1Display;
             }
-            _loc7_ = _loc4_.y - _loc5_.y;
-            _point.y = _loc5_.y + _loc7_ / 2;
+            distY = bottomObj.y - topObj.y;
+            _point.y = topObj.y + distY / 2;
          }
          if(autoZoom)
          {
-            _loc11_ = _zoom;
-            _loc10_ = _zoom;
+            zoomTargetX = _zoom;
+            zoomTargetY = _zoom;
+            var scaleRatio:Number = LocalCoordManager.isLocalCoordMode() ? LocalCoordManager.getScale() : 1;
             if(focusX)
             {
-               _loc11_ = _screenSize.x / _loc8_ * 0.8;
+               zoomTargetX = (_screenSize.x / distX * 0.8) / scaleRatio;
             }
             if(focusY)
             {
-               _loc10_ = _screenSize.y / _loc7_ * 0.8;
+               zoomTargetY = (_screenSize.y / distY * 0.8) / scaleRatio;
             }
-            _loc6_ = Math.min(_loc11_,_loc10_);
-            renderAutoZoom(_loc6_);
+            targetZoom = Math.min(zoomTargetX,zoomTargetY);
+            renderAutoZoom(targetZoom);
          }
       }
       
@@ -255,6 +314,12 @@ package net.play5d.game.bvn.state
       
       private function renderX() : void
       {
+         if(stageCameraMode)
+         {
+            var targetCenterX:Number = !!_point ? _point.x : _focus[0].x;
+            setX(targetCenterX);
+            return;
+         }
          var _loc1_:Number = NaN;
          _loc1_ = Number(!!_point ? _point.x : _focus[0].x);
          _loc1_ -= _foffsetX + offsetX;
@@ -263,58 +328,162 @@ package net.play5d.game.bvn.state
       
       private function renderY() : void
       {
+         if(stageCameraMode)
+         {
+            var highestPlayerY:Number = !!_point ? _point.y : _focus[0].y;
+            setY(highestPlayerY);
+            return;
+         }
          var _loc1_:Number = NaN;
          _loc1_ = Number(!!_point ? _point.y : _focus[0].y);
          _loc1_ -= _foffsetY + offsetY;
          setY(_loc1_);
       }
       
-      public function setX(param1:Number) : void
+      public function setX(targetX:Number) : void
       {
+         if(stageCameraMode)
+         {
+            var halfScreen:Number = (_screenSize.x * 0.5) / _zoom;
+            var effectiveZoomMin:Number = (stageZoomMin > 0) ? stageZoomMin : _zoom;
+            var extraPan:Number = 0;
+            if(_zoom > effectiveZoomMin)
+            {
+               extraPan = (_screenSize.x * 0.5) * (1.0 / effectiveZoomMin - 1.0 / _zoom);
+            }
+            var minCenterStageX:Number = stageHalfWidth + stageBoundLeft * stageLocalScaleX - extraPan;
+            var maxCenterStageX:Number = stageHalfWidth + stageBoundRight * stageLocalScaleX + extraPan;
+            if(minCenterStageX > maxCenterStageX)
+            {
+               targetX = stageHalfWidth;
+            }
+            else
+            {
+               if(targetX < minCenterStageX)
+               {
+                  targetX = minCenterStageX;
+               }
+               if(targetX > maxCenterStageX)
+               {
+                  targetX = maxCenterStageX;
+               }
+            }
+            var finalTargetRectX:Number = targetX - halfScreen;
+            _noTweenRect.x = finalTargetRectX;
+            if(tweenSpd > 1)
+            {
+               _rect.x += (finalTargetRectX - _rect.x) / tweenSpd;
+            }
+            else
+            {
+               _rect.x = finalTargetRectX;
+            }
+            return;
+         }
          if(_fbR)
          {
-            if(param1 < _fbR.x)
+            if(_fbR.width < _fbR.x)
             {
-               param1 = _fbR.x;
+               targetX = (_fbR.x + _fbR.width) / 2;
             }
-            if(param1 > _fbR.width)
+            else
             {
-               param1 = _fbR.width;
+               if(targetX < _fbR.x)
+               {
+                  targetX = _fbR.x;
+               }
+               if(targetX > _fbR.width)
+               {
+                  targetX = _fbR.width;
+               }
             }
          }
-         _noTweenRect.x = param1;
+         _noTweenRect.x = targetX;
          if(tweenSpd > 1)
          {
-            _rect.x += (param1 - _rect.x) / tweenSpd;
+            _rect.x += (targetX - _rect.x) / tweenSpd;
          }
          else
          {
-            _rect.x = param1;
+            _rect.x = targetX;
          }
       }
       
-      public function setY(param1:Number) : void
+      public function setY(targetY:Number) : void
       {
+         if(stageCameraMode)
+         {
+            var jumpHeight:Number = Math.max(0, stagePlayerBottom - targetY);
+            var floorTension:Number = Math.max(0, stageFloorTension * stageLocalScaleY);
+            var camFollowY:Number = 0;
+            if(jumpHeight > floorTension)
+            {
+               camFollowY = (jumpHeight - floorTension) * stageVerticalFollow;
+            }
+            var maxUpward:Number = Math.abs(stageBoundHigh) * stageLocalScaleY;
+            if(camFollowY > maxUpward)
+            {
+               camFollowY = maxUpward;
+            }
+            var finalTargetRectY:Number = stagePlayerBottom - (stagePlayerBottom / _zoom) - camFollowY;
+            _noTweenRect.y = finalTargetRectY;
+            if(tweenSpd > 1)
+            {
+               _rect.y += (finalTargetRectY - _rect.y) / tweenSpd;
+            }
+            else
+            {
+               _rect.y = finalTargetRectY;
+            }
+            return;
+         }
          if(_fbR)
          {
-            if(param1 < _fbR.y)
+            if(_fbR.height < _fbR.y)
             {
-               param1 = _fbR.y;
+               targetY = (_fbR.y + _fbR.height) / 2;
             }
-            if(param1 > _fbR.height)
+            else
             {
-               param1 = _fbR.height;
+               if(targetY < _fbR.y)
+               {
+                  targetY = _fbR.y;
+               }
+               if(targetY > _fbR.height)
+               {
+                  targetY = _fbR.height;
+               }
             }
          }
-         _noTweenRect.y = param1;
+         _noTweenRect.y = targetY;
          if(tweenSpd > 1)
          {
-            _rect.y += (param1 - _rect.y) / tweenSpd;
+            _rect.y += (targetY - _rect.y) / tweenSpd;
          }
          else
          {
-            _rect.y = param1;
+            _rect.y = targetY;
          }
+      }
+      
+      public function getStageCamFollowY() : Number
+      {
+         if(!stageCameraMode)
+         {
+            return 0;
+         }
+         var groundRectY:Number = stagePlayerBottom - (stagePlayerBottom / _zoom);
+         return groundRectY - _rect.y;
+      }
+      
+      public function getStageCamCenterX() : Number
+      {
+         if(!stageCameraMode)
+         {
+            return stageHalfWidth;
+         }
+         var halfScreen:Number = (_screenSize.x * 0.5) / _zoom;
+         return _rect.x + halfScreen;
       }
       
       private function renderZoom() : void

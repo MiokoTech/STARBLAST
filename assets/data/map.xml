@@ -4,6 +4,18 @@
 		<img url="stages/random.png" />
 	</map>
 
+	<map id="training_room" name="Training Room">
+		<file url="stages/training_room/stage.json" />
+		<img url="stages/training_room/preview.jpg" />
+		<bgm url="bgm/bgm_map/tower.mp3"/>
+	</map>
+
+	<map id="aurora_city" name="Aurora City">
+		<file url="stages/aurora_city/stage.json" />
+		<img url="stages/aurora_city/preview.jpg" />
+		<bgm url="stages/aurora_city/AURORA_CITY_TWS.mp3"/>
+	</map>
+
 <map id="university_opera" name="University Opera">
   <file url="stages/university_opera.swf" />
   <img url="stages/university_opera.png" />

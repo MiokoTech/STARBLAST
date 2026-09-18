@@ -470,31 +470,32 @@ package net.play5d.game.bvn.fighter.ctrler
          return getCurrentRect(_loc2_,"hit_check");
       }
       
-      public function getCurrentRect(param1:Rectangle, param2:String = null) : Rectangle
+      public function getCurrentRect(rawRect:Rectangle, cacheKey:String = null) : Rectangle
       {
-         var _loc3_:Rectangle = null;
-         if(param2 == null)
+         var targetRect:Rectangle = null;
+         if(cacheKey == null)
          {
-            _loc3_ = new Rectangle();
+            targetRect = new Rectangle();
          }
-         else if(_rectCache[param2])
+         else if(_rectCache[cacheKey])
          {
-            _loc3_ = _rectCache[param2];
+            targetRect = _rectCache[cacheKey];
          }
          else
          {
-            _loc3_ = new Rectangle();
-            _rectCache[param2] = _loc3_;
+            targetRect = new Rectangle();
+            _rectCache[cacheKey] = targetRect;
          }
-         _loc3_.x = param1.x * _fighter.direct + _fighter.x;
+         var sc:Number = _fighter ? _fighter.scale : 1;
+         targetRect.x = (rawRect.x * _fighter.direct) * sc + _fighter.x;
          if(_fighter.direct < 0)
          {
-            _loc3_.x -= param1.width;
+            targetRect.x -= rawRect.width * sc;
          }
-         _loc3_.y = param1.y + _fighter.y;
-         _loc3_.width = param1.width;
-         _loc3_.height = param1.height;
-         return _loc3_;
+         targetRect.y = rawRect.y * sc + _fighter.y;
+         targetRect.width = rawRect.width * sc;
+         targetRect.height = rawRect.height * sc;
+         return targetRect;
       }
       
       public function doWanKai(param1:int = 0) : void

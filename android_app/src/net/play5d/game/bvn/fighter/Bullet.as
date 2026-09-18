@@ -85,6 +85,13 @@ package net.play5d.game.bvn.fighter
       
       private var _direct:int;
       
+      private var _bulletScale:Number = 1.0;
+      
+      public function get scale() : Number
+      {
+         return _bulletScale;
+      }
+      
       private var _currentRect:Rectangle = new Rectangle();
       
       public function Bullet(param1:MovieClip, param2:Object = null)
@@ -240,7 +247,8 @@ package net.play5d.game.bvn.fighter
       public function set direct(param1:int) : void
       {
          _direct = param1;
-         mc.scaleX = _orgScale.x * _direct;
+         mc.scaleX = _orgScale.x * _direct * _bulletScale;
+         mc.scaleY = _orgScale.y * _bulletScale;
          mc.rotation = _orgRotate * _direct;
          mc.x *= _direct;
          speed.x *= param1;
@@ -253,35 +261,44 @@ package net.play5d.game.bvn.fighter
       
       public function setHitVO(param1:HitVO) : void
       {
-         var _loc4_:FighterMC = null;
+         var fighterMc:FighterMC = null;
          owner = param1.owner;
          _hitVO = param1.clone();
          _hitVO.owner = this;
-         var _loc3_:DisplayObject = mc.getChildByName("main");
-         var _loc2_:DisplayObject = owner.getDisplay();
-         if(_loc3_)
+         if(owner is BaseGameSprite)
          {
-            _bulletArea = _loc3_.getBounds(_loc2_);
+            _bulletScale = (owner as BaseGameSprite).scale;
+         }
+         else
+         {
+            _bulletScale = LocalCoordManager.getScale();
+         }
+         direct = owner.direct;
+         var mainDisplay:DisplayObject = mc.getChildByName("main");
+         var ownerDisplay:DisplayObject = owner.getDisplay();
+         if(mainDisplay)
+         {
+            _bulletArea = mainDisplay.getBounds(ownerDisplay);
             _bulletArea.x -= mc.x;
             _bulletArea.y -= mc.y;
          }
          else
          {
-            _bulletArea = mc.getBounds(_loc2_);
+            _bulletArea = mc.getBounds(ownerDisplay);
             _bulletArea.x -= mc.x;
             _bulletArea.y -= mc.y;
          }
-         direct = owner.direct;
-         mc.x += owner.x;
-         mc.y += owner.y;
+         mc.x = mc.x * _bulletScale + owner.x;
+         mc.y = mc.y * _bulletScale + owner.y;
          if(owner is FighterMain)
          {
-            _loc4_ = (owner as FighterMain).getMC();
-            mc.x += _loc4_.x;
-            mc.y += _loc4_.y;
-            _bulletArea.x -= _loc4_.x;
-            _bulletArea.y -= _loc4_.y;
+            fighterMc = (owner as FighterMain).getMC();
+            mc.x += fighterMc.x;
+            mc.y += fighterMc.y;
+            _bulletArea.x -= fighterMc.x;
+            _bulletArea.y -= fighterMc.y;
          }
+         MCUtils.applyPixelArtStyle(mc);
       }
       
       public function destory(param1:Boolean = true) : void

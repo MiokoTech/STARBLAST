@@ -8,6 +8,12 @@ package net.play5d.game.bvn
 
       public static var PIXEL_STYLE_MODE:Boolean = true;
 
+      public static const SPRITE_STYLE_LOCALCOORD:int = 0;
+
+      public static const SPRITE_STYLE_ORIGINAL:int = 1;
+
+      public static var SPRITE_STYLE:int = SPRITE_STYLE_LOCALCOORD;
+
       public static var SHADOW_ENABLED:Boolean = true;
 
       public static const GAMEPLAY_STYLE_BVN:int = 0;

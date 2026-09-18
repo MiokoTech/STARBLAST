@@ -1,0 +1,668 @@
+;BY DISSIDIA
+;MUGEN 1.0 ONLY
+;===============================
+[Info]
+name			= "Aurora City-TWS"
+displayname		= "Aurora City-TWS"
+author			= "DISSIDIA"; True widescreen version by Beterhans
+versiondate		= 09,24,2023
+mugenversion	= 1.1
+
+
+[Camera]
+startx = 0            
+starty = 0            
+boundleft = -220
+boundright = 220
+boundhigh = -457
+boundlow = 0
+
+verticalfollow	= 0.9
+floortension	= 105		; Player Pos y above ground, Camera start to follow, Ryu normal jump at 240p is -105
+
+tension			= 180
+tensionhigh		= 210;232		;Y Pos camera start to go up (Player Normal Jump high point ScreenPos y)
+tensionlow		= 60;40;38		;Y Pos Camera start to zoom out (Unkown)
+startzoom		= 1.0
+zoomin			= 0.75
+zoomout			= 0.68
+overdrawhigh	= 20
+overdrawlow		= 20   
+
+
+   
+[PlayerInfo]
+p1startx = -170         
+p1starty = 0          
+p1startz = 0          
+p1facing = 1          
+p2startx = 170         
+p2starty = 0          
+p2startz = 0          
+p2facing = -1
+
+p3startx = -240         
+p3starty = 0          
+p3startz = 0          
+p3facing = 1          
+p4startx = 240         
+p4starty = 0          
+p4startz = 0          
+p4facing = -1   
+       
+leftbound = -20000      
+rightbound = 20000     
+topbound = 0  
+botbound = 0
+
+[Scaling]
+topz = 0               
+botz = 50             
+topscale = 1
+botscale = 1.2  
+      
+[Bound]
+screenleft = 45
+screenright = 45
+
+[StageInfo]
+zoffset = 320
+autoturn = 1         
+resetBG = 0     
+localcoord = 640,360
+xscale = 1
+yscale = 1
+
+[Shadow]
+intensity = 96
+color = 0,0,0
+yscale = .2
+fade.range = -400,-100
+
+
+[Reflection]
+intensity = 0
+
+[Music]
+;bgmusic			= stages\DISSIDIA\AURORA_CITY_TWS.mp3
+bgmusic			= sound\AURORA_CITY_TWS.mp3
+bgmvolume		= 100
+bgmloopstart	= 733681
+bgmloopend		= 5116016
+
+[BGdef]
+spr				= AURORA_CITY_TWS.sff
+debugbg			= 0
+
+
+;--------------- BG ------------------
+[BG SKY]
+type  = normal
+spriteno = 0,1
+start = 0, -90
+scalestart = 2, 2
+delta = 0,0
+mask = 0
+zoomdelta = 0
+
+
+[BG SKY 2]
+type  = normal
+spriteno = 0,2
+start = 0, -90
+delta = 0,0.2
+mask = 1
+trans = add
+zoomdelta = 0
+
+[BG AURORA BLUE]
+type = anim
+actionno = 1
+start = 0, -130
+scalestart = 1.25, 1.25
+delta = 0.4, 0.4
+mask = 1
+
+
+[BG AURORA PINK]
+type = anim
+actionno = 2
+start = 0, -130
+scalestart = 1.25, 1.25
+delta = 0.4, 0.4
+mask = 1
+
+
+[BG MOUNTAIN]
+type  = normal
+spriteno = 0,3
+start = 0, -130
+delta = 0.7,0.7
+mask = 1
+
+[BG MOUNTAIN LIGHTS]
+type = anim
+actionno = 0
+start = 0, -130
+delta = 0.7,0.7
+mask = 1
+
+
+[Begin Action 0]
+0,4,0,0,2,,AS200D256
+0,4,0,0,2,,AS150D256
+
+
+
+[Begin Action 1]
+1,0,0,0,4,,AS200D256
+1,1,0,0,4,,AS200D256
+1,2,0,0,4,,AS200D256
+1,3,0,0,4,,AS200D256
+1,4,0,0,4,,AS200D256
+1,5,0,0,4,,AS200D256
+1,6,0,0,4,,AS200D256
+1,7,0,0,4,,AS200D256
+1,8,0,0,4,,AS200D256
+1,9,0,0,4,,AS200D256
+1,10,0,0,4,,AS200D256
+1,11,0,0,4,,AS200D256
+1,12,0,0,4,,AS200D256
+1,13,0,0,4,,AS200D256
+1,14,0,0,4,,AS200D256
+1,15,0,0,4,,AS200D256
+1,16,0,0,4,,AS200D256
+1,17,0,0,4,,AS200D256
+1,18,0,0,4,,AS200D256
+1,19,0,0,4,,AS200D256
+1,20,0,0,4,,AS200D256
+1,21,0,0,4,,AS200D256
+1,22,0,0,4,,AS200D256
+1,23,0,0,4,,AS200D256
+1,24,0,0,4,,AS200D256
+1,25,0,0,4,,AS200D256
+1,26,0,0,4,,AS200D256
+1,27,0,0,4,,AS200D256
+1,28,0,0,4,,AS200D256
+1,29,0,0,4,,AS200D256
+
+
+
+[Begin Action 2]
+2,0,0,0,4,,AS220D256
+2,1,0,0,4,,AS220D256
+2,2,0,0,4,,AS220D256
+2,3,0,0,4,,AS220D256
+2,4,0,0,4,,AS220D256
+2,5,0,0,4,,AS220D256
+2,6,0,0,4,,AS220D256
+2,7,0,0,4,,AS220D256
+2,8,0,0,4,,AS220D256
+2,9,0,0,4,,AS220D256
+2,10,0,0,4,,AS220D256
+2,11,0,0,4,,AS220D256
+2,12,0,0,4,,AS220D256
+2,13,0,0,4,,AS220D256
+2,14,0,0,4,,AS220D256
+2,15,0,0,4,,AS220D256
+2,16,0,0,4,,AS220D256
+2,17,0,0,4,,AS220D256
+2,18,0,0,4,,AS220D256
+2,19,0,0,4,,AS220D256
+2,20,0,0,4,,AS220D256
+2,21,0,0,4,,AS220D256
+2,22,0,0,4,,AS220D256
+2,23,0,0,4,,AS220D256
+2,24,0,0,4,,AS220D256
+2,25,0,0,4,,AS220D256
+2,26,0,0,4,,AS220D256
+2,27,0,0,4,,AS220D256
+2,28,0,0,4,,AS220D256
+2,29,0,0,4,,AS220D256
+
+[BG BUILDINGS 1]
+type = normal
+spriteno = 3,0
+start = 0, -90
+delta = 0.75,0.75
+mask = 1
+
+[BG BUILDINGS 1 LIGHTS]
+type = anim
+actionno = 3
+start = 0, -90
+delta = 0.75,0.75
+mask = 1
+
+[Begin Action 3]
+3,1,0,0,3,,AS0D256
+3,1,0,0,3,,AS10D256
+3,1,0,0,3,,AS20D256
+3,1,0,0,3,,AS30D256
+3,1,0,0,3,,AS40D256
+3,1,0,0,3,,AS50D256
+3,1,0,0,3,,AS60D256
+3,1,0,0,3,,AS70D256
+3,1,0,0,3,,AS80D256
+3,1,0,0,3,,AS90D256
+3,1,0,0,3,,AS100D256
+3,1,0,0,3,,AS110D256
+3,1,0,0,3,,AS120D256
+3,1,0,0,3,,AS130D256
+3,1,0,0,3,,AS140D256
+3,1,0,0,3,,AS150D256
+3,1,0,0,3,,AS160D256
+3,1,0,0,3,,AS170D256
+3,1,0,0,3,,AS180D256
+3,1,0,0,3,,AS190D256
+3,1,0,0,3,,AS200D256
+3,1,0,0,3,,AS190D256
+3,1,0,0,3,,AS180D256
+3,1,0,0,3,,AS170D256
+3,1,0,0,3,,AS160D256
+3,1,0,0,3,,AS150D256
+3,1,0,0,3,,AS140D256
+3,1,0,0,3,,AS130D256
+3,1,0,0,3,,AS120D256
+3,1,0,0,3,,AS110D256
+3,1,0,0,3,,AS100D256
+3,1,0,0,3,,AS90D256
+3,1,0,0,3,,AS80D256
+3,1,0,0,3,,AS70D256
+3,1,0,0,3,,AS60D256
+3,1,0,0,3,,AS50D256
+3,1,0,0,3,,AS40D256
+3,1,0,0,3,,AS30D256
+3,1,0,0,3,,AS20D256
+3,1,0,0,3,,AS10D256
+
+[BG BUILDINGS 2]
+type = normal
+spriteno = 4,0
+start = 0, -90
+delta = 0.8,0.8
+mask = 1
+
+[BG BUILDINGS 2 LIGHTS]
+type = anim
+actionno = 4
+start = 0, -90
+delta = 0.8,0.8
+mask = 1
+
+[Begin Action 4]
+4,1,0,0,3,,AS190D256
+4,1,0,0,3,,AS180D256
+4,1,0,0,3,,AS170D256
+4,1,0,0,3,,AS160D256
+4,1,0,0,3,,AS150D256
+4,1,0,0,3,,AS140D256
+4,1,0,0,3,,AS130D256
+4,1,0,0,3,,AS120D256
+4,1,0,0,3,,AS110D256
+4,1,0,0,3,,AS100D256
+4,1,0,0,3,,AS90D256
+4,1,0,0,3,,AS80D256
+4,1,0,0,3,,AS70D256
+4,1,0,0,3,,AS60D256
+4,1,0,0,3,,AS50D256
+4,1,0,0,3,,AS40D256
+4,1,0,0,3,,AS30D256
+4,1,0,0,3,,AS20D256
+4,1,0,0,3,,AS10D256
+4,1,0,0,3,,AS0D256
+4,1,0,0,3,,AS10D256
+4,1,0,0,3,,AS20D256
+4,1,0,0,3,,AS30D256
+4,1,0,0,3,,AS40D256
+4,1,0,0,3,,AS50D256
+4,1,0,0,3,,AS60D256
+4,1,0,0,3,,AS70D256
+4,1,0,0,3,,AS80D256
+4,1,0,0,3,,AS90D256
+4,1,0,0,3,,AS100D256
+4,1,0,0,3,,AS110D256
+4,1,0,0,3,,AS120D256
+4,1,0,0,3,,AS130D256
+4,1,0,0,3,,AS140D256
+4,1,0,0,3,,AS150D256
+4,1,0,0,3,,AS160D256
+4,1,0,0,3,,AS170D256
+4,1,0,0,3,,AS180D256
+4,1,0,0,3,,AS190D256
+4,1,0,0,3,,AS200D256
+
+[BG TRAIN TILE]
+type = normal
+spriteno = 4,2
+start = 0, -90
+delta = 0.85,0.85
+velocity = -3,0
+tile = 1,0
+tilespacing = 2000,0
+mask = 1
+
+[BG TRAIN TILE LIGHT]
+type = normal
+spriteno = 4,3
+start = 0, -90
+delta = 0.85,0.85
+velocity = -3,0
+tile = 1,0
+tilespacing = 1987,0
+mask = 1
+trans = add
+
+[BG TRAIN BRIDGE]
+type = normal
+spriteno = 4,4
+start = 0, -90
+tile = 1,0
+delta = 0.85,0.85
+mask = 1
+
+[BG TRAIN BRIDGE LIGHTS]
+type = anim
+actionno = 5
+start = 0, -90
+delta = 0.85,0.85
+mask = 1
+
+[Begin Action 5]
+4,5,0,0,2,,AS200D256
+4,5,0,0,2,,AS180D256
+
+
+[BG BRIDGE]
+type = normal
+spriteno = 5,0
+start = 140, -90
+delta = 0.8,0.8
+mask = 1
+
+[BG BRIDGE FRONT LIGHT]
+type = anim
+actionno = 6
+start = 140, -90
+delta = 0.8,0.8
+mask = 1
+
+[Begin Action 6]
+5,1,0,0,3,,AS190D256
+5,1,0,0,3,,AS180D256
+5,1,0,0,3,,AS170D256
+5,1,0,0,3,,AS160D256
+5,1,0,0,3,,AS150D256
+5,1,0,0,3,,AS140D256
+5,1,0,0,3,,AS130D256
+5,1,0,0,3,,AS120D256
+5,1,0,0,3,,AS110D256
+5,1,0,0,3,,AS100D256
+5,1,0,0,3,,AS110D256
+5,1,0,0,3,,AS120D256
+5,1,0,0,3,,AS130D256
+5,1,0,0,3,,AS140D256
+5,1,0,0,3,,AS150D256
+5,1,0,0,3,,AS160D256
+5,1,0,0,3,,AS170D256
+5,1,0,0,3,,AS180D256
+5,1,0,0,3,,AS190D256
+5,1,0,0,3,,AS200D256
+
+[BG BRIDGE UPPER RIGHT LIGHT]
+type = anim
+actionno = 7
+start = 140, -90
+delta = 0.8,0.8
+mask = 1
+
+[Begin Action 7]
+5,2,0,0,3,,AS100D256
+5,2,0,0,3,,AS110D256
+5,2,0,0,3,,AS120D256
+5,2,0,0,3,,AS130D256
+5,2,0,0,3,,AS140D256
+5,2,0,0,3,,AS150D256
+5,2,0,0,3,,AS160D256
+5,2,0,0,3,,AS170D256
+5,2,0,0,3,,AS180D256
+5,2,0,0,3,,AS190D256
+5,2,0,0,3,,AS200D256
+5,2,0,0,3,,AS190D256
+5,2,0,0,3,,AS180D256
+5,2,0,0,3,,AS170D256
+5,2,0,0,3,,AS160D256
+5,2,0,0,3,,AS150D256
+5,2,0,0,3,,AS140D256
+5,2,0,0,3,,AS130D256
+5,2,0,0,3,,AS120D256
+5,2,0,0,3,,AS110D256
+
+[BG BRIDGE STREET LIGHTS]
+type = anim
+actionno = 8
+start = 140, -90
+delta = 0.8,0.8
+mask = 1
+
+[Begin Action 8]
+Interpolate Blend
+5,3, 0,0, 4, , AS160D256
+Interpolate Blend
+5,3, 0,0, 4, , AS64D256
+
+[BG RIPPLE_Lef]
+type  = anim
+actionno = 209
+start = -884, -90
+;tile = 1,0
+;tilespacing = 1024,0
+delta = 0.8,0.9
+mask = 1
+
+[BG RIPPLE]
+type  = anim
+actionno = 9
+start = 140, -90
+;tile = 0,0
+;tilespacing = 1024,0
+delta = 0.8,0.9
+mask = 1
+
+; RIPPLE
+[Begin Action 9]
+6,0,0,0,2
+6,1,0,0,2
+6,2,0,0,2
+6,3,0,0,2
+6,4,0,0,2
+6,5,0,0,2
+6,6,0,0,2
+6,7,0,0,2
+6,8,0,0,2
+6,9,0,0,2
+6,10,0,0,2
+6,11,0,0,2
+6,12,0,0,2
+6,13,0,0,2
+6,14,0,0,2
+6,15,0,0,2
+6,16,0,0,2
+6,17,0,0,2
+6,18,0,0,2
+6,19,0,0,2
+6,20,0,0,2
+6,21,0,0,2
+6,22,0,0,2
+6,23,0,0,2
+6,24,0,0,2
+6,25,0,0,2
+6,26,0,0,2
+6,27,0,0,2
+6,28,0,0,2
+6,29,0,0,2
+
+[BG FRONT LIGHTING]
+type = anim
+actionno = 10
+start = 140, -90
+tile = 1, 0
+tilespacing = 1024, 0
+delta = 0.8,0.8
+mask = 1
+
+; RIPPLE_Fold
+[Begin Action 209]
+6,0, 0,0, 2, H
+6,1, 0,0, 2, H
+6,2, 0,0, 2, H
+6,3, 0,0, 2, H
+6,4, 0,0, 2, H
+6,5, 0,0, 2, H
+6,6, 0,0, 2, H
+6,7, 0,0, 2, H
+6,8, 0,0, 2, H
+6,9, 0,0, 2, H
+6,10, 0,0, 2, H
+6,11, 0,0, 2, H
+6,12, 0,0, 2, H
+6,13, 0,0, 2, H
+6,14, 0,0, 2, H
+6,15, 0,0, 2, H
+6,16, 0,0, 2, H
+6,17, 0,0, 2, H
+6,18, 0,0, 2, H
+6,19, 0,0, 2, H
+6,20, 0,0, 2, H
+6,21, 0,0, 2, H
+6,22, 0,0, 2, H
+6,23, 0,0, 2, H
+6,24, 0,0, 2, H
+6,25, 0,0, 2, H
+6,26, 0,0, 2, H
+6,27, 0,0, 2, H
+6,28, 0,0, 2, H
+6,29, 0,0, 2, H
+
+
+;-------- Boat
+[BG Boat]
+type = Anim
+actionno = 240
+layerno = 0
+start = 760, 310
+scalestart = 0.8, 0.8
+delta = 0.84, 0.84
+mask = 1
+sin.y = 4,256,0
+ID = 240
+
+
+[BG Boat_GreenLight]
+type = Anim
+actionno = 241
+layerno = 0
+start = 760, 310
+scalestart = 0.8, 0.8
+delta = 0.84, 0.84
+mask = 1
+sin.y = 4,256,0
+ID = 240
+
+[BG Boat_RedLight]
+type = Anim
+actionno = 242
+layerno = 0
+start = 760, 310
+scalestart = 0.8, 0.8
+delta = 0.84, 0.84
+mask = 1
+sin.y = 4,256,0
+ID = 240
+
+[Begin Action 10]
+Interpolate Blend
+7,0, 0,0, 32, , AS32D256
+Interpolate Blend
+7,0, 0,0, 32, , AS160D256
+
+[BG TREES]
+type = normal
+spriteno = 8,0
+start = -200, -90
+delta = 1.1,0.9
+mask = 1
+
+[BG SHORE HILL]
+type = normal
+spriteno = 8,1
+start = -200, -90
+delta = 1.15,0.85
+mask = 1
+
+[BG HOUSE]
+type = normal
+spriteno = 9,0
+start = 170, -90
+delta = 0.88, 0.88
+mask = 1
+
+[BG HOUSE LIGHT]
+type = anim
+actionno = 11
+start = 170, -90
+delta = 0.88, 0.88
+mask = 1
+
+[Begin Action 11]
+Interpolate Blend
+9,1, 0,0, 3, , AS64D256
+Interpolate Blend
+9,1, 0,0, 3, , AS192D256
+
+[BG FLOOR]
+type = normal
+spriteno = 10,0
+start = 0, -90
+scalestart = 1.5, 1
+delta = 1,1
+mask = 1
+; Boat
+[Begin Action 240]
+240,0, 0,0, 3200
+
+; GreenLight
+[Begin Action 241]
+Interpolate Blend
+241,0, 0,0, 48, , AS192D256
+Interpolate Blend
+241,0, 0,0, 8, , AS32D256
+
+[Begin Action 242]
+Interpolate Blend
+241,1, 0,0, 8, , AS32D256
+Interpolate Blend
+241,1, 0,0, 64, , AS192D256
+
+;-------------- Main Controls -------------
+[BGCtrlDef Boat]
+looptime = 1800; Useless.....
+ctrlID = 240
+
+[BGCtrl Boat_PosReset]
+type = PosSet;				0=Orignal position not center of screen
+time = 0,0,3200
+ctrlID = 240
+x = 0
+y = 0
+
+[BGCtrl Boat_Start]
+type = VelSet
+time = 0,0,3200
+ctrlID = 240
+x = -0.6
+y = 0
+
+
+
+

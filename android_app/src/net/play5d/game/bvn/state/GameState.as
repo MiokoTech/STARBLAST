@@ -17,6 +17,7 @@ package net.play5d.game.bvn.state
    import net.play5d.game.bvn.data.GameRunFighterGroup;
    import net.play5d.game.bvn.events.GameEvent;
    import net.play5d.game.bvn.fighter.FighterMain;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    import net.play5d.game.bvn.fighter.ctrler.FighterAICtrl;
    import net.play5d.game.bvn.interfaces.IGameSprite;
    import net.play5d.game.bvn.map.MapMain;
@@ -160,10 +161,9 @@ package net.play5d.game.bvn.state
       
       public function initFight(param1:GameRunFighterGroup, param2:GameRunFighterGroup, param3:MapMain) : void
       {
-         var _loc6_:Point = null;
-         EffectCtrl.SHADOW_ENABLED = true;
          _map = param3;
          _map.gameState = this;
+         EffectCtrl.SHADOW_ENABLED = _map.shadowIntensity > 0;
          if(_map.bgLayer)
          {
             addChild(_map.bgLayer);
@@ -230,9 +230,14 @@ package net.play5d.game.bvn.state
             _loc8_.direct = 1;
             _loc8_.updatePosition();
          }
+         var isStageCustom:Boolean = _map && _map.isJSONMap;
+         var scX:Number = (_map && _map.stageCoord) ? _map.stageCoord.x : 640;
+         var scY:Number = (_map && _map.stageCoord) ? _map.stageCoord.y : 360;
+         LocalCoordManager.setStageContext(isStageCustom, scX, scY);
+         updateGroupFightersScale(param1, isStageCustom);
+         updateGroupFightersScale(param2, isStageCustom);
          if(_map.mapLayer)
          {
-            _loc6_ = new Point(_map.mapLayer.width,GameConfig.GAME_SIZE.y);
             initCamera();
             camera.focus(_cameraFocus);
             gameUI.initFight(param1,param2);
@@ -242,11 +247,58 @@ package net.play5d.game.bvn.state
          throw new Error("map is error! :: mapLayer is null!");
       }
       
+      private function updateGroupFightersScale(group:GameRunFighterGroup, isStageCustom:Boolean) : void
+      {
+         if(!group)
+         {
+            return;
+         }
+         var scX:Number = (_map && _map.stageCoord) ? _map.stageCoord.x : 640;
+         var scY:Number = (_map && _map.stageCoord) ? _map.stageCoord.y : 360;
+         if(group.currentFighter)
+         {
+            group.currentFighter.updateScale(isStageCustom, scX, scY);
+         }
+         if(group.nextFighter1)
+         {
+            group.nextFighter1.updateScale(isStageCustom, scX, scY);
+         }
+         if(group.nextFighter2)
+         {
+            group.nextFighter2.updateScale(isStageCustom, scX, scY);
+         }
+         if(group.currentAssister)
+         {
+            group.currentAssister.updateScale(isStageCustom, scX, scY);
+         }
+         var fighterItem1:FighterMain = group.getFighter(group.fighter1);
+         if(fighterItem1)
+         {
+            fighterItem1.updateScale(isStageCustom, scX, scY);
+         }
+         var fighterItem2:FighterMain = group.getFighter(group.fighter2);
+         if(fighterItem2)
+         {
+            fighterItem2.updateScale(isStageCustom, scX, scY);
+         }
+         var fighterItem3:FighterMain = group.getFighter(group.fighter3);
+         if(fighterItem3)
+         {
+            fighterItem3.updateScale(isStageCustom, scX, scY);
+         }
+      }
+      
       public function resetFight(param1:GameRunFighterGroup, param2:GameRunFighterGroup) : void
       {
+         var isStageCustom:Boolean = _map && _map.isJSONMap;
+         var scX:Number = (_map && _map.stageCoord) ? _map.stageCoord.x : 640;
+         var scY:Number = (_map && _map.stageCoord) ? _map.stageCoord.y : 360;
+         LocalCoordManager.setStageContext(isStageCustom, scX, scY);
+         updateGroupFightersScale(param1, isStageCustom);
+         updateGroupFightersScale(param2, isStageCustom);
          var _loc4_:FighterMain = param1.currentFighter;
          var _loc3_:FighterMain = param2.currentFighter;
-         EffectCtrl.SHADOW_ENABLED = true;
+         EffectCtrl.SHADOW_ENABLED = _map ? (_map.shadowIntensity > 0) : true;
          _cameraFocus = [];
          
          if(_loc4_) _loc4_.setActive(true);
@@ -381,101 +433,204 @@ package net.play5d.game.bvn.state
 
       private function getCameraGroupFocusZoom() : Number
       {
-         var _loc1_:Number = 2.5;
+         if(_map && _map.isJSONMap)
+         {
+            if(!isNaN(_map.cameraStartZoom))
+            {
+               return _map.cameraStartZoom;
+            }
+            return !isNaN(_map.cameraZoomMax) ? _map.cameraZoomMax : 0.75;
+         }
+         var focusZoom:Number = 2.5;
          if(GameData.I && GameData.I.config)
          {
-            _loc1_ = Number(GameData.I.config.cameraDistance);
+            focusZoom = Number(GameData.I.config.cameraDistance);
          }
-         if(_loc1_ < 1.2)
+         if(LocalCoordManager.isLocalCoordMode())
          {
-            _loc1_ = 1.2;
+            focusZoom = focusZoom / LocalCoordManager.getScale();
+            if(focusZoom < 0.75)
+            {
+               focusZoom = 0.75;
+            }
+            if(focusZoom > 1.2)
+            {
+               focusZoom = 1.2;
+            }
+            return focusZoom;
          }
-         if(_loc1_ > 3.2)
+         if(focusZoom < 1.2)
          {
-            _loc1_ = 3.2;
+            focusZoom = 1.2;
+         }
+         if(focusZoom > 3.2)
+         {
+            focusZoom = 3.2;
          }
          switch(getCameraStyle())
          {
             case GameConfig.CAMERA_STYLE_STARBLAST:
-               _loc1_ += 0.2;
+               focusZoom += 0.2;
                break;
          }
-         if(_loc1_ > 3.2)
+         if(focusZoom > 3.2)
          {
-            _loc1_ = 3.2;
+            focusZoom = 3.2;
          }
-         return _loc1_;
+         return focusZoom;
       }
 
       private function getCameraFocusOneZoom() : Number
       {
-         var _loc1_:Number = getCameraGroupFocusZoom();
+         if(_map && _map.isJSONMap)
+         {
+            return !isNaN(_map.cameraZoomMax) ? _map.cameraZoomMax : 0.75;
+         }
+         var focusOneZoom:Number = getCameraGroupFocusZoom();
+         if(LocalCoordManager.isLocalCoordMode())
+         {
+            focusOneZoom += 0.15;
+            if(focusOneZoom > 1.25)
+            {
+               focusOneZoom = 1.25;
+            }
+            return focusOneZoom;
+         }
          switch(getCameraStyle())
          {
             case GameConfig.CAMERA_STYLE_STARBLAST:
-               _loc1_ += 0.45;
+               focusOneZoom += 0.45;
                break;
             default:
-               _loc1_ += 0.5;
+               focusOneZoom += 0.5;
          }
-         if(_loc1_ > 3.2)
+         if(focusOneZoom > 3.2)
          {
-            _loc1_ = 3.2;
+            focusOneZoom = 3.2;
          }
-         return _loc1_;
+         return focusOneZoom;
       }
       
       private function initCamera() : void
       {
-         var _loc5_:int = 0;
-         var _loc6_:Number = NaN;
-         var _loc7_:Number = NaN;
-         var _loc8_:Number = NaN;
+         var camStyle:int = 0;
+         var zoomMinRate:Number = NaN;
+         var camXHalf:Number = NaN;
+         var camYOffset:Number = NaN;
          if(camera)
          {
             throw new Error("camera inited!");
          }
-         var _loc1_:Point = _map.getStageSize();
-         camera = new GameCamera(_gameLayer,GameConfig.GAME_SIZE,_loc1_,true);
+         var stageSize:Point = _map.getStageSize();
+         camera = new GameCamera(_gameLayer,GameConfig.GAME_SIZE,stageSize,true);
          camera.focusX = true;
          camera.focusY = true;
          camera.offsetY = _map.getMapBottomDistance();
-         camera.setStageBounds(new Rectangle(0,-1000,_loc1_.x,_loc1_.y));
-         _loc5_ = getCameraStyle();
-         _loc6_ = int(1 / GameData.I.config.cameraZoomRate * 100) / 100;
-         if(_loc6_ < 1)
+         var stageBoundTop:Number = (_map && !isNaN(_map.cameraBoundHigh)) ? _map.cameraBoundHigh : -1000;
+         var stageBoundBottom:Number = (_map && !isNaN(_map.cameraBoundLow)) ? (stageSize.y + _map.cameraBoundLow) : stageSize.y;
+         camera.setStageBounds(new Rectangle(0,stageBoundTop,stageSize.x,stageBoundBottom));
+         camStyle = getCameraStyle();
+         zoomMinRate = int(1 / GameData.I.config.cameraZoomRate * 100) / 100;
+         if(_map && _map.isJSONMap)
          {
-            _loc6_ = 1;
+            camera.stageCameraMode = true;
+            camera.stageBoundLeft = _map.cameraBoundLeft;
+            camera.stageBoundRight = _map.cameraBoundRight;
+            camera.stageBoundHigh = _map.cameraBoundHigh;
+            camera.stageBoundLow = _map.cameraBoundLow;
+            camera.stageTension = _map.cameraTension;
+            camera.stageFloorTension = _map.cameraFloorTension;
+            camera.stageVerticalFollow = _map.cameraVerticalFollow;
+            camera.stageZoomMin = !isNaN(_map.cameraZoomMin) ? _map.cameraZoomMin : 0.68;
+            camera.stageZoomMax = !isNaN(_map.cameraZoomMax) ? _map.cameraZoomMax : 0.75;
+            camera.stageLocalScaleX = _map.localScaleX;
+            camera.stageLocalScaleY = _map.localScaleY;
+            camera.stagePlayerBottom = _map.playerBottom;
+            camera.stageHalfWidth = _map.stageHalfWidth;
+            camera.focusX = true;
+            camera.focusY = true;
+            camera.autoZoom = true;
+            camera.autoZoomMin = camera.stageZoomMin;
+            camera.autoZoomMax = camera.stageZoomMax;
+            camera.offsetY = _map.getMapBottomDistance();
+            var initialStageZoom:Number = !isNaN(_map.cameraStartZoom) ? _map.cameraStartZoom : camera.stageZoomMax;
+            camera.stageStartZoom = initialStageZoom;
+            camera.setZoomInitial(initialStageZoom);
          }
-         if(_loc6_ > 3)
+         else if(LocalCoordManager.isLocalCoordMode())
          {
-            _loc6_ = 3;
-         }
-         switch(_loc5_)
-         {
-            case GameConfig.CAMERA_STYLE_STARBLAST:
-               camera.focusY = true;
-               camera.autoZoom = true;
-               camera.autoZoomMin = _loc6_;
-               camera.autoZoomMax = 3.2;
+            var minMapZoom:Number = stageSize && stageSize.x > 0 ? (GameConfig.GAME_SIZE.x / stageSize.x) : 0.75;
+            camera.focusY = true;
+            camera.autoZoom = true;
+            if(_map && !isNaN(_map.cameraZoomMin))
+            {
+               camera.autoZoomMin = _map.cameraZoomMin;
+            }
+            else
+            {
+               camera.autoZoomMin = Math.max(0.75, minMapZoom);
+            }
+            if(_map && !isNaN(_map.cameraZoomMax))
+            {
+               camera.autoZoomMax = _map.cameraZoomMax;
+            }
+            else
+            {
+               camera.autoZoomMax = 1.2;
+            }
+            if(camStyle == GameConfig.CAMERA_STYLE_STARBLAST)
+            {
                camera.offsetY = _map.getMapBottomDistance() - 8;
-               break;
-            default:
-               camera.focusY = true;
-               camera.autoZoom = true;
-               camera.autoZoomMin = _loc6_;
-               camera.autoZoomMax = 3;
+            }
+            else
+            {
                camera.offsetY = _map.getMapBottomDistance();
+            }
+         }
+         else
+         {
+            if(zoomMinRate < 1.2)
+            {
+               zoomMinRate = 1.2;
+            }
+            if(zoomMinRate > 3)
+            {
+               zoomMinRate = 3;
+            }
+            switch(camStyle)
+            {
+               case GameConfig.CAMERA_STYLE_STARBLAST:
+                  camera.focusY = true;
+                  camera.autoZoom = true;
+                  camera.autoZoomMin = zoomMinRate;
+                  camera.autoZoomMax = 3.2;
+                  camera.offsetY = _map.getMapBottomDistance() - 8;
+                  break;
+               default:
+                  camera.focusY = true;
+                  camera.autoZoom = true;
+                  camera.autoZoomMin = zoomMinRate;
+                  camera.autoZoomMax = 3;
+                  camera.offsetY = _map.getMapBottomDistance();
+            }
          }
          camera.tweenSpd = getCameraTweenSpd();
-         var _loc4_:Number = getCameraGroupFocusZoom();
-         _loc7_ = GameConfig.GAME_SIZE.x * 0.5;
-         _loc8_ = GameConfig.GAME_SIZE.y * (200 / 420);
-         var _loc3_:Number = _loc1_.x / 2 * _loc4_ - _loc7_;
-         var _loc2_:Number = _map.bottom - _loc8_;
-         camera.setZoom(_loc4_);
-         camera.setX(-_loc3_);
-         camera.setY(-_loc2_);
+         var initialZoom:Number = getCameraGroupFocusZoom();
+         camXHalf = GameConfig.GAME_SIZE.x * 0.5;
+         camYOffset = GameConfig.GAME_SIZE.y * (200 / 420);
+         var initX:Number = stageSize.x / 2 * initialZoom - camXHalf;
+         var initY:Number = _map.bottom - camYOffset;
+         camera.setZoom(initialZoom);
+         if(camera.stageCameraMode)
+         {
+            camera.setX(_map.stageHalfWidth);
+            camera.setY(_map.playerBottom);
+         }
+         else
+         {
+            camera.setX(-initX);
+            camera.setY(-initY);
+         }
          camera.updateNow();
       }
       
@@ -519,6 +674,7 @@ package net.play5d.game.bvn.state
       
       public function destory(param1:Function = null) : void
       {
+         LocalCoordManager.setStageContext(false);
          this.removeChildren();
          if(_gameSprites)
          {

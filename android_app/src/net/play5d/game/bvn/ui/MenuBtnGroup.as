@@ -8,6 +8,7 @@ package net.play5d.game.bvn.ui
    import net.play5d.game.bvn.GameConfig;
    import net.play5d.game.bvn.MainGame;
    import net.play5d.game.bvn.ctrl.GameRender;
+   import net.play5d.game.bvn.ctrl.SoundCtrl;
    import net.play5d.game.bvn.data.GameMode;
    import net.play5d.game.bvn.data.MessionModel;
    import net.play5d.game.bvn.input.GameInputer;
@@ -371,13 +372,19 @@ package net.play5d.game.bvn.ui
             }
             hoverBtn(btns[_btnIndex]);
          }
-         if (GameInputer.jump(_inputType, 1)) {
+         if (GameInputer.jump(_inputType, 1) || GameInputer.select(_inputType, 1) || GameInputer.attack(_inputType, 1)) {
             selectBtn(btns[_btnIndex]);
          }
-         if(GameInputer.dash("MENU", 1)) {
-            if(_showIngChildrenBtn) {
-               _btnIndex = _showIngChildrenBtn.index;
+         if (GameInputer.back(1) || GameInputer.dash("MENU", 1)) {
+            if (_showIngChildrenBtn) {
+               var parentBtn:MenuBtn = _showIngChildrenBtn;
+               _btnIndex = parentBtn.index;
                closeChildren(true);
+               hoverBtn(parentBtn);
+               SoundCtrl.I.sndCancel();
+            } else {
+               SoundCtrl.I.sndCancel();
+               MainGame.I.goTitle();
             }
          }
       }

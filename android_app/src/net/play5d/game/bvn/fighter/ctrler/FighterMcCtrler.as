@@ -1877,53 +1877,53 @@ package net.play5d.game.bvn.fighter.ctrler
          }
       }
       
-      private function doHurtAnimate(param1:HitVO, param2:Rectangle) : void
+      private function doHurtAnimate(hitVO:HitVO, hitRect:Rectangle) : void
       {
          effectCtrler.endShake();
-         _fighter.isApplyG = param1.targetApplyG;
+         _fighter.isApplyG = true;
          _isDefense = false;
-         var _loc3_:Number = param1.hitx;
-         var _loc4_:Number = param1.hity;
+         var hitX:Number = hitVO.hitx;
+         var hitY:Number = hitVO.hity;
          if(_fighter.mosouEnemyData && !_fighter.mosouEnemyData.isBoss)
          {
             if(!_fighter.isAlive)
             {
-               if(_loc4_ > 0)
+               if(hitY > 0)
                {
-                  _loc4_ += Math.random() * 3;
+                  hitY += Math.random() * 3;
                }
                else
                {
-                  _loc4_ -= 3 + Math.random() * 3;
+                  hitY -= 3 + Math.random() * 3;
                }
-               _loc3_ += 2 + Math.random() * 3;
+               hitX += 2 + Math.random() * 3;
             }
          }
-         if(param1.owner)
+         if(hitVO.owner)
          {
-            _loc3_ *= param1.owner.direct;
+            hitX *= hitVO.owner.direct;
          }
          if(_fighter.isInAir)
          {
-            if(_loc4_ <= 0)
+            if(hitY <= 0)
             {
-               _loc4_ -= 3;
+               hitY -= 3;
             }
          }
-         else if(_loc4_ < 0)
+         else if(hitY < 0)
          {
-            _loc4_ -= 6;
+            hitY -= 6;
             _isTouchFloor = false;
          }
          _action.clearState();
          _doingAirAction = null;
          _doingAction = null;
          setSteelBody(false);
-         if(param1.hurtType == 0)
+         if(hitVO.hurtType == 0)
          {
             _action.isHurting = true;
-            _hurtHoldFrame = GameConfig.calcHurtHoldFrame(param1.hurtTime);
-            if(param1.hitType == 11)
+            _hurtHoldFrame = GameConfig.calcHurtHoldFrame(hitVO.hurtTime);
+            if(hitVO.hitType == 11)
             {
                _mc.goFrame("被打",false);
             }
@@ -1932,19 +1932,19 @@ package net.play5d.game.bvn.fighter.ctrler
                _mc.goFrame("被打",true,7);
             }
             _fighter.actionState = 21;
-            _fighter.setVelocity(_loc3_,_loc4_);
+            _fighter.setVelocity(hitX,hitY);
             _fighter.setDamping(0.1,0.5);
-            if(_fighter.isAlive && HitType.isHeavy(param1.hitType))
+            if(_fighter.isAlive && HitType.isHeavy(hitVO.hitType))
             {
                _fighter.getCtrler().getVoiceCtrl().playVoice(0,0.5);
             }
          }
-         if(param1.hurtType == 1)
+         if(hitVO.hurtType == 1)
          {
             _action.isHurtFlying = true;
             _fighter.actionState = 22;
             _hurtDownFrame = 0;
-            _mc.playHurtFly(_loc3_,_loc4_);
+            _mc.playHurtFly(hitX,hitY);
             if(_fighter.isAlive)
             {
                _fighter.getCtrler().getVoiceCtrl().playVoice(1,1);
@@ -2266,11 +2266,11 @@ package net.play5d.game.bvn.fighter.ctrler
          }
          _mc.stopHurtFly();
          _fighter.useEnergy(30);
-         var _loc1_:Number = _fighter.getVecX();
+         var vecX:Number = _fighter.getVecX();
          doAction("起身");
          _fighter.isAllowBeHit = false;
-         _fighter.setVelocity(_loc1_);
-         _fighter.setDamping(_loc1_ * 0.1);
+         _fighter.setVelocity(vecX);
+         _fighter.setDamping(vecX * 0.1, GameConfig.HURT_DOWN_JUMP_DAMPING);
          FighterEventDispatcher.dispatchEvent(_fighter,"HURT_RESUME");
       }
       

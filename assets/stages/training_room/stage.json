@@ -1,0 +1,172 @@
+{
+  "format": "starblast_stage_v1",
+  "info": {
+    "name": "Training Room 720",
+    "displayname": "Training Room",
+    "author": "Elecbyte",
+    "versiondate": "09,30,2009",
+    "mugenversion": "1.0"
+  },
+  "camera": {
+    "startx": 0.0,
+    "starty": 0.0,
+    "boundleft": -500.0,
+    "boundright": 500.0,
+    "boundhigh": -450.0,
+    "boundlow": 0.0,
+    "verticalfollow": 0.85,
+    "floortension": 200.0,
+    "tension": 200.0,
+    "overdrawhigh": 120.0,
+    "overdrawlow": 120.0,
+    "cuthigh": 0.0,
+    "cutlow": 0.0,
+    "zoomout": 1.0,
+    "zoomin": 1.0
+  },
+  "playerinfo": {
+    "p1startx": -280.0,
+    "p1starty": 0.0,
+    "p1facing": 1,
+    "p2startx": 280.0,
+    "p2starty": 0.0,
+    "p2facing": -1,
+    "p3startx": -400.0,
+    "p3starty": 0.0,
+    "p3facing": 1,
+    "p4startx": 400.0,
+    "p4starty": 0.0,
+    "p4facing": -1,
+    "leftbound": -4000.0,
+    "rightbound": 4000.0
+  },
+  "bound": {
+    "screenleft": 60.0,
+    "screenright": 60.0
+  },
+  "stageinfo": {
+    "zoffset": 660.0,
+    "autoturn": true,
+    "resetBG": true,
+    "localcoord": [
+      1280,
+      720
+    ],
+    "xscale": 1.0,
+    "yscale": 1.0,
+    "hires": false
+  },
+  "shadow": {
+    "intensity": 96,
+    "color": [
+      0,
+      0,
+      0
+    ],
+    "yscale": 0.3,
+    "fade_range": [
+      0.0,
+      0.0
+    ]
+  },
+  "reflection": {
+    "intensity": 0
+  },
+  "music": {
+    "bgmusic": "",
+    "bgmvolume": 100,
+    "bgmloopstart": 0,
+    "bgmloopend": 0
+  },
+  "layers": [
+    {
+      "id": "bg_0",
+      "name": "BG 0",
+      "type": "normal",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        0.0
+      ],
+      "delta": [
+        0.75,
+        0.75
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 0,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "0_0.png",
+      "width": 3200,
+      "height": 1072,
+      "axis_x": 1600,
+      "axis_y": 460
+    },
+    {
+      "id": "bg_1",
+      "name": "BG 1",
+      "type": "parallax",
+      "spriteno": [
+        1,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        612.0
+      ],
+      "delta": [
+        0.78,
+        0.75
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 0,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "xscale": [
+        1.0,
+        3.0
+      ],
+      "yscalestart": 100.0,
+      "yscaledelta": 0.3,
+      "img_ref": "1_0.png",
+      "width": 3200,
+      "height": 328,
+      "axis_x": 1600,
+      "axis_y": 0
+    }
+  ],
+  "actions": {}
+}

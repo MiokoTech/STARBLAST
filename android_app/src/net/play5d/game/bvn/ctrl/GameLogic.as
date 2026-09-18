@@ -321,60 +321,77 @@ package net.play5d.game.bvn.ctrl
          }
       }
       
-      public static function fixGameSpritePosition(param1:IGameSprite) : void
+      public static function fixGameSpritePosition(sp:IGameSprite) : void
       {
-         var _loc3_:* = NaN;
-         var _loc9_:* = NaN;
-         var _loc2_:Number = NaN;
-         var _loc8_:Number = NaN;
-         var _loc5_:Rectangle = null;
-         var _loc4_:Number = NaN;
-         var _loc7_:Number = NaN;
-         var _loc6_:Boolean = false;
-         if(param1.allowCrossMapXY() == false)
+         var left:Number = NaN;
+         var right:Number = NaN;
+         var offsetX:Number = NaN;
+         var camZoom:Number = NaN;
+         var camRect:Rectangle = null;
+         var camLeft:Number = NaN;
+         var camRight:Number = NaN;
+         var isTouchSide:Boolean = false;
+         if(sp.allowCrossMapXY() == false)
          {
-            _loc3_ = _map.left + 10;
-            _loc9_ = _map.right - 10;
-            _loc2_ = 10;
-            _loc8_ = _camera.getZoom();
-            _loc5_ = _camera.getScreenRect();
-            if(param1 is FighterMain)
+            var edgeMarginL:Number = (_map && _map.screenLeft > 0) ? _map.screenLeft : 10;
+            var edgeMarginR:Number = (_map && _map.screenRight > 0) ? _map.screenRight : 10;
+            left = _map.left + edgeMarginL;
+            right = _map.right - edgeMarginR;
+            offsetX = edgeMarginL;
+            camZoom = _camera.getZoom();
+            camRect = _camera.getScreenRect();
+            if(sp is FighterMain)
             {
-               if((param1 as FighterMain).getVecX() != 0)
+               if((sp as FighterMain).getVecX() != 0)
                {
-                  if(_loc8_ == _camera.autoZoomMin)
+                  if(_camera && _camera.stageCameraMode)
                   {
-                     _loc4_ = _loc5_.x / _loc8_ + _loc2_;
-                     _loc7_ = _loc4_ + _loc5_.width - _loc2_;
-                     if(_loc3_ < _loc4_)
+                     var camCenterX:Number = _camera.getStageCamCenterX();
+                     var halfVisibleSpan:Number = 640.0 / camZoom;
+                     camLeft = camCenterX - halfVisibleSpan + edgeMarginL;
+                     camRight = camCenterX + halfVisibleSpan - edgeMarginR;
+                     if(left < camLeft)
                      {
-                        _loc3_ = _loc4_;
+                        left = camLeft;
                      }
-                     if(_loc9_ > _loc7_)
+                     if(right > camRight)
                      {
-                        _loc9_ = _loc7_;
+                        right = camRight;
+                     }
+                  }
+                  else if(Math.abs(camZoom - _camera.autoZoomMin) < 0.01 || camZoom <= _camera.autoZoomMin)
+                  {
+                     camLeft = camRect.x / camZoom + offsetX;
+                     camRight = camLeft + camRect.width - offsetX;
+                     if(left < camLeft)
+                     {
+                        left = camLeft;
+                     }
+                     if(right > camRight)
+                     {
+                        right = camRight;
                      }
                   }
                }
             }
-            _loc6_ = false;
-            if(param1.x <= _loc3_)
+            isTouchSide = false;
+            if(sp.x <= left)
             {
-               param1.x = _loc3_;
-               _loc6_ = true;
+               sp.x = left;
+               isTouchSide = true;
             }
-            if(param1.x >= _loc9_)
+            if(sp.x >= right)
             {
-               param1.x = _loc9_;
-               _loc6_ = true;
+               sp.x = right;
+               isTouchSide = true;
             }
-            param1.setIsTouchSide(_loc6_);
+            sp.setIsTouchSide(isTouchSide);
          }
-         if(param1.allowCrossMapBottom() == false)
+         if(sp.allowCrossMapBottom() == false)
          {
-            if(param1.y > _map.bottom)
+            if(sp.y > _map.bottom)
             {
-               param1.y = _map.bottom;
+               sp.y = _map.bottom;
             }
          }
       }

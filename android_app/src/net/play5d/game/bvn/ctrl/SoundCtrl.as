@@ -299,6 +299,11 @@ package net.play5d.game.bvn.ctrl
       {
          playSwcSound(snd_menu2);
       }
+      
+      public function sndCancel() : void
+      {
+         playSwcSound(snd_menu1);
+      }
    }
 }
 

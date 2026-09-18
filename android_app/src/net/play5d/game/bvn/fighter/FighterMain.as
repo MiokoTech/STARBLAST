@@ -50,7 +50,29 @@ package net.play5d.game.bvn.fighter
       
       public var isSuperSteelBody:Boolean = false;
       
-      public var data:FighterVO;
+      private var _data:FighterVO;
+      
+      public function get data() : FighterVO
+      {
+         return _data;
+      }
+      
+      public function set data(val:FighterVO) : void
+      {
+         _data = val;
+         if(_data)
+         {
+            this.scale = LocalCoordManager.getScale(_data.id);
+         }
+      }
+      
+      public function updateScale(isStageCustom:Boolean = false, stageCoordX:Number = 0, stageCoordY:Number = 0) : void
+      {
+         if(_data)
+         {
+            this.scale = LocalCoordManager.getScaleForStage(_data.id, isStageCustom, stageCoordX, stageCoordY);
+         }
+      }
       
       
       

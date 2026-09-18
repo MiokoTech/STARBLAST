@@ -61,6 +61,8 @@ package net.play5d.game.bvn.fighter
       
       private var _hity:Number = 0;
       
+      private var _hasHitWall:Boolean = false;
+      
       private var _shadowEffect:ShadowEffectView;
       
       private var _shadowContainer:Sprite;
@@ -70,6 +72,8 @@ package net.play5d.game.bvn.fighter
       public var shadowIng:Boolean = true;
       
       private var _pauseShadowBySuper:Boolean = false;
+      
+      private var _groundY:Number = NaN;
       
       public function FighterMC()
       {
@@ -116,12 +120,13 @@ package net.play5d.game.bvn.fighter
          this._mc.y = param1;
       }
       
-      public function initlize(param1:MovieClip, param2:FighterMain, param3:FighterMcCtrler) : void
+      public function initlize(mcObj:MovieClip, fighterMain:FighterMain, mcCtrler:FighterMcCtrler) : void
       {
-         this._mc = param1;
-         this._fighter = param2;
-         this._fighterDisplay = param2.getDisplay();
-         this._mcCtrler = param3;
+         this._mc = mcObj;
+         this._fighter = fighterMain;
+         this._fighterDisplay = fighterMain.getDisplay();
+         this._mcCtrler = mcCtrler;
+         this._groundY = NaN;
          this._shadowContainer = new Sprite();
          this._shadowEffects = new Dictionary();
          if(Boolean(this._mc) && Boolean(this._mc.parent))
@@ -129,6 +134,7 @@ package net.play5d.game.bvn.fighter
             this._mc.parent.addChildAt(this._shadowContainer,this._mc.parent.getChildIndex(this._mc));
          }
          this.startShadow(this._mc,0,0,0);
+         MCUtils.applyPixelArtStyle(this._mc);
       }
       
       public function destory() : void
@@ -162,7 +168,17 @@ package net.play5d.game.bvn.fighter
          this._fighter = null;
          this._fighterDisplay = null;
          this._undefinedFrames = null;
-         this._shadowEffects = null;
+         if(this._shadowEffects)
+         {
+            for each(var sView:ShadowEffectView in this._shadowEffects)
+            {
+               if(sView)
+               {
+                  sView.destory();
+               }
+            }
+            this._shadowEffects = null;
+         }
       }
       
       public function getChildByName(param1:String) : DisplayObject
@@ -172,7 +188,6 @@ package net.play5d.game.bvn.fighter
       
       public function renderAnimate() : void
       {
-         var _loc1_:ShadowEffectView = null;
          if(this._renderMainAnimate)
          {
             if(this._renderMainAnimateFrame > 0)
@@ -196,22 +211,39 @@ package net.play5d.game.bvn.fighter
          this.findHitArea();
          if(!this._pauseShadowBySuper)
          {
-            for each(_loc1_ in this._shadowEffects)
+            if(this._fighter)
             {
-               _loc1_.render();
-               if(this._fighter.isInAir)
+               if(!this._fighter.isInAir)
                {
-                  this._shadowContainer.alpha += (0 - this._shadowContainer.alpha) * 0.2;
-                  if(this._shadowContainer.alpha < 0.05)
-                  {
-                     this._shadowContainer.visible = false;
-                  }
+                  this._groundY = this._fighter.y;
+               }
+               else if(isNaN(this._groundY) || this._fighter.y > this._groundY)
+               {
+                  this._groundY = this._fighter.y;
+               }
+            }
+            var shadowView:ShadowEffectView = null;
+            for each(shadowView in this._shadowEffects)
+            {
+               if(shadowView)
+               {
+                  shadowView.groundY = this._groundY;
+                  shadowView.render();
+               }
+            }
+            if(this._shadowContainer)
+            {
+               if(this._fighter && this._fighter.isInAir)
+               {
+                  var jumpDist:Number = Math.max(0, this._groundY - this._fighter.y);
+                  var targetAirAlpha:Number = Math.max(0.18, 0.5 - (jumpDist / 600) * 0.32);
+                  this._shadowContainer.alpha += (targetAirAlpha - this._shadowContainer.alpha) * 0.25;
                }
                else
                {
-                  this._shadowContainer.visible = true;
-                  this._shadowContainer.alpha += (0.5 - this._shadowContainer.alpha) * 0.2;
+                  this._shadowContainer.alpha += (0.5 - this._shadowContainer.alpha) * 0.25;
                }
+               this._shadowContainer.visible = this._shadowContainer.alpha > 0.05;
             }
          }
          if(this._hurtFlyState != 0)
@@ -236,30 +268,30 @@ package net.play5d.game.bvn.fighter
          }
       }
       
-      public function startShadow(param1:DisplayObject, param2:int = 0, param3:int = 0, param4:int = 0) : void
+      public function startShadow(targetObj:DisplayObject, red:int = 0, green:int = 0, blue:int = 0) : void
       {
          this._pauseShadowBySuper = false;
-         var _loc5_:ShadowEffectView = this._shadowEffects[param1];
-         if(_loc5_)
+         var shadowView:ShadowEffectView = this._shadowEffects[targetObj];
+         if(shadowView)
          {
-            _loc5_.r = param2;
-            _loc5_.g = param3;
-            _loc5_.b = param4;
-            _loc5_.stopShadow = false;
+            shadowView.r = red;
+            shadowView.g = green;
+            shadowView.b = blue;
+            shadowView.stopShadow = false;
             return;
          }
-         _loc5_ = new ShadowEffectView(param1,param2,param3,param4);
-         _loc5_.onRemove = this.removeShadow;
-         _loc5_.container = this._shadowContainer;
-         this._shadowEffects[param1] = _loc5_;
+         shadowView = new ShadowEffectView(targetObj, red, green, blue);
+         shadowView.onRemove = this.removeShadow;
+         shadowView.container = this._shadowContainer;
+         this._shadowEffects[targetObj] = shadowView;
       }
       
       public function endShadow() : void
       {
-         var _loc1_:ShadowEffectView = this._shadowEffects[this._mc];
-         if(_loc1_)
+         var targetShadow:ShadowEffectView = this._shadowEffects[this._mc];
+         if(targetShadow)
          {
-            _loc1_.stopShadow = true;
+            targetShadow.stopShadow = true;
          }
          this.shadowIng = false;
       }
@@ -296,13 +328,13 @@ package net.play5d.game.bvn.fighter
          }
       }
       
-      private function removeShadow(param1:ShadowEffectView) : void
+      private function removeShadow(shadowView:ShadowEffectView) : void
       {
-         if(!this._shadowEffects)
+         if(!this._shadowEffects || !shadowView)
          {
             return;
          }
-         delete this._shadowEffects[param1.target];
+         delete this._shadowEffects[shadowView.target];
       }
       
       private function renderChildren() : void
@@ -348,6 +380,7 @@ package net.play5d.game.bvn.fighter
             }
             _loc3_++;
          }
+         MCUtils.applyPixelArtStyle(this._mc);
       }
       
       public function goFrame(param1:String, param2:Boolean = true, param3:int = 0, param4:Object = null, param5:Boolean = false) : void
@@ -536,13 +569,14 @@ package net.play5d.game.bvn.fighter
          this._hitAreaCache.cacheAreaByFrame(this._mc.currentFrame,_loc9_);
       }
       
-      public function playHurtFly(param1:Number, param2:Number, param3:Boolean = true) : void
+      public function playHurtFly(hitX:Number, hitY:Number, isPlayFlyAnimate:Boolean = true) : void
       {
-         if(param1 != 0)
+         this._hasHitWall = false;
+         if(hitX != 0)
          {
-            this._fighter.direct = param1 > 0 ? -1 : 1;
+            this._fighter.direct = hitX > 0 ? -1 : 1;
          }
-         if(param3)
+         if(isPlayFlyAnimate)
          {
             this.goFrame("被打",false,0,{
                "name":"击飞",
@@ -554,7 +588,7 @@ package net.play5d.game.bvn.fighter
          {
             this.goFrame("击飞",false);
          }
-         if(param2 > 5)
+         if(hitY > 5)
          {
             this._hurtFlyFrame = 0;
             this._isHeavyDownAttack = true;
@@ -564,12 +598,12 @@ package net.play5d.game.bvn.fighter
             this._isHeavyDownAttack = false;
             this._hurtFlyFrame = this._fighter.isInAir ? 0 : 15;
          }
-         this._fighter.setVelocity(param1,param2);
+         this._fighter.setVelocity(hitX,hitY);
          this._fighter.setDamping(0,0.5);
          this._hurtFlyState = 1;
          this._hurtYMin = this._fighter.y;
-         this._hitx = param1;
-         this._hity = param2;
+         this._hitx = hitX;
+         this._hity = hitY;
       }
       
       public function playHurtDown() : void
@@ -579,12 +613,18 @@ package net.play5d.game.bvn.fighter
             "delay":2
          });
          this._mcCtrler.effectCtrler.hitFloor(1,2);
+         this._fighter.setVecY(0);
+         this._fighter.setDampingY(0);
+         this._fighter.isApplyG = true;
          this._fighter.setDamping(2);
       }
       
       private function playHurtDown2() : void
       {
          this.goFrame("击飞_倒",false);
+         this._fighter.setVecY(0);
+         this._fighter.setDampingY(0);
+         this._fighter.isApplyG = true;
          this._hurtDownFrame = 15;
          this._hurtFlyState = 4;
          this._mcCtrler.touchFloor();
@@ -595,17 +635,30 @@ package net.play5d.game.bvn.fighter
       public function stopHurtFly() : void
       {
          this._hurtFlyState = 0;
+         this._hasHitWall = false;
       }
       
       private function renderHurtFly() : void
       {
-         var _loc1_:Number = NaN;
-         var _loc2_:* = NaN;
-         _loc1_ = NaN;
-         _loc2_ = NaN;
+         var yDiff:Number = NaN;
+         var vecY:Number = NaN;
          switch(this._hurtFlyState - 1)
          {
             case 0:
+               if(!this._hasHitWall && this._fighter.getIsTouchSide() && Math.abs(this._hitx) > 2)
+               {
+                  this._hasHitWall = true;
+                  this._mcCtrler.effectCtrler.hitWall(0,3);
+                  this._fighter.setVecX(0);
+                  this._fighter.setDamping(2,0.5);
+                  this._hurtFlyFrame = 0;
+                  if(!this._fighter.isInAir)
+                  {
+                     this.goFrame("击飞_落");
+                     this._hurtFlyState = 2;
+                     break;
+                  }
+               }
                if(--this._hurtFlyFrame <= 0 && !this._fighter.isInAir)
                {
                   this.goFrame("击飞_落");
@@ -625,46 +678,51 @@ package net.play5d.game.bvn.fighter
                {
                   this._hurtDownFrame = 30;
                   this.goFrame("击飞_倒",false);
+                  this._fighter.setVecY(0);
+                  this._fighter.setDampingY(0);
+                  this._fighter.isApplyG = true;
                   this._fighter.actionState = 23;
                   FighterEventDispatcher.dispatchEvent(this._fighter,"HURT_DOWN");
                   this._fighter.setDamping(4);
                   this._hurtFlyState = 4;
-                  _loc1_ = this._fighter.y - this._hurtYMin;
-                  _loc2_ = _loc1_ * 0.04 * (1 + this._hity * 0.1);
-                  if(_loc2_ < 2)
+                  yDiff = this._fighter.y - this._hurtYMin;
+                  vecY = yDiff * 0.04 * (1 + this._hity * 0.1);
+                  if(vecY < 2)
                   {
-                     _loc2_ = 2;
+                     vecY = 2;
                   }
-                  if(_loc2_ > 5)
+                  if(vecY > 5)
                   {
-                     _loc2_ = 5;
+                     vecY = 5;
                   }
-                  this._mcCtrler.effectCtrler.hitFloor(2,_loc2_);
+                  this._mcCtrler.effectCtrler.hitFloor(2,vecY);
                   break;
                }
                this.goFrame("击飞_弹",false);
-               _loc1_ = this._fighter.y - this._hurtYMin;
-               _loc2_ = _loc1_ / 25;
-               if(_loc2_ < 3)
+               yDiff = this._fighter.y - this._hurtYMin;
+               vecY = yDiff / 25;
+               if(vecY < 3)
                {
-                  _loc2_ = 3;
+                  vecY = 3;
                }
-               if(_loc2_ > 8)
+               if(vecY > 8)
                {
-                  _loc2_ = 8;
+                  vecY = 8;
                }
-               this._fighter.setVecY(-_loc2_);
+               this._fighter.setVecY(-vecY);
+               this._fighter.setDamping(0,0.5);
+               this._fighter.isApplyG = true;
                this._hurtFlyState = 3;
                this._fighter.actionState = 24;
-               if(_loc2_ < 0.5)
+               if(vecY < 0.5)
                {
-                  _loc2_ = 0.5;
+                  vecY = 0.5;
                }
-               if(_loc2_ > 3)
+               if(vecY > 3)
                {
-                  _loc2_ = 3;
+                  vecY = 3;
                }
-               this._mcCtrler.effectCtrler.hitFloor(0,_loc2_);
+               this._mcCtrler.effectCtrler.hitFloor(0,vecY);
                break;
             case 2:
                if(this._curFrameCount < 2)
@@ -673,9 +731,18 @@ package net.play5d.game.bvn.fighter
                }
                if(this._fighter.isInAir)
                {
+                  if(!this._hasHitWall && this._fighter.getIsTouchSide() && Math.abs(this._hitx) > 2)
+                  {
+                     this._hasHitWall = true;
+                     this._mcCtrler.effectCtrler.hitWall(1,2);
+                     this._fighter.setVecX(0);
+                  }
                   return;
                }
                this.goFrame("击飞_倒",false);
+               this._fighter.setVecY(0);
+               this._fighter.setDampingY(0);
+               this._fighter.isApplyG = true;
                this._fighter.setDamping(2);
                this._hurtDownFrame = 15;
                this._hurtFlyState = 4;

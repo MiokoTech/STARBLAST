@@ -1,82 +1,60 @@
 package net.play5d.game.bvn.views.effects
 {
    import flash.display.Bitmap;
+   import flash.display.BitmapData;
    import flash.display.DisplayObject;
+   import flash.display.DisplayObjectContainer;
+   import flash.display.MovieClip;
    import flash.display.Sprite;
    import flash.geom.ColorTransform;
+   import flash.geom.Matrix;
    import flash.geom.Rectangle;
    import net.play5d.game.bvn.ctrl.EffectCtrl;
-   import net.play5d.kyo.utils.KyoUtils;
    
    public class ShadowEffectView
    {
-      
       public var target:DisplayObject;
-      
       public var r:int = 0;
-      
       public var g:int = 0;
-      
       public var b:int = 0;
-      
       public var container:Sprite;
+      public var groundY:Number = NaN;
       
       private var _bps:Vector.<Bitmap> = new Vector.<Bitmap>();
-      
-      private var _alphaLose:Number = 0.1;
-      
       private var _alphaStart:Number = 0.8;
-      
-      private var _addBpGap:int = 1;
-      
-      private var _addBpFrame:int = 0;
-      
       public var stopShadow:Boolean;
-      
       public var isStaticShadow:Boolean = false;
-      
-      private var _staticBmp:Bitmap;
-      
       public var onRemove:Function;
       
-      public function ShadowEffectView(param1:DisplayObject, param2:int = 0, param3:int = 0, param4:int = 0)
+      public function ShadowEffectView(targetObj:DisplayObject, red:int = 0, green:int = 0, blue:int = 0)
       {
          super();
-         this.target = param1;
-         this.r = param2;
-         this.g = param3;
-         this.b = param4;
-         this._addBpFrame = 0;
+         this.target = targetObj;
+         this.r = red;
+         this.g = green;
+         this.b = blue;
       }
       
       public function destory() : void
       {
-         var _loc1_:int = 0;
-         var _loc2_:Bitmap = null;
          this.target = null;
-         while(_loc1_ < this._bps.length)
+         if(this._bps)
          {
-            _loc2_ = this._bps[_loc1_];
-            _loc2_.bitmapData.dispose();
-            try
+            while(this._bps.length > 0)
             {
-               this.container.removeChild(_loc2_);
+               this.removeBitmap(this._bps[0]);
             }
-            catch(error:Error)
-            {
-            }
-            _loc1_++;
+            this._bps = null;
          }
-         this._bps = null;
+         this.container = null;
+         this.onRemove = null;
       }
       
       public function render() : void
       {
-         var _loc2_:Bitmap = null;
-         var _loc1_:int = 0;
          if(!EffectCtrl.SHADOW_ENABLED)
          {
-            if(this._bps.length > 0)
+            if(this._bps && this._bps.length > 0)
             {
                while(this._bps.length > 0)
                {
@@ -87,13 +65,14 @@ package net.play5d.game.bvn.views.effects
          }
          if(this.stopShadow)
          {
-            if(this._bps.length <= 0)
+            if(!this._bps || this._bps.length <= 0)
             {
                this.removeSelf();
+               return;
             }
          }
          this.addShadowBp();
-         while(this._bps.length > 1)
+         while(this._bps && this._bps.length > 1)
          {
             this.removeBitmap(this._bps[0]);
          }
@@ -101,41 +80,172 @@ package net.play5d.game.bvn.views.effects
       
       private function addShadowBp() : void
       {
-         var _loc1_:ColorTransform = new ColorTransform();
-         _loc1_.redMultiplier = 0;
-         _loc1_.greenMultiplier = 0;
-         _loc1_.blueMultiplier = 0;
-         _loc1_.alphaMultiplier = 0.8;
-         var _loc2_:Rectangle = this.target.getBounds(this.target);
-         var _loc3_:Bitmap = KyoUtils.drawDisplay(this.target,true,true,0,_loc1_);
-         if(_loc3_ == null)
+         if(!this.target || !this.container)
          {
             return;
          }
-         _loc3_.alpha = this._alphaStart;
-         _loc3_.x = this.target.x + _loc2_.x * this.target.scaleX;
-         _loc3_.y = this.target.y + _loc2_.y * this.target.scaleY;
-         _loc3_.scaleX = this.target.scaleX;
-         _loc3_.scaleY = this.target.scaleY;
-         this.container.addChildAt(_loc3_,0);
-         this._bps.push(_loc3_);
+         
+         var hiddenList:Vector.<DisplayObject> = new Vector.<DisplayObject>();
+         var containerTarget:DisplayObjectContainer = this.target as DisplayObjectContainer;
+         if(containerTarget != null)
+         {
+            var numKids:int = containerTarget.numChildren;
+            for(var i:int = 0; i < numKids; i++)
+            {
+               var child:DisplayObject = containerTarget.getChildAt(i);
+               if(!child) continue;
+               var cname:String = child.name;
+               if(cname == "AImain" || cname.indexOf("atm") != -1)
+               {
+                  if(child.visible)
+                  {
+                     child.visible = false;
+                     hiddenList.push(child);
+                  }
+               }
+               else if(child is MovieClip && cname != "bdmn")
+               {
+                  var childMc:MovieClip = child as MovieClip;
+                  if(childMc.totalFrames >= 2)
+                  {
+                     if(childMc.visible)
+                     {
+                        childMc.visible = false;
+                        hiddenList.push(childMc);
+                     }
+                  }
+               }
+            }
+         }
+         
+         var bodyBounds:Rectangle = null;
+         if(containerTarget != null)
+         {
+            var bdmn:DisplayObject = null;
+            try { bdmn = containerTarget.getChildByName("bdmn"); } catch(e:Error) {}
+            if(bdmn != null)
+            {
+               bodyBounds = bdmn.getBounds(this.target);
+            }
+         }
+         if(bodyBounds == null || bodyBounds.isEmpty())
+         {
+            bodyBounds = this.target.getBounds(this.target);
+         }
+         if(bodyBounds == null || bodyBounds.isEmpty() || bodyBounds.width <= 0 || bodyBounds.height <= 0)
+         {
+            for each(var hc:DisplayObject in hiddenList)
+            {
+               hc.visible = true;
+            }
+            return;
+         }
+         
+         var captureBounds:Rectangle = bodyBounds.clone();
+         captureBounds.inflate(10, 4);
+         
+         var drawW:int = Math.ceil(captureBounds.width);
+         var drawH:int = Math.ceil(captureBounds.height);
+         if(drawW <= 0 || drawH <= 0)
+         {
+            for each(var hc2:DisplayObject in hiddenList)
+            {
+               hc2.visible = true;
+            }
+            return;
+         }
+         if(drawW > 400) drawW = 400;
+         if(drawH > 400) drawH = 400;
+         
+         var bData:BitmapData = new BitmapData(drawW, drawH, true, 0);
+         var drawMat:Matrix = new Matrix(1, 0, 0, 1, -captureBounds.x, -captureBounds.y);
+         
+         var ct:ColorTransform = new ColorTransform();
+         if(this.r == 0 && this.g == 0 && this.b == 0)
+         {
+            ct.redMultiplier = 0;
+            ct.greenMultiplier = 0;
+            ct.blueMultiplier = 0;
+            ct.alphaMultiplier = 0.85;
+         }
+         else
+         {
+            ct.redMultiplier = this.r / 255;
+            ct.greenMultiplier = this.g / 255;
+            ct.blueMultiplier = this.b / 255;
+            ct.alphaMultiplier = 0.85;
+         }
+         
+         try
+         {
+            bData.draw(this.target, drawMat, ct);
+         }
+         finally
+         {
+            for each(var restoreChild:DisplayObject in hiddenList)
+            {
+               restoreChild.visible = true;
+            }
+         }
+         
+         var shadowBmp:Bitmap = new Bitmap(bData);
+         shadowBmp.smoothing = true;
+         
+         var shadowMat:Matrix = new Matrix();
+         shadowMat.translate(captureBounds.x, captureBounds.y);
+         
+         var scaleFactorX:Number = this.target.scaleX;
+         var isFacingLeft:Boolean = scaleFactorX < 0;
+         var projScaleX:Number = scaleFactorX;
+         var projScaleY:Number = -0.32 * Math.abs(this.target.scaleY);
+         var skewX:Number = isFacingLeft ? 0.15 : -0.15;
+         
+         var floorY:Number = !isNaN(this.groundY) ? this.groundY : this.target.y;
+         var airHeight:Number = Math.max(0, floorY - this.target.y);
+         var airScaleFactor:Number = 1.0;
+         var airAlphaFactor:Number = 1.0;
+         if(airHeight > 0)
+         {
+            airScaleFactor = Math.max(0.4, 1.0 - airHeight / 600);
+            airAlphaFactor = Math.max(0.2, 1.0 - airHeight / 400);
+         }
+         
+         shadowMat.a = projScaleX * airScaleFactor;
+         shadowMat.b = 0;
+         shadowMat.c = skewX * Math.abs(projScaleX) * airScaleFactor;
+         shadowMat.d = projScaleY * airScaleFactor;
+         shadowMat.tx = this.target.x;
+         shadowMat.ty = floorY;
+         
+         shadowBmp.transform.matrix = shadowMat;
+         shadowBmp.alpha = this._alphaStart * airAlphaFactor;
+         
+         this.container.addChildAt(shadowBmp, 0);
+         this._bps.push(shadowBmp);
       }
       
-      private function removeBitmap(param1:Bitmap) : void
+      private function removeBitmap(bmp:Bitmap) : void
       {
-         var _loc2_:int = int(this._bps.indexOf(param1));
-         if(_loc2_ != -1)
+         if(!bmp) return;
+         var idx:int = int(this._bps.indexOf(bmp));
+         if(idx != -1)
          {
-            this._bps.splice(_loc2_,1);
+            this._bps.splice(idx, 1);
          }
          try
          {
-            this.container.removeChild(param1);
+            if(this.container && bmp.parent == this.container)
+            {
+               this.container.removeChild(bmp);
+            }
          }
          catch(e:Error)
          {
          }
-         param1.bitmapData.dispose();
+         if(bmp.bitmapData)
+         {
+            bmp.bitmapData.dispose();
+         }
       }
       
       private function removeSelf() : void
@@ -147,4 +257,3 @@ package net.play5d.game.bvn.views.effects
       }
    }
 }
-

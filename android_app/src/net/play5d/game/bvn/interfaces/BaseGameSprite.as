@@ -12,6 +12,7 @@ package net.play5d.game.bvn.interfaces
    import net.play5d.game.bvn.ctrl.GameRender;
    import net.play5d.game.bvn.data.TeamVO;
    import net.play5d.game.bvn.debug.Debugger;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    import net.play5d.game.bvn.fighter.models.HitVO;
    import net.play5d.kyo.utils.KyoUtils;
    import net.play5d.kyo.utils.UUID;
@@ -83,7 +84,7 @@ package net.play5d.game.bvn.interfaces
       
       private var _direct:int = 1;
       
-      private var _scale:Number = 1.3;
+      private var _scale:Number = 1.0;
       
       private var _frameFuncs:Array = [];
       
@@ -109,9 +110,12 @@ package net.play5d.game.bvn.interfaces
       {
          super();
          _mainMc = param1;
+         _scale = LocalCoordManager.getScale();
          if(_mainMc)
          {
             _area = _mainMc.getBounds(_mainMc);
+            _mainMc.scaleX = _direct * _scale;
+            _mainMc.scaleY = _scale;
          }
       }
       
@@ -178,7 +182,11 @@ package net.play5d.game.bvn.interfaces
       public function set scale(param1:Number) : void
       {
          _scale = param1;
-         _mainMc.scaleX = _mainMc.scaleY = _scale;
+         if(_mainMc)
+         {
+            _mainMc.scaleX = _direct * _scale;
+            _mainMc.scaleY = _scale;
+         }
       }
       
       public function get direct() : int
@@ -189,7 +197,11 @@ package net.play5d.game.bvn.interfaces
       public function set direct(param1:int) : void
       {
          _direct = param1;
-         _mainMc.scaleX = _direct * _scale;
+         if(_mainMc)
+         {
+            _mainMc.scaleX = _direct * _scale;
+            _mainMc.scaleY = _scale;
+         }
       }
       
       public function get team() : TeamVO
@@ -411,6 +423,10 @@ package net.play5d.game.bvn.interfaces
             if(_damping.y > 0)
             {
                _velocity.y = KyoUtils.num_wake(_velocity.y,_damping.y * _dampingRate);
+            }
+            else if(_velocity.y < 0)
+            {
+               _velocity.y = KyoUtils.num_wake(_velocity.y,0.5 * _dampingRate);
             }
          }
          if(_velocity2.x != 0)

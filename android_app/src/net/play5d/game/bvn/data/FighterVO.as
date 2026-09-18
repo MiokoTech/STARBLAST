@@ -1,5 +1,7 @@
 package net.play5d.game.bvn.data
 {
+   import flash.geom.Point;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    import net.play5d.kyo.utils.KyoRandom;
    
    public class FighterVO
@@ -39,7 +41,9 @@ package net.play5d.game.bvn.data
       
       public var aiFile:String;
       
-      private var _cloneKey:Array = ["id","name","comicType","fileUrl","startFrame","faceUrl","contactFriends","contactEnemys","says","faceBigUrl","faceBarUrl","bgm","bgmRate","faceWinUrl","aiLevelOverride","aiFile"];
+      public var localcoord:Point;
+      
+      private var _cloneKey:Array = ["id","name","comicType","fileUrl","startFrame","faceUrl","contactFriends","contactEnemys","says","faceBigUrl","faceBarUrl","bgm","bgmRate","faceWinUrl","aiLevelOverride","aiFile","localcoord"];
       
       public function FighterVO()
       {
@@ -69,6 +73,14 @@ package net.play5d.game.bvn.data
          else if(xml.@ai.length() > 0)
          {
             aiFile = xml.@ai;
+         }
+         if(xml.@localcoord.length() > 0)
+         {
+            localcoord = LocalCoordManager.parseCoord(xml.@localcoord);
+            if(localcoord && id)
+            {
+               LocalCoordManager.register(id, localcoord.x, localcoord.y);
+            }
          }
          says = [];
          for each(var sayXml:XML in xml.says.say_item)

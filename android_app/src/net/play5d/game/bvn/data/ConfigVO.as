@@ -3,6 +3,7 @@ package net.play5d.game.bvn.data
    import net.play5d.game.bvn.GameConfig;
    import net.play5d.game.bvn.ctrl.EffectCtrl;
    import net.play5d.game.bvn.ctrl.SoundCtrl;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    import net.play5d.game.bvn.interfaces.GameInterface;
    import net.play5d.game.bvn.interfaces.IExtendConfig;
    import net.play5d.kyo.utils.KyoUtils;
@@ -46,6 +47,8 @@ package net.play5d.game.bvn.data
       public var legacyAssetScaleMode:int = GameConfig.LEGACY_SCALE_MODE_AUTO;
 
       public var pixelStyleMode:Boolean = true;
+
+      public var spriteStyle:int = GameConfig.SPRITE_STYLE_LOCALCOORD;
 
       public var shadowEnabled:Boolean = true;
 
@@ -168,6 +171,11 @@ package net.play5d.game.bvn.data
                   break;
                case "shadowEnabled":
                   GameConfig.SHADOW_ENABLED = Boolean(shadowEnabled);
+                  break;
+               case "spriteStyle":
+                  GameConfig.SPRITE_STYLE = int(spriteStyle);
+                  LocalCoordManager.spriteStyle = int(spriteStyle);
+                  break;
             }
             return;
          }
@@ -203,14 +211,20 @@ package net.play5d.game.bvn.data
          {
             cameraStyle = GameConfig.CAMERA_STYLE_BVN;
          }
-         gameplayStyle = GameConfig.GAMEPLAY_STYLE_BVN;
-         GameConfig.PIXEL_STYLE_MODE = pixelStyleMode;
-         GameConfig.SHADOW_ENABLED = shadowEnabled;
-         GameConfig.LEGACY_ASSET_SCALE_MODE = legacyAssetScaleMode;
-         GameConfig.CAMERA_STYLE = cameraStyle;
-         GameConfig.QI_GAIN_RATE = qiGainRate;
-         GameConfig.BISHA_ENERGY_MAX = bishaEnergyMax;
-         GameConfig.applyGameplayStyle(gameplayStyle);
+          spriteStyle = int(spriteStyle);
+          if(spriteStyle < GameConfig.SPRITE_STYLE_LOCALCOORD || spriteStyle > GameConfig.SPRITE_STYLE_ORIGINAL)
+          {
+             spriteStyle = GameConfig.SPRITE_STYLE_LOCALCOORD;
+          }
+          GameConfig.SPRITE_STYLE = spriteStyle;
+          LocalCoordManager.spriteStyle = spriteStyle;
+          GameConfig.PIXEL_STYLE_MODE = pixelStyleMode;
+          GameConfig.SHADOW_ENABLED = shadowEnabled;
+          GameConfig.LEGACY_ASSET_SCALE_MODE = legacyAssetScaleMode;
+          GameConfig.CAMERA_STYLE = cameraStyle;
+          GameConfig.QI_GAIN_RATE = qiGainRate;
+          GameConfig.BISHA_ENERGY_MAX = bishaEnergyMax;
+          GameConfig.applyGameplayStyle(gameplayStyle);
          switch(quality)
          {
             case "low":

@@ -637,6 +637,22 @@ package net.play5d.game.bvn.state
          return _itemObj[param1 + "," + param2];
       }
 
+      private function getFighterItemById(fighterId:String) : SelectFighterItem
+      {
+         if(!_itemObj || !fighterId)
+         {
+            return null;
+         }
+         for each(var item:SelectFighterItem in _itemObj)
+         {
+            if(item && item.fighterData && item.fighterData.id == fighterId)
+            {
+               return item;
+            }
+         }
+         return null;
+      }
+
       private function initSelecter() : void
       {
          GameInputer.enabled = true;
@@ -1267,7 +1283,7 @@ package net.play5d.game.bvn.state
                SoundCtrl.I.sndConfrim();
                return;
             }
-            if(GameInputer.dash(inputType,1))
+            if(GameInputer.dash(inputType,1) || GameInputer.back(1))
             {
                cancelP1Select();
                return;
@@ -1303,7 +1319,7 @@ package net.play5d.game.bvn.state
                SoundCtrl.I.sndConfrim();
                return;
             }
-            if(GameInputer.dash(inputType,1))
+            if(GameInputer.dash(inputType,1) || GameInputer.back(1))
             {
                cancelP2Select();
                return;
@@ -1328,7 +1344,7 @@ package net.play5d.game.bvn.state
                SoundCtrl.I.sndConfrim();
                return;
             }
-            if(GameInputer.dash(mapInputType,1))
+            if(GameInputer.dash(mapInputType,1) || GameInputer.back(1))
             {
                cancelMapSelect();
                return;
@@ -1603,7 +1619,11 @@ package net.play5d.game.bvn.state
             _fighterListUI.addChild(_p2Slt.ui);
             _p2Slt.enabled = true;
             _p2Slt.cancelSelect();
-            var itemP2:SelectFighterItem = getFighterItem(_p2Slt.x, _p2Slt.y);
+            var itemP2:SelectFighterItem = getFighterItemById(_p2Slt.lastCancelledFighterId);
+            if(!itemP2)
+            {
+               itemP2 = getFighterItem(_p2Slt.x, _p2Slt.y);
+            }
             if(itemP2)
             {
                moveToSelectFighter(_p2Slt, itemP2);
@@ -1614,7 +1634,11 @@ package net.play5d.game.bvn.state
             _fighterListUI.addChild(_p1Slt.ui);
             _p1Slt.enabled = true;
             _p1Slt.cancelSelect();
-            var itemP1:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+            var itemP1:SelectFighterItem = getFighterItemById(_p1Slt.lastCancelledFighterId);
+            if(!itemP1)
+            {
+               itemP1 = getFighterItem(_p1Slt.x, _p1Slt.y);
+            }
             if(itemP1)
             {
                moveToSelectFighter(_p1Slt, itemP1);
@@ -1647,7 +1671,11 @@ package net.play5d.game.bvn.state
                _fighterListUI.addChild(_p1Slt.ui);
                _p1Slt.enabled = true;
                _p1Slt.cancelSelect();
-               var curItemP1Assist:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+               var curItemP1Assist:SelectFighterItem = getFighterItemById(_p1Slt.lastCancelledFighterId);
+               if(!curItemP1Assist)
+               {
+                  curItemP1Assist = getFighterItem(_p1Slt.x, _p1Slt.y);
+               }
                if(curItemP1Assist)
                {
                   moveToSelectFighter(_p1Slt, curItemP1Assist);
@@ -1662,7 +1690,11 @@ package net.play5d.game.bvn.state
          if(_p2Slt.selectTimes > 0)
          {
             _p2Slt.cancelSelect();
-            var curItemP2:SelectFighterItem = getFighterItem(_p2Slt.x, _p2Slt.y);
+            var curItemP2:SelectFighterItem = getFighterItemById(_p2Slt.lastCancelledFighterId);
+            if(!curItemP2)
+            {
+               curItemP2 = getFighterItem(_p2Slt.x, _p2Slt.y);
+            }
             if(curItemP2)
             {
                moveToSelectFighter(_p2Slt, curItemP2);
@@ -1683,7 +1715,11 @@ package net.play5d.game.bvn.state
             _fighterListUI.addChild(_p1Slt.ui);
             _p1Slt.enabled = true;
             _p1Slt.cancelSelect();
-            var curItemP1:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+            var curItemP1:SelectFighterItem = getFighterItemById(_p1Slt.lastCancelledFighterId);
+            if(!curItemP1)
+            {
+               curItemP1 = getFighterItem(_p1Slt.x, _p1Slt.y);
+            }
             if(curItemP1)
             {
                moveToSelectFighter(_p1Slt, curItemP1);
@@ -1703,7 +1739,8 @@ package net.play5d.game.bvn.state
       {
          if(!_p1Slt)
          {
-            MainGame.I.goMenu();
+            GameUI.confrim('BACK TITLE?', '返回到主菜单？', MainGame.I.goMenu);
+            GameEvent.dispatchEvent(GameEvent.CONFRIM_BACK_MENU);
             return;
          }
 
@@ -1731,7 +1768,11 @@ package net.play5d.game.bvn.state
                   _fighterListUI.addChild(_p2Slt.ui);
                   _p2Slt.enabled = true;
                   _p2Slt.cancelSelect();
-                  var itemP2Char:SelectFighterItem = getFighterItem(_p2Slt.x, _p2Slt.y);
+                  var itemP2Char:SelectFighterItem = getFighterItemById(_p2Slt.lastCancelledFighterId);
+                  if(!itemP2Char)
+                  {
+                     itemP2Char = getFighterItem(_p2Slt.x, _p2Slt.y);
+                  }
                   if(itemP2Char)
                   {
                      moveToSelectFighter(_p2Slt, itemP2Char);
@@ -1746,7 +1787,11 @@ package net.play5d.game.bvn.state
                _fighterListUI.addChild(_p1Slt.ui);
                _p1Slt.enabled = true;
                _p1Slt.cancelSelect();
-               var itemP1Char:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+               var itemP1Char:SelectFighterItem = getFighterItemById(_p1Slt.lastCancelledFighterId);
+               if(!itemP1Char)
+               {
+                  itemP1Char = getFighterItem(_p1Slt.x, _p1Slt.y);
+               }
                if(itemP1Char)
                {
                   moveToSelectFighter(_p1Slt, itemP1Char);
@@ -1761,7 +1806,11 @@ package net.play5d.game.bvn.state
          if(_p1Slt.selectTimes > 0)
          {
             _p1Slt.cancelSelect();
-            var curItemP1Fighter:SelectFighterItem = getFighterItem(_p1Slt.x, _p1Slt.y);
+            var curItemP1Fighter:SelectFighterItem = getFighterItemById(_p1Slt.lastCancelledFighterId);
+            if(!curItemP1Fighter)
+            {
+               curItemP1Fighter = getFighterItem(_p1Slt.x, _p1Slt.y);
+            }
             if(curItemP1Fighter)
             {
                moveToSelectFighter(_p1Slt, curItemP1Fighter);
@@ -1771,7 +1820,8 @@ package net.play5d.game.bvn.state
          }
 
          SoundCtrl.I.sndSelect();
-         MainGame.I.goMenu();
+         GameUI.confrim('BACK TITLE?', '返回到主菜单？', MainGame.I.goMenu);
+         GameEvent.dispatchEvent(GameEvent.CONFRIM_BACK_MENU);
       }
       
       private function startAcradeGame() : void

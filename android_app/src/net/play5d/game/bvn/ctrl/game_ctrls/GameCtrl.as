@@ -430,6 +430,13 @@ package net.play5d.game.bvn.ctrl.game_ctrls
          {
             param2 = 1;
          }
+          if(gameState && gameState.getMap())
+          {
+             var currentMap:MapMain = gameState.getMap();
+             var scX:Number = (currentMap && currentMap.stageCoord) ? currentMap.stageCoord.x : 640;
+             var scY:Number = (currentMap && currentMap.stageCoord) ? currentMap.stageCoord.y : 360;
+             param1.updateScale(currentMap.isJSONMap, scX, scY);
+          }
          param1.initlize();
          param1.setActionCtrl(_loc3_);
          addGameSprite(param2,param1);

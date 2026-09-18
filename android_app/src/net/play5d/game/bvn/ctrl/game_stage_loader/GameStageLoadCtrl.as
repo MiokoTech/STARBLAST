@@ -13,6 +13,9 @@ package net.play5d.game.bvn.ctrl.game_stage_loader
    import net.play5d.game.bvn.data.FighterVO;
    import net.play5d.game.bvn.data.MapModel;
    import net.play5d.game.bvn.data.MapVO;
+   import flash.display.Bitmap;
+   import net.play5d.game.bvn.ctrl.AssetManager;
+   import net.play5d.game.bvn.map.MapMain;
    
    public class GameStageLoadCtrl extends EventDispatcher
    {
@@ -142,7 +145,7 @@ package net.play5d.game.bvn.ctrl.game_stage_loader
          return _loc10_;
       }
       
-      public function getMapMc(param1:String) : MovieClip
+      public function getMapMc(param1:String) : *
       {
          return _mapCache[param1];
       }
@@ -310,10 +313,131 @@ package net.play5d.game.bvn.ctrl.game_stage_loader
             {
                onLoadError(param1);
             };
+            
+            if(lv.url && lv.url.indexOf(".json") != -1)
+            {
+               loadJSONStage(lv.url, succBack, loadFail);
+               return;
+            }
             GameLoader.loadSWF(lv.url,loadSucc,loadFail,onLoadProcess);
          };
          _loadingType = 0;
          loadAssets(maps,load,callback);
+      }
+      
+      private function loadJSONStage(jsonUrl:String, succBack:Function, failBack:Function) : void
+      {
+         var baseDir:String = "";
+         var lastSlash:int = Math.max(jsonUrl.lastIndexOf("/"), jsonUrl.lastIndexOf("\\"));
+         if(lastSlash != -1)
+         {
+            baseDir = jsonUrl.substring(0, lastSlash + 1);
+         }
+         
+         AssetManager.I.loadJSON(jsonUrl, function(stageConfig:Object):void
+         {
+            if(!stageConfig || !stageConfig.layers)
+            {
+               failBack("Format stage JSON tidak valid");
+               return;
+            }
+            
+            var layers:Array = stageConfig.layers as Array;
+            var pendingImages:Array = [];
+            var bitmapCache:Object = {};
+            
+            for each(var layer:Object in layers)
+            {
+               if(layer && layer.img_ref)
+               {
+                  if(pendingImages.indexOf(layer.img_ref) == -1)
+                  {
+                     pendingImages.push(layer.img_ref);
+                  }
+               }
+            }
+            
+            if(stageConfig.actions)
+            {
+               for(var actionId:String in stageConfig.actions)
+               {
+                  var actionFrames:Array = stageConfig.actions[actionId] as Array;
+                  if(actionFrames)
+                  {
+                     for each(var frameObj:Object in actionFrames)
+                     {
+                        if(frameObj && frameObj.img_ref)
+                        {
+                           if(pendingImages.indexOf(frameObj.img_ref) == -1)
+                           {
+                              pendingImages.push(frameObj.img_ref);
+                           }
+                        }
+                     }
+                  }
+               }
+            }
+            
+            if(pendingImages.length == 0)
+            {
+               var emptyMap:MapMain = new MapMain();
+               emptyMap.initByJSON(stageConfig, bitmapCache);
+               _mapCache[jsonUrl] = emptyMap;
+               succBack();
+               return;
+            }
+            
+            var loadedCount:int = 0;
+            var totalCount:int = pendingImages.length;
+            var maxConcurrent:int = 6;
+            var activeWorkers:int = 0;
+            var queueIndex:int = 0;
+            
+            var spawnWorker:* = function():void
+            {
+               while(activeWorkers < maxConcurrent && queueIndex < pendingImages.length)
+               {
+                  var imgRef:String = pendingImages[queueIndex++];
+                  activeWorkers++;
+                  
+                  (function(ref:String):void
+                  {
+                     var fullImgUrl:String = baseDir + ref;
+                     AssetManager.I.loadBitmap(fullImgUrl, function(bmp:Bitmap):void
+                     {
+                        bitmapCache[ref] = bmp;
+                        loadedCount++;
+                        activeWorkers--;
+                        onLoadProcess(loadedCount / totalCount);
+                        checkFinish();
+                     }, function():void
+                     {
+                        loadedCount++;
+                        activeWorkers--;
+                        checkFinish();
+                     });
+                  })(imgRef);
+               }
+            };
+            
+            var checkFinish:* = function():void
+            {
+               if(loadedCount >= totalCount)
+               {
+                  var mapInstance:MapMain = new MapMain();
+                  mapInstance.initByJSON(stageConfig, bitmapCache);
+                  _mapCache[jsonUrl] = mapInstance;
+                  succBack();
+                  return;
+               }
+               spawnWorker();
+            };
+            
+            spawnWorker();
+         }, function():void
+         {
+            failBack("Gagal memuat file stage JSON: " + jsonUrl);
+         });
       }
       
       private function loadFighters(param1:Vector.<LoadAssetVO>, param2:Function) : void

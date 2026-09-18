@@ -6,6 +6,7 @@ package net.play5d.game.bvn.views.effects
    import net.play5d.game.bvn.ctrl.SoundCtrl;
    import net.play5d.game.bvn.data.BitmapDataCacheVO;
    import net.play5d.game.bvn.data.EffectVO;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    import net.play5d.game.bvn.interfaces.IGameSprite;
    import net.play5d.kyo.utils.KyoMath;
    
@@ -70,7 +71,16 @@ package net.play5d.game.bvn.views.effects
          _orgX = param1;
          _orgY = param2;
          _direct = _rotation != 0 ? 1 : param3;
-         display.scaleX = _direct;
+         var effScale:Number = 1.0;
+         if(LocalCoordManager.isLocalCoordMode())
+         {
+            if(!_data || _data.className != "kobg_effect_mc")
+            {
+               effScale = LocalCoordManager.getScale();
+            }
+         }
+         display.scaleX = _direct * effScale;
+         display.scaleY = effScale;
          _curFrame = 0;
          if(_data.randRotate)
          {
@@ -116,7 +126,9 @@ package net.play5d.game.bvn.views.effects
       {
          _rotation = Math.random() * 360;
          display.rotation = _rotation;
-         display.scaleX = 1;
+         var effScale:Number = LocalCoordManager.getScale();
+         display.scaleX = effScale;
+         display.scaleY = effScale;
       }
       
       public function render() : void
@@ -170,27 +182,28 @@ package net.play5d.game.bvn.views.effects
       
       private function renderDisplay() : void
       {
-         var _loc2_:Number = NaN;
-         var _loc3_:Point = null;
-         var _loc1_:BitmapDataCacheVO = _bitmapDatas[_curFrame];
-         if(_loc1_ == null)
+         var rad:Number = NaN;
+         var offsetPt:Point = null;
+         var cacheVO:BitmapDataCacheVO = _bitmapDatas[_curFrame];
+         if(cacheVO == null)
          {
             display.bitmapData = null;
          }
          else
          {
-            display.bitmapData = _loc1_.bitmapData;
+            display.bitmapData = cacheVO.bitmapData;
+            var effScale:Number = LocalCoordManager.getScale();
             if(_rotation != 0)
             {
-               _loc2_ = KyoMath.asRadians(_rotation);
-               _loc3_ = KyoMath.getPointByRadians(new Point(_loc1_.offsetX,_loc1_.offsetY),_loc2_);
-               display.x = _orgX + _loc3_.x;
-               display.y = _orgY + _loc3_.y;
+               rad = KyoMath.asRadians(_rotation);
+               offsetPt = KyoMath.getPointByRadians(new Point(cacheVO.offsetX * effScale, cacheVO.offsetY * effScale), rad);
+               display.x = _orgX + offsetPt.x;
+               display.y = _orgY + offsetPt.y;
             }
             else
             {
-               display.x = _orgX + _loc1_.offsetX * _direct;
-               display.y = _orgY + _loc1_.offsetY;
+               display.x = _orgX + cacheVO.offsetX * _direct * effScale;
+               display.y = _orgY + cacheVO.offsetY * effScale;
             }
          }
       }

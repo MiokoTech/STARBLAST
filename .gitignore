@@ -1,11 +1,10 @@
 scripts/
-skills/
 release_app/
-other/
 tools/mugen
 tooos/menu
 tools/__pycache__/
 tools/modules/__pycache__/
 
+Ikemen-GO
 scratch/
 *.orig

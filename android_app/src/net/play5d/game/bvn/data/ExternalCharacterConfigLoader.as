@@ -3,6 +3,8 @@ package net.play5d.game.bvn.data
    import flash.filesystem.File;
    import flash.filesystem.FileMode;
    import flash.filesystem.FileStream;
+   import flash.geom.Point;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    
    public class ExternalCharacterConfigLoader
    {
@@ -472,6 +474,30 @@ package net.play5d.game.bvn.data
          if(customAiPath && customAiPath.length > 0)
          {
             fighterData.aiFile = resolveCharacterAssetPath(customAiPath,characterFolderName,null);
+         }
+         var rawLocalCoord:* = characterConfig.hasOwnProperty("localcoord") ? characterConfig["localcoord"] : (characterConfig.hasOwnProperty("local_coord") ? characterConfig["local_coord"] : null);
+         if(rawLocalCoord)
+         {
+            var parsedPoint:Point = null;
+            if(rawLocalCoord is Array && (rawLocalCoord as Array).length >= 2)
+            {
+               var arrCoord:Array = rawLocalCoord as Array;
+               var coordXVal:Number = Number(arrCoord[0]);
+               var coordYVal:Number = Number(arrCoord[1]);
+               if(coordXVal > 0 && coordYVal > 0)
+               {
+                  parsedPoint = new Point(coordXVal, coordYVal);
+               }
+            }
+            else if(rawLocalCoord is String)
+            {
+               parsedPoint = LocalCoordManager.parseCoord(String(rawLocalCoord));
+            }
+            if(parsedPoint)
+            {
+               fighterData.localcoord = parsedPoint;
+               LocalCoordManager.register(fighterID, parsedPoint.x, parsedPoint.y);
+            }
          }
          return fighterData;
       }

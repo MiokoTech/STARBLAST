@@ -16,11 +16,33 @@ package net.play5d.game.bvn.fighter
    
    public class Assister extends BaseGameSprite
    {
-      public var onRemove:Function;
+      private var _data:FighterVO;
       
-      public var data:FighterVO;
+      public function get data() : FighterVO
+      {
+         return _data;
+      }
+      
+      public function set data(val:FighterVO) : void
+      {
+         _data = val;
+         if(_data)
+         {
+            this.scale = LocalCoordManager.getScale(_data.id);
+         }
+      }
+      
+      public function updateScale(isStageCustom:Boolean = false, stageCoordX:Number = 0, stageCoordY:Number = 0) : void
+      {
+         if(_data)
+         {
+            this.scale = LocalCoordManager.getScaleForStage(_data.id, isStageCustom, stageCoordX, stageCoordY);
+         }
+      }
       
       public var isAttacking:Boolean;
+      
+      public var onRemove:Function;
       
       private var _hitAreaCache:McAreaCacher = new McAreaCacher("hit");
       
@@ -225,31 +247,32 @@ package net.play5d.game.bvn.fighter
          return _loc2_;
       }
       
-      private function getCurrentRect(param1:Rectangle, param2:String = null) : Rectangle
+      private function getCurrentRect(rawRect:Rectangle, cacheKey:String = null) : Rectangle
       {
-         var _loc3_:Rectangle = null;
-         if(param2 == null)
+         var targetRect:Rectangle = null;
+         if(cacheKey == null)
          {
-            _loc3_ = new Rectangle();
+            targetRect = new Rectangle();
          }
-         else if(_rectCache[param2])
+         else if(_rectCache[cacheKey])
          {
-            _loc3_ = _rectCache[param2];
+            targetRect = _rectCache[cacheKey];
          }
          else
          {
-            _loc3_ = new Rectangle();
-            _rectCache[param2] = _loc3_;
+            targetRect = new Rectangle();
+            _rectCache[cacheKey] = targetRect;
          }
-         _loc3_.x = param1.x * direct + _x;
+         var sc:Number = scale;
+         targetRect.x = (rawRect.x * direct) * sc + _x;
          if(direct < 0)
          {
-            _loc3_.x -= param1.width;
+            targetRect.x -= rawRect.width * sc;
          }
-         _loc3_.y = param1.y + _y;
-         _loc3_.width = param1.width;
-         _loc3_.height = param1.height;
-         return _loc3_;
+         targetRect.y = rawRect.y * sc + _y;
+         targetRect.width = rawRect.width * sc;
+         targetRect.height = rawRect.height * sc;
+         return targetRect;
       }
       
       private function findHitArea() : void

@@ -154,19 +154,27 @@ package net.play5d.game.bvn.ui.select
          }
       }
 
+      public function removeFighterAt(index:int) : void
+      {
+         if(index >= 0 && index < _circleSlots.length)
+         {
+            var curSlot:CircleSlotUI = _circleSlots[index];
+            if(curSlot)
+            {
+               curSlot.setFighter(null);
+            }
+            if(_pickedCount > index)
+            {
+               _pickedCount = index;
+            }
+         }
+      }
+
       public function removeLastFighter() : void
       {
          if(_pickedCount > 0 && _circleSlots.length > 0)
          {
-            _pickedCount--;
-            if(_pickedCount < _circleSlots.length)
-            {
-               var curSlot:CircleSlotUI = _circleSlots[_pickedCount];
-               if(curSlot)
-               {
-                  curSlot.setFighter(null);
-               }
-            }
+            removeFighterAt(_pickedCount - 1);
          }
       }
 

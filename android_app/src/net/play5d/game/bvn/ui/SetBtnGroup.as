@@ -254,10 +254,10 @@ package net.play5d.game.bvn.ui
                   },
                   { label: "Sprite Style", cn: "Display", cn_y: 222,
                      options: [
-                        { label: "Pixel", cn: "Pixel", cn_y: 255, value: true },
-                        { label: "Smooth", cn: "Smooth", cn_y: 255, value: false }
+                        { label: "Localcoord", cn: "Localcoord", cn_y: 255, value: 0 },
+                        { label: "Original", cn: "Original", cn_y: 255, value: 1 }
                      ],
-                     optoinKey:"pixelStyleMode"
+                     optoinKey:"spriteStyle"
                   },
                   { label: "Character Shadow", cn: "Display", cn_y: 222,
                      options: [
@@ -543,6 +543,11 @@ package net.play5d.game.bvn.ui
          } else {
             btn.addEventListener(SetBtnEvent.SELECT, onSelect);
          }
+         btn.addEventListener(MouseEvent.CLICK, function(e:MouseEvent):void {
+            if (!keyEnable) return;
+            setArrowIndex(_btns.indexOf(btn));
+            btn.select();
+         });
 
          _btns.push(btn);
          return btn;
@@ -557,6 +562,7 @@ package net.play5d.game.bvn.ui
       public function setArrowIndex(id:int, sound:Boolean = true, isScroll:Boolean = true) : void
       {
          if (_arrowIndex == id) return;
+         if (!_btns || _btns.length < 1) return;
          if (id < 0) {
             if (_btnDisplayOffset > 0) {
                _btnDisplayOffset--;
@@ -574,6 +580,9 @@ package net.play5d.game.bvn.ui
             } else {
                id = _btns.length - 1;
             }
+         }
+         if (id >= _btns.length) {
+            id = _btns.length - 1;
          }
 
          var btn:SetBtn = _btns[id];
@@ -648,7 +657,7 @@ package net.play5d.game.bvn.ui
                btn.nextOption();
             }
          }
-         if(GameInputer.jump(gameInputType,1))
+         if(GameInputer.jump(gameInputType,1) || GameInputer.select(gameInputType,1) || GameInputer.attack(gameInputType,1))
          {
             btn.select();
          }

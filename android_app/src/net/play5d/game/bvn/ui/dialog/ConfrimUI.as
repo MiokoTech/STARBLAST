@@ -8,8 +8,9 @@ package net.play5d.game.bvn.ui.dialog
    import net.play5d.game.bvn.events.SetBtnEvent;
    import net.play5d.game.bvn.ui.GameUI;
    import net.play5d.game.bvn.ui.SetBtnGroup;
+   import net.play5d.game.bvn.ctrl.GameRender;
+   import net.play5d.game.bvn.input.GameInputer;
    import net.play5d.game.bvn.ui.UIUtils;
-   import net.play5d.game.bvn.ui.select.SelecterItemUI;
    import net.play5d.game.bvn.utils.BtnUtils;
    import net.play5d.game.bvn.utils.ResUtils;
    import net.play5d.kyo.display.bitmap.BitmapFontText;
@@ -21,7 +22,6 @@ package net.play5d.game.bvn.ui.dialog
       private var _ui:Sprite;
       private var _old_cnTxt:TextField;
       private var _enTxt:BitmapFontText;
-      private var _p1Slt:SelecterItemUI;
       private var _btnGroup:SetBtnGroup;
       
       public function ConfrimUI()
@@ -35,6 +35,7 @@ package net.play5d.game.bvn.ui.dialog
       override protected function onDestory() : void
       {
          super.onDestory();
+         GameRender.remove(render, this);
          if(_cnTxt)
          {
             _cnTxt.destory();
@@ -78,6 +79,7 @@ package net.play5d.game.bvn.ui.dialog
             _loc2_.addChild(_old_cnTxt);
          }
          _btnGroup = new SetBtnGroup();
+         _btnGroup._isSubMenu = true;
          _btnGroup.startX = _btnGroup.startY = 0;
          _btnGroup.direct = 0;
          _btnGroup.gap = 200;
@@ -97,6 +99,29 @@ package net.play5d.game.bvn.ui.dialog
          TweenLite.to(_loc2_,0.2,{"y":_loc1_});
       }
       
+      override protected function onShow() : void
+      {
+         super.onShow();
+         GameRender.add(render, this);
+         GameInputer.focus();
+         GameInputer.enabled = true;
+      }
+
+      private function render() : void
+      {
+         if(_btnGroup)
+         {
+            _btnGroup.render();
+         }
+         if(GameInputer.back(1) || GameInputer.dash("MENU", 1))
+         {
+            if(noBack != null)
+            {
+               noBack();
+            }
+         }
+      }
+
       private function selectHandler(param1:SetBtnEvent) : void
       {
          switch(param1.selectedLabel)
@@ -111,8 +136,8 @@ package net.play5d.game.bvn.ui.dialog
                if(noBack != null)
                {
                   noBack();
-                  _p1Slt.enabled = true;
                }
+               break;
          }
       }
       

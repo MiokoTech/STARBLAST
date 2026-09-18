@@ -5,6 +5,8 @@ package net.play5d.game.bvn.ui
    import flash.events.Event;
    import flash.utils.setTimeout;
    import net.play5d.game.bvn.GameConfig;
+   import net.play5d.game.bvn.ctrl.GameRender;
+   import net.play5d.game.bvn.input.GameInputer;
    
    public class MoveListSp extends Sprite
    {
@@ -24,6 +26,7 @@ package net.play5d.game.bvn.ui
          _pic.height = GameConfig.GAME_SIZE.y;
          addChild(_pic);
          _btns = new SetBtnGroup();
+         _btns._isSubMenu = true;
          _btns.setBtnData([{
             "label":"BACK",
             "cn":"返回"
@@ -36,6 +39,7 @@ package net.play5d.game.bvn.ui
       
       public function destory() : void
       {
+         GameRender.remove(render, this);
          if(_btns)
          {
             _btns.removeEventListener("SELECT",onSelect);
@@ -52,6 +56,9 @@ package net.play5d.game.bvn.ui
       public function show() : void
       {
          this.visible = true;
+         GameRender.add(render, this);
+         GameInputer.focus();
+         GameInputer.enabled = true;
          setTimeout(function():void
          {
             _btns.keyEnable = true;
@@ -62,6 +69,23 @@ package net.play5d.game.bvn.ui
       {
          _btns.keyEnable = false;
          this.visible = false;
+         GameRender.remove(render, this);
+      }
+
+      private function render() : void
+      {
+         if(!visible) return;
+         if(_btns)
+         {
+            _btns.render();
+         }
+         if(GameInputer.back(1) || GameInputer.dash("MENU", 1))
+         {
+            if(onBackSelect != null)
+            {
+               onBackSelect();
+            }
+         }
       }
       
       private function onSelect(param1:Event) : void

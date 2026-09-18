@@ -893,3 +893,36 @@ gradlew         text eol=lf
 *.pdf      diff=astextplain
 *.PDF      diff=astextplain
 *.rtf      diff=astextplain
+
+# GitHub Linguist language overrides
+*.as linguist-language=ActionScript linguist-detectable=true
+*.java linguist-language=Java linguist-detectable=true
+*.py linguist-language=Python linguist-detectable=true
+*.sh linguist-language=Shell linguist-detectable=true
+
+# Ignore libraries, compiled binaries, extensions, and assets from language statistics
+libs/** linguist-vendored
+swc/** linguist-vendored
+extension/** linguist-vendored
+common/** linguist-vendored
+assets/** linguist-vendored
+stage/** linguist-vendored
+keysign/** linguist-vendored
+ANE_Project/**/bin/** linguist-vendored
+ANE_Project/**/libs/** linguist-vendored
+
+# Exclude metadata, configs, compiled classes, and binary/data files from language statistics
+*.json linguist-detectable=false
+*.xml linguist-detectable=false
+*.class linguist-detectable=false
+*.jar linguist-detectable=false
+*.ane linguist-detectable=false
+*.swc linguist-detectable=false
+*.zip linguist-detectable=false
+*.swf linguist-detectable=false
+*.sff linguist-detectable=false
+*.def linguist-detectable=false
+*.cpu linguist-detectable=false
+*.properties linguist-detectable=false
+*.md5 linguist-detectable=false
+*.p12 linguist-detectable=false

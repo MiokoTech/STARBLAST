@@ -195,20 +195,37 @@ package net.play5d.game.bvn.fighter.ctrler
          EffectCtrl.I.touchFloorEffect(_targetDisplay.x,_targetDisplay.y);
       }
       
-      public function hitFloor(param1:int, param2:Number = 0) : void
+      public function hitFloor(type:int, shakePow:Number = 0) : void
       {
          if(_target is FighterMain && (_target as FighterMain).mosouEnemyData && !(_target as FighterMain).mosouEnemyData.isBoss)
          {
-            if(param2 > 1)
+            if(shakePow > 1)
             {
-               param2 = 1;
+               shakePow = 1;
             }
          }
-         if(param2 > 0)
+         if(shakePow > 0)
          {
-            shake(0,param2);
+            shake(0,shakePow);
          }
-         EffectCtrl.I.hitFloorEffect(param1,_targetDisplay.x,_targetDisplay.y);
+         EffectCtrl.I.hitFloorEffect(type,_targetDisplay.x,_targetDisplay.y);
+      }
+      
+      public function hitWall(type:int = 0, shakePow:Number = 3) : void
+      {
+         if(_target is FighterMain && (_target as FighterMain).mosouEnemyData && !(_target as FighterMain).mosouEnemyData.isBoss)
+         {
+            if(shakePow > 1)
+            {
+               shakePow = 1;
+            }
+         }
+         if(shakePow > 0)
+         {
+            shake(shakePow,shakePow * 0.5);
+         }
+         var impactY:Number = _targetDisplay.y - 35;
+         EffectCtrl.I.hitFloorEffect(type,_targetDisplay.x,impactY);
       }
       
       public function slowDown(param1:Number) : void

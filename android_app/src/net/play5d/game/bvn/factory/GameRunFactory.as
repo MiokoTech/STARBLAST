@@ -57,12 +57,19 @@ package net.play5d.game.bvn.factory
          return _loc4_;
       }
       
-      public static function createMapByData(param1:MapVO) : MapMain
+      public static function createMapByData(mapVO:MapVO) : MapMain
       {
-         var _loc2_:MovieClip = GameStageLoadCtrl.I.getMapMc(param1.fileUrl);
-         var _loc3_:MapMain = new MapMain(_loc2_);
-         _loc3_.data = param1;
-         return _loc3_;
+         var cachedMap:* = GameStageLoadCtrl.I.getMapMc(mapVO.fileUrl);
+         if(cachedMap is MapMain)
+         {
+            var jsonMap:MapMain = cachedMap as MapMain;
+            jsonMap.data = mapVO;
+            return jsonMap;
+         }
+         var mapDisplay:MovieClip = cachedMap as MovieClip;
+         var mapInstance:MapMain = new MapMain(mapDisplay);
+         mapInstance.data = mapVO;
+         return mapInstance;
       }
       
       public static function createAssisterByData(fighterVO:FighterVO, teamId:String) : Assister
@@ -82,4 +89,3 @@ package net.play5d.game.bvn.factory
       }
    }
 }
-

@@ -1,9 +1,13 @@
 package net.play5d.game.bvn.utils
 {
+   import flash.display.Bitmap;
    import flash.display.DisplayObject;
+   import flash.display.DisplayObjectContainer;
    import flash.display.FrameLabel;
    import flash.display.MovieClip;
+   import flash.display.PixelSnapping;
    import flash.filters.ColorMatrixFilter;
+   import net.play5d.game.bvn.fighter.LocalCoordManager;
    
    public class MCUtils
    {
@@ -61,6 +65,29 @@ package net.play5d.game.bvn.utils
          var _loc2_:Number = Math.cos(param1 * 3.141592653589793 / 180);
          var _loc3_:Number = Math.sin(param1 * 3.141592653589793 / 180);
          return new ColorMatrixFilter([0.213 + _loc2_ * (1 - 0.213) + _loc3_ * (0 - 0.213),0.715 + _loc2_ * (0 - 0.715) + _loc3_ * (0 - 0.715),0.072 + _loc2_ * (0 - 0.072) + _loc3_ * (1 - 0.072),0,0,0.213 + _loc2_ * (0 - 0.213) + _loc3_ * 0.143,0.715 + _loc2_ * (1 - 0.715) + _loc3_ * 0.14,0.072 + _loc2_ * (0 - 0.072) + _loc3_ * -0.283,0,0,0.213 + _loc2_ * (0 - 0.213) + _loc3_ * -0.787,0.715 + _loc2_ * (0 - 0.715) + _loc3_ * 0.715,0.072 + _loc2_ * (1 - 0.072) + _loc3_ * 0.072,0,0,0,0,0,1,0]);
+      }
+      
+      public static function applyPixelArtStyle(target:DisplayObjectContainer) : void
+      {
+         if(!target || !LocalCoordManager.isLocalCoordMode())
+         {
+            return;
+         }
+         var count:int = target.numChildren;
+         for(var i:int = 0; i < count; i++)
+         {
+            var child:DisplayObject = target.getChildAt(i);
+            if(child is Bitmap)
+            {
+               var bmp:Bitmap = child as Bitmap;
+               bmp.smoothing = false;
+               bmp.pixelSnapping = PixelSnapping.ALWAYS;
+            }
+            else if(child is DisplayObjectContainer)
+            {
+               applyPixelArtStyle(child as DisplayObjectContainer);
+            }
+         }
       }
    }
 }

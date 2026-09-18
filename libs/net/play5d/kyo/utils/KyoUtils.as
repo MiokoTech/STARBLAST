@@ -257,24 +257,22 @@ package net.play5d.kyo.utils
          return _loc2_;
       }
       
-      public static function drawDisplay(param1:DisplayObject, param2:Boolean = true, param3:Boolean = true, param4:uint = 0, param5:ColorTransform = null) : Bitmap
+      public static function drawDisplay(displayObj:DisplayObject, autoOffset:Boolean = true, transparent:Boolean = true, fillColor:uint = 0, colorTransform:ColorTransform = null) : Bitmap
       {
-         var _loc7_:Matrix = null;
-         var _loc8_:Rectangle = null;
-         if(!param1 || param1.width <= 0 || param1.height <= 0)
+         var matrix:Matrix = null;
+         var bounds:Rectangle = null;
+         if(!displayObj || displayObj.width <= 0 || displayObj.height <= 0)
          {
             return null;
          }
-         var _loc6_:Bitmap = new Bitmap(new BitmapData(param1.width,param1.height,param3,param4));
-         if(param2)
+         var bmp:Bitmap = new Bitmap(new BitmapData(displayObj.width, displayObj.height, transparent, fillColor));
+         if(autoOffset)
          {
-            _loc8_ = param1.getBounds(param1);
-            var m:Matrix = new Matrix();
-            m.scale(1, -1); // refleksi vertikal, setengah tinggi
-            m.translate(-_loc8_.x, 22);
+            bounds = displayObj.getBounds(displayObj);
+            matrix = new Matrix(1, 0, 0, 1, -bounds.x, -bounds.y);
          }
-         _loc6_.bitmapData.draw(param1,m,param5);
-         return _loc6_;
+         bmp.bitmapData.draw(displayObj, matrix, colorTransform);
+         return bmp;
       }
       
       public static function drawBitmapFilter(param1:DisplayObject, param2:BitmapFilter, param3:Boolean = true, param4:Point = null) : BitmapData

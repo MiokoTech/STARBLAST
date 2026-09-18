@@ -12,6 +12,7 @@ package net.play5d.game.bvn.fighter
    import net.play5d.game.bvn.fighter.utils.McAreaCacher;
    import net.play5d.game.bvn.interfaces.BaseGameSprite;
    import net.play5d.game.bvn.interfaces.IGameSprite;
+   import net.play5d.game.bvn.utils.MCUtils;
    
    public class FighterAttacker extends BaseGameSprite
    {
@@ -154,6 +155,10 @@ package net.play5d.game.bvn.fighter
       {
          _owner = param1;
          direct = param1.direct;
+         if(param1 is BaseGameSprite)
+         {
+            this.scale = (param1 as BaseGameSprite).scale;
+         }
          if(_owner is FighterMain)
          {
             _ctrler.effect = (_owner as FighterMain).getCtrler().getEffectCtrl();
@@ -166,7 +171,7 @@ package net.play5d.game.bvn.fighter
       
       public function init() : void
       {
-         var _loc4_:FighterMC = null;
+         var fighterMc:FighterMC = null;
          var _loc2_:Number = NaN;
          var _loc1_:Number = NaN;
          var _loc3_:Number = NaN;
@@ -175,21 +180,23 @@ package net.play5d.game.bvn.fighter
          {
             return;
          }
+         var sc:Number = scale;
          if(direct > 0)
          {
-            _x = _owner.x + _startX;
+            _x = _owner.x + _startX * sc;
          }
          else
          {
-            _x = _owner.x - _startX;
+            _x = _owner.x - _startX * sc;
          }
-         _y += _owner.y;
+         _y = _owner.y + _startY * sc;
          if(_owner is FighterMain)
          {
-            _loc4_ = (_owner as FighterMain).getMC();
-            _x += _loc4_.x;
-            _y += _loc4_.y;
+            fighterMc = (_owner as FighterMain).getMC();
+            _x += fighterMc.x;
+            _y += fighterMc.y;
          }
+         MCUtils.applyPixelArtStyle(_mainMc);
          if(!moveToTargetX && !moveToTargetY)
          {
             return;
@@ -429,31 +436,32 @@ package net.play5d.game.bvn.fighter
          return _loc2_;
       }
       
-      private function getCurrentRect(param1:Rectangle, param2:String = null) : Rectangle
+      private function getCurrentRect(rawRect:Rectangle, cacheKey:String = null) : Rectangle
       {
-         var _loc3_:Rectangle = null;
-         if(param2 == null)
+         var targetRect:Rectangle = null;
+         if(cacheKey == null)
          {
-            _loc3_ = new Rectangle();
+            targetRect = new Rectangle();
          }
-         else if(_rectCache[param2])
+         else if(_rectCache[cacheKey])
          {
-            _loc3_ = _rectCache[param2];
+            targetRect = _rectCache[cacheKey];
          }
          else
          {
-            _loc3_ = new Rectangle();
-            _rectCache[param2] = _loc3_;
+            targetRect = new Rectangle();
+            _rectCache[cacheKey] = targetRect;
          }
-         _loc3_.x = param1.x * direct + _x;
+         var sc:Number = scale;
+         targetRect.x = (rawRect.x * direct) * sc + _x;
          if(direct < 0)
          {
-            _loc3_.x -= param1.width;
+            targetRect.x -= rawRect.width * sc;
          }
-         _loc3_.y = param1.y + _y;
-         _loc3_.width = param1.width;
-         _loc3_.height = param1.height;
-         return _loc3_;
+         targetRect.y = rawRect.y * sc + _y;
+         targetRect.width = rawRect.width * sc;
+         targetRect.height = rawRect.height * sc;
+         return targetRect;
       }
       
       private function getHitModel() : FighterHitModel

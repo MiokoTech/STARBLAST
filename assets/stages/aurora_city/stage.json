@@ -1,0 +1,4542 @@
+{
+  "format": "starblast_stage_v1",
+  "info": {
+    "name": "Aurora City-TWS",
+    "displayname": "Aurora City-TWS",
+    "author": "DISSIDIA",
+    "versiondate": "09,24,2023",
+    "mugenversion": "1.1"
+  },
+  "camera": {
+    "startx": 0.0,
+    "starty": 0.0,
+    "boundleft": -220.0,
+    "boundright": 220.0,
+    "boundhigh": -457.0,
+    "boundlow": 0.0,
+    "verticalfollow": 0.9,
+    "floortension": 105.0,
+    "tension": 180.0,
+    "overdrawhigh": 20.0,
+    "overdrawlow": 20.0,
+    "cuthigh": 0.0,
+    "cutlow": 0.0,
+    "zoomout": 0.68,
+    "zoomin": 0.75
+  },
+  "playerinfo": {
+    "p1startx": -170.0,
+    "p1starty": 0.0,
+    "p1facing": 1,
+    "p2startx": 170.0,
+    "p2starty": 0.0,
+    "p2facing": -1,
+    "p3startx": -240.0,
+    "p3starty": 0.0,
+    "p3facing": 1,
+    "p4startx": 240.0,
+    "p4starty": 0.0,
+    "p4facing": -1,
+    "leftbound": -20000.0,
+    "rightbound": 20000.0
+  },
+  "bound": {
+    "screenleft": 45.0,
+    "screenright": 45.0
+  },
+  "stageinfo": {
+    "zoffset": 320.0,
+    "autoturn": true,
+    "resetBG": false,
+    "localcoord": [
+      640,
+      360
+    ],
+    "xscale": 1.0,
+    "yscale": 1.0,
+    "hires": false
+  },
+  "shadow": {
+    "intensity": 96,
+    "color": [
+      0,
+      0,
+      0
+    ],
+    "yscale": 0.2,
+    "fade_range": [
+      -400.0,
+      -100.0
+    ]
+  },
+  "reflection": {
+    "intensity": 0
+  },
+  "music": {
+    "bgmusic": "AURORA_CITY_TWS.mp3",
+    "bgmvolume": 100,
+    "bgmloopstart": 733681,
+    "bgmloopend": 5116016
+  },
+  "controllers": [
+    {
+      "name": "BGCtrl Boat_PosReset",
+      "type": "PosSet",
+      "ctrl_id": 240,
+      "time": [
+        0,
+        0,
+        3200
+      ],
+      "x": 0.0,
+      "y": 0.0
+    },
+    {
+      "name": "BGCtrl Boat_Start",
+      "type": "VelSet",
+      "ctrl_id": 240,
+      "time": [
+        0,
+        0,
+        3200
+      ],
+      "x": -0.6,
+      "y": 0.0
+    }
+  ],
+  "layers": [
+    {
+      "id": "bg_0",
+      "name": "BG SKY",
+      "type": "normal",
+      "spriteno": [
+        0,
+        1
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.0,
+        0.0
+      ],
+      "scalestart": [
+        2.0,
+        2.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 0,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "0_1.png",
+      "width": 640,
+      "height": 810,
+      "axis_x": 320,
+      "axis_y": 330
+    },
+    {
+      "id": "bg_1",
+      "name": "BG SKY 2",
+      "type": "normal",
+      "spriteno": [
+        0,
+        2
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.0,
+        0.2
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "add",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "0_2.png",
+      "width": 640,
+      "height": 445,
+      "axis_x": 320,
+      "axis_y": -35
+    },
+    {
+      "id": "bg_2",
+      "name": "BG AURORA BLUE",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -130.0
+      ],
+      "delta": [
+        0.4,
+        0.4
+      ],
+      "scalestart": [
+        1.25,
+        1.25
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 1,
+      "img_ref": "1_0.png",
+      "width": 1100,
+      "height": 623,
+      "axis_x": 550,
+      "axis_y": 320
+    },
+    {
+      "id": "bg_3",
+      "name": "BG AURORA PINK",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -130.0
+      ],
+      "delta": [
+        0.4,
+        0.4
+      ],
+      "scalestart": [
+        1.25,
+        1.25
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 2,
+      "img_ref": "2_0.png",
+      "width": 952,
+      "height": 587,
+      "axis_x": 494,
+      "axis_y": 320
+    },
+    {
+      "id": "bg_4",
+      "name": "BG MOUNTAIN",
+      "type": "normal",
+      "spriteno": [
+        0,
+        3
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -130.0
+      ],
+      "delta": [
+        0.7,
+        0.7
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "0_3.png",
+      "width": 1200,
+      "height": 218,
+      "axis_x": 600,
+      "axis_y": -262
+    },
+    {
+      "id": "bg_5",
+      "name": "BG MOUNTAIN LIGHTS",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -130.0
+      ],
+      "delta": [
+        0.7,
+        0.7
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 0,
+      "img_ref": "0_4.png",
+      "width": 1200,
+      "height": 205,
+      "axis_x": 600,
+      "axis_y": -266
+    },
+    {
+      "id": "bg_6",
+      "name": "BG BUILDINGS 1",
+      "type": "normal",
+      "spriteno": [
+        3,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.75,
+        0.75
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "3_0.png",
+      "width": 725,
+      "height": 117,
+      "axis_x": 495,
+      "axis_y": -275
+    },
+    {
+      "id": "bg_7",
+      "name": "BG BUILDINGS 1 LIGHTS",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.75,
+        0.75
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 3,
+      "img_ref": "3_1.png",
+      "width": 727,
+      "height": 122,
+      "axis_x": 495,
+      "axis_y": -274
+    },
+    {
+      "id": "bg_8",
+      "name": "BG BUILDINGS 2",
+      "type": "normal",
+      "spriteno": [
+        4,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "4_0.png",
+      "width": 839,
+      "height": 164,
+      "axis_x": 507,
+      "axis_y": -245
+    },
+    {
+      "id": "bg_9",
+      "name": "BG BUILDINGS 2 LIGHTS",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 4,
+      "img_ref": "4_1.png",
+      "width": 840,
+      "height": 169,
+      "axis_x": 507,
+      "axis_y": -244
+    },
+    {
+      "id": "bg_10",
+      "name": "BG TRAIN TILE",
+      "type": "normal",
+      "spriteno": [
+        4,
+        2
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.85,
+        0.85
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        1,
+        0
+      ],
+      "tilespacing": [
+        2000,
+        0
+      ],
+      "velocity": [
+        -3.0,
+        0.0
+      ],
+      "img_ref": "4_2.png",
+      "width": 333,
+      "height": 13,
+      "axis_x": -480,
+      "axis_y": -265
+    },
+    {
+      "id": "bg_11",
+      "name": "BG TRAIN TILE LIGHT",
+      "type": "normal",
+      "spriteno": [
+        4,
+        3
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.85,
+        0.85
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "add",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        1,
+        0
+      ],
+      "tilespacing": [
+        1987,
+        0
+      ],
+      "velocity": [
+        -3.0,
+        0.0
+      ],
+      "img_ref": "4_3.png",
+      "width": 346,
+      "height": 21,
+      "axis_x": -475,
+      "axis_y": -260
+    },
+    {
+      "id": "bg_12",
+      "name": "BG TRAIN BRIDGE",
+      "type": "normal",
+      "spriteno": [
+        4,
+        4
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.85,
+        0.85
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        1,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "4_4.png",
+      "width": 1050,
+      "height": 95,
+      "axis_x": 525,
+      "axis_y": -271
+    },
+    {
+      "id": "bg_13",
+      "name": "BG TRAIN BRIDGE LIGHTS",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        0.85,
+        0.85
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 5,
+      "img_ref": "4_5.png",
+      "width": 965,
+      "height": 57,
+      "axis_x": 525,
+      "axis_y": -294
+    },
+    {
+      "id": "bg_14",
+      "name": "BG BRIDGE",
+      "type": "normal",
+      "spriteno": [
+        5,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        140.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "5_0.png",
+      "width": 625,
+      "height": 708,
+      "axis_x": 113,
+      "axis_y": 320
+    },
+    {
+      "id": "bg_15",
+      "name": "BG BRIDGE FRONT LIGHT",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        140.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 6,
+      "img_ref": "5_1.png",
+      "width": 207,
+      "height": 207,
+      "axis_x": 215,
+      "axis_y": -175
+    },
+    {
+      "id": "bg_16",
+      "name": "BG BRIDGE UPPER RIGHT LIGHT",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        140.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 7,
+      "img_ref": "5_2.png",
+      "width": 452,
+      "height": 445,
+      "axis_x": -60,
+      "axis_y": 469
+    },
+    {
+      "id": "bg_17",
+      "name": "BG BRIDGE STREET LIGHTS",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        140.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 8,
+      "img_ref": "5_3.png",
+      "width": 622,
+      "height": 438,
+      "axis_x": 121,
+      "axis_y": 95
+    },
+    {
+      "id": "bg_18",
+      "name": "BG RIPPLE_Lef",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        -884.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.9
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 209,
+      "img_ref": "6_0.png",
+      "width": 1024,
+      "height": 110,
+      "axis_x": 512,
+      "axis_y": -347
+    },
+    {
+      "id": "bg_19",
+      "name": "BG RIPPLE",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        140.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.9
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 9,
+      "img_ref": "6_0.png",
+      "width": 1024,
+      "height": 110,
+      "axis_x": 512,
+      "axis_y": -347
+    },
+    {
+      "id": "bg_20",
+      "name": "BG FRONT LIGHTING",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        140.0,
+        -90.0
+      ],
+      "delta": [
+        0.8,
+        0.8
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        1,
+        0
+      ],
+      "tilespacing": [
+        1024,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 10,
+      "img_ref": "7_0.png",
+      "width": 1024,
+      "height": 218,
+      "axis_x": 512,
+      "axis_y": -236
+    },
+    {
+      "id": "bg_21",
+      "name": "BG Boat",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        760.0,
+        310.0
+      ],
+      "delta": [
+        0.84,
+        0.84
+      ],
+      "scalestart": [
+        0.8,
+        0.8
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "ctrl_id": 240,
+      "sin_y": [
+        4.0,
+        256.0,
+        0.0
+      ],
+      "actionno": 240,
+      "img_ref": "240_0.png",
+      "width": 598,
+      "height": 322,
+      "axis_x": 315,
+      "axis_y": 286
+    },
+    {
+      "id": "bg_22",
+      "name": "BG Boat_GreenLight",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        760.0,
+        310.0
+      ],
+      "delta": [
+        0.84,
+        0.84
+      ],
+      "scalestart": [
+        0.8,
+        0.8
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "ctrl_id": 240,
+      "sin_y": [
+        4.0,
+        256.0,
+        0.0
+      ],
+      "actionno": 241,
+      "img_ref": "241_0.png",
+      "width": 598,
+      "height": 322,
+      "axis_x": 315,
+      "axis_y": 286
+    },
+    {
+      "id": "bg_23",
+      "name": "BG Boat_RedLight",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        760.0,
+        310.0
+      ],
+      "delta": [
+        0.84,
+        0.84
+      ],
+      "scalestart": [
+        0.8,
+        0.8
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "ctrl_id": 240,
+      "sin_y": [
+        4.0,
+        256.0,
+        0.0
+      ],
+      "actionno": 242,
+      "img_ref": "241_1.png",
+      "width": 598,
+      "height": 322,
+      "axis_x": 315,
+      "axis_y": 286
+    },
+    {
+      "id": "bg_24",
+      "name": "BG TREES",
+      "type": "normal",
+      "spriteno": [
+        8,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        -200.0,
+        -90.0
+      ],
+      "delta": [
+        1.1,
+        0.9
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "8_0.png",
+      "width": 262,
+      "height": 424,
+      "axis_x": 532,
+      "axis_y": 30
+    },
+    {
+      "id": "bg_25",
+      "name": "BG SHORE HILL",
+      "type": "normal",
+      "spriteno": [
+        8,
+        1
+      ],
+      "layerno": 0,
+      "start": [
+        -200.0,
+        -90.0
+      ],
+      "delta": [
+        1.15,
+        0.85
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "8_1.png",
+      "width": 536,
+      "height": 95,
+      "axis_x": 546,
+      "axis_y": -363
+    },
+    {
+      "id": "bg_26",
+      "name": "BG HOUSE",
+      "type": "normal",
+      "spriteno": [
+        9,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        170.0,
+        -90.0
+      ],
+      "delta": [
+        0.88,
+        0.88
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "9_0.png",
+      "width": 240,
+      "height": 425,
+      "axis_x": -272,
+      "axis_y": -33
+    },
+    {
+      "id": "bg_27",
+      "name": "BG HOUSE LIGHT",
+      "type": "anim",
+      "spriteno": [
+        0,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        170.0,
+        -90.0
+      ],
+      "delta": [
+        0.88,
+        0.88
+      ],
+      "scalestart": [
+        1.0,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "actionno": 11,
+      "img_ref": "9_1.png",
+      "width": 258,
+      "height": 209,
+      "axis_x": -254,
+      "axis_y": -271
+    },
+    {
+      "id": "bg_28",
+      "name": "BG FLOOR",
+      "type": "normal",
+      "spriteno": [
+        10,
+        0
+      ],
+      "layerno": 0,
+      "start": [
+        0.0,
+        -90.0
+      ],
+      "delta": [
+        1.0,
+        1.0
+      ],
+      "scalestart": [
+        1.5,
+        1.0
+      ],
+      "trans": "none",
+      "alpha": [
+        256,
+        0
+      ],
+      "mask": 1,
+      "tile": [
+        0,
+        0
+      ],
+      "tilespacing": [
+        0,
+        0
+      ],
+      "velocity": [
+        0.0,
+        0.0
+      ],
+      "img_ref": "10_0.png",
+      "width": 1024,
+      "height": 173,
+      "axis_x": 512,
+      "axis_y": -307
+    }
+  ],
+  "actions": {
+    "0": [
+      {
+        "group": 0,
+        "number": 4,
+        "axis_x": 600,
+        "axis_y": -266,
+        "ticks": 2,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "0_4.png",
+        "width": 1200,
+        "height": 205
+      },
+      {
+        "group": 0,
+        "number": 4,
+        "axis_x": 600,
+        "axis_y": -266,
+        "ticks": 2,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "0_4.png",
+        "width": 1200,
+        "height": 205
+      }
+    ],
+    "1": [
+      {
+        "group": 1,
+        "number": 0,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_0.png",
+        "width": 1100,
+        "height": 623
+      },
+      {
+        "group": 1,
+        "number": 1,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_1.png",
+        "width": 1100,
+        "height": 624
+      },
+      {
+        "group": 1,
+        "number": 2,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_2.png",
+        "width": 1100,
+        "height": 624
+      },
+      {
+        "group": 1,
+        "number": 3,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_3.png",
+        "width": 1100,
+        "height": 623
+      },
+      {
+        "group": 1,
+        "number": 4,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_4.png",
+        "width": 1100,
+        "height": 622
+      },
+      {
+        "group": 1,
+        "number": 5,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_5.png",
+        "width": 1100,
+        "height": 619
+      },
+      {
+        "group": 1,
+        "number": 6,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_6.png",
+        "width": 1100,
+        "height": 615
+      },
+      {
+        "group": 1,
+        "number": 7,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_7.png",
+        "width": 1100,
+        "height": 610
+      },
+      {
+        "group": 1,
+        "number": 8,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_8.png",
+        "width": 1100,
+        "height": 606
+      },
+      {
+        "group": 1,
+        "number": 9,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_9.png",
+        "width": 1100,
+        "height": 605
+      },
+      {
+        "group": 1,
+        "number": 10,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_10.png",
+        "width": 1100,
+        "height": 605
+      },
+      {
+        "group": 1,
+        "number": 11,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_11.png",
+        "width": 1100,
+        "height": 604
+      },
+      {
+        "group": 1,
+        "number": 12,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_12.png",
+        "width": 1100,
+        "height": 603
+      },
+      {
+        "group": 1,
+        "number": 13,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_13.png",
+        "width": 1100,
+        "height": 601
+      },
+      {
+        "group": 1,
+        "number": 14,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_14.png",
+        "width": 1100,
+        "height": 601
+      },
+      {
+        "group": 1,
+        "number": 15,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_15.png",
+        "width": 1100,
+        "height": 603
+      },
+      {
+        "group": 1,
+        "number": 16,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_16.png",
+        "width": 1100,
+        "height": 604
+      },
+      {
+        "group": 1,
+        "number": 17,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_17.png",
+        "width": 1100,
+        "height": 606
+      },
+      {
+        "group": 1,
+        "number": 18,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_18.png",
+        "width": 1100,
+        "height": 608
+      },
+      {
+        "group": 1,
+        "number": 19,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_19.png",
+        "width": 1100,
+        "height": 610
+      },
+      {
+        "group": 1,
+        "number": 20,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_20.png",
+        "width": 1100,
+        "height": 612
+      },
+      {
+        "group": 1,
+        "number": 21,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_21.png",
+        "width": 1100,
+        "height": 614
+      },
+      {
+        "group": 1,
+        "number": 22,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_22.png",
+        "width": 1100,
+        "height": 615
+      },
+      {
+        "group": 1,
+        "number": 23,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_23.png",
+        "width": 1100,
+        "height": 617
+      },
+      {
+        "group": 1,
+        "number": 24,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_24.png",
+        "width": 1100,
+        "height": 618
+      },
+      {
+        "group": 1,
+        "number": 25,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_25.png",
+        "width": 1100,
+        "height": 620
+      },
+      {
+        "group": 1,
+        "number": 26,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_26.png",
+        "width": 1100,
+        "height": 621
+      },
+      {
+        "group": 1,
+        "number": 27,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_27.png",
+        "width": 1100,
+        "height": 622
+      },
+      {
+        "group": 1,
+        "number": 28,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_28.png",
+        "width": 1100,
+        "height": 622
+      },
+      {
+        "group": 1,
+        "number": 29,
+        "axis_x": 550,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "1_29.png",
+        "width": 1100,
+        "height": 623
+      }
+    ],
+    "2": [
+      {
+        "group": 2,
+        "number": 0,
+        "axis_x": 494,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_0.png",
+        "width": 952,
+        "height": 587
+      },
+      {
+        "group": 2,
+        "number": 1,
+        "axis_x": 494,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_1.png",
+        "width": 955,
+        "height": 584
+      },
+      {
+        "group": 2,
+        "number": 2,
+        "axis_x": 493,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_2.png",
+        "width": 957,
+        "height": 583
+      },
+      {
+        "group": 2,
+        "number": 3,
+        "axis_x": 492,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_3.png",
+        "width": 959,
+        "height": 583
+      },
+      {
+        "group": 2,
+        "number": 4,
+        "axis_x": 501,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_4.png",
+        "width": 971,
+        "height": 583
+      },
+      {
+        "group": 2,
+        "number": 5,
+        "axis_x": 506,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_5.png",
+        "width": 979,
+        "height": 585
+      },
+      {
+        "group": 2,
+        "number": 6,
+        "axis_x": 507,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_6.png",
+        "width": 982,
+        "height": 586
+      },
+      {
+        "group": 2,
+        "number": 7,
+        "axis_x": 507,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_7.png",
+        "width": 984,
+        "height": 587
+      },
+      {
+        "group": 2,
+        "number": 8,
+        "axis_x": 506,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_8.png",
+        "width": 985,
+        "height": 588
+      },
+      {
+        "group": 2,
+        "number": 9,
+        "axis_x": 506,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_9.png",
+        "width": 985,
+        "height": 588
+      },
+      {
+        "group": 2,
+        "number": 10,
+        "axis_x": 505,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_10.png",
+        "width": 984,
+        "height": 589
+      },
+      {
+        "group": 2,
+        "number": 11,
+        "axis_x": 503,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_11.png",
+        "width": 981,
+        "height": 589
+      },
+      {
+        "group": 2,
+        "number": 12,
+        "axis_x": 501,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_12.png",
+        "width": 976,
+        "height": 588
+      },
+      {
+        "group": 2,
+        "number": 13,
+        "axis_x": 500,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_13.png",
+        "width": 971,
+        "height": 587
+      },
+      {
+        "group": 2,
+        "number": 14,
+        "axis_x": 497,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_14.png",
+        "width": 960,
+        "height": 587
+      },
+      {
+        "group": 2,
+        "number": 15,
+        "axis_x": 496,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_15.png",
+        "width": 951,
+        "height": 589
+      },
+      {
+        "group": 2,
+        "number": 16,
+        "axis_x": 493,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_16.png",
+        "width": 940,
+        "height": 590
+      },
+      {
+        "group": 2,
+        "number": 17,
+        "axis_x": 491,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_17.png",
+        "width": 932,
+        "height": 592
+      },
+      {
+        "group": 2,
+        "number": 18,
+        "axis_x": 489,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_18.png",
+        "width": 928,
+        "height": 594
+      },
+      {
+        "group": 2,
+        "number": 19,
+        "axis_x": 487,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_19.png",
+        "width": 928,
+        "height": 595
+      },
+      {
+        "group": 2,
+        "number": 20,
+        "axis_x": 488,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_20.png",
+        "width": 930,
+        "height": 596
+      },
+      {
+        "group": 2,
+        "number": 21,
+        "axis_x": 488,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_21.png",
+        "width": 932,
+        "height": 598
+      },
+      {
+        "group": 2,
+        "number": 22,
+        "axis_x": 495,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_22.png",
+        "width": 941,
+        "height": 599
+      },
+      {
+        "group": 2,
+        "number": 23,
+        "axis_x": 498,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_23.png",
+        "width": 946,
+        "height": 599
+      },
+      {
+        "group": 2,
+        "number": 24,
+        "axis_x": 500,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_24.png",
+        "width": 949,
+        "height": 599
+      },
+      {
+        "group": 2,
+        "number": 25,
+        "axis_x": 500,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_25.png",
+        "width": 951,
+        "height": 599
+      },
+      {
+        "group": 2,
+        "number": 26,
+        "axis_x": 500,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_26.png",
+        "width": 952,
+        "height": 597
+      },
+      {
+        "group": 2,
+        "number": 27,
+        "axis_x": 498,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_27.png",
+        "width": 951,
+        "height": 593
+      },
+      {
+        "group": 2,
+        "number": 28,
+        "axis_x": 497,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_28.png",
+        "width": 950,
+        "height": 589
+      },
+      {
+        "group": 2,
+        "number": 29,
+        "axis_x": 495,
+        "axis_y": 320,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as220d256",
+        "img_ref": "2_29.png",
+        "width": 950,
+        "height": 588
+      }
+    ],
+    "3": [
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as0d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as10d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as20d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as30d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as40d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as50d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as60d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as70d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as80d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as90d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as100d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as100d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as90d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as80d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as70d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as60d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as50d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as40d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as30d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as20d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      },
+      {
+        "group": 3,
+        "number": 1,
+        "axis_x": 495,
+        "axis_y": -274,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as10d256",
+        "img_ref": "3_1.png",
+        "width": 727,
+        "height": 122
+      }
+    ],
+    "4": [
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as100d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as90d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as80d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as70d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as60d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as50d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as40d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as30d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as20d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as10d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as0d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as10d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as20d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as30d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as40d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as50d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as60d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as70d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as80d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as90d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as100d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      },
+      {
+        "group": 4,
+        "number": 1,
+        "axis_x": 507,
+        "axis_y": -244,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "4_1.png",
+        "width": 840,
+        "height": 169
+      }
+    ],
+    "5": [
+      {
+        "group": 4,
+        "number": 5,
+        "axis_x": 525,
+        "axis_y": -294,
+        "ticks": 2,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "4_5.png",
+        "width": 965,
+        "height": 57
+      },
+      {
+        "group": 4,
+        "number": 5,
+        "axis_x": 525,
+        "axis_y": -294,
+        "ticks": 2,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "4_5.png",
+        "width": 965,
+        "height": 57
+      }
+    ],
+    "6": [
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as100d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      },
+      {
+        "group": 5,
+        "number": 1,
+        "axis_x": 215,
+        "axis_y": -175,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "5_1.png",
+        "width": 207,
+        "height": 207
+      }
+    ],
+    "7": [
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as100d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as200d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as190d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as180d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as170d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as150d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as140d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as130d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as120d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      },
+      {
+        "group": 5,
+        "number": 2,
+        "axis_x": -60,
+        "axis_y": 469,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as110d256",
+        "img_ref": "5_2.png",
+        "width": 452,
+        "height": 445
+      }
+    ],
+    "8": [
+      {
+        "group": 5,
+        "number": 3,
+        "axis_x": 121,
+        "axis_y": 95,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "5_3.png",
+        "width": 622,
+        "height": 438
+      },
+      {
+        "group": 5,
+        "number": 3,
+        "axis_x": 121,
+        "axis_y": 95,
+        "ticks": 4,
+        "flip": "",
+        "trans": "as64d256",
+        "img_ref": "5_3.png",
+        "width": 622,
+        "height": 438
+      }
+    ],
+    "9": [
+      {
+        "group": 6,
+        "number": 0,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_0.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 1,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_1.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 2,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_2.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 3,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_3.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 4,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_4.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 5,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_5.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 6,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_6.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 7,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_7.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 8,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_8.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 9,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_9.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 10,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_10.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 11,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_11.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 12,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_12.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 13,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_13.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 14,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_14.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 15,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_15.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 16,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_16.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 17,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_17.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 18,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_18.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 19,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_19.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 20,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_20.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 21,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_21.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 22,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_22.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 23,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_23.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 24,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_24.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 25,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_25.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 26,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_26.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 27,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_27.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 28,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_28.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 29,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "6_29.png",
+        "width": 1024,
+        "height": 110
+      }
+    ],
+    "209": [
+      {
+        "group": 6,
+        "number": 0,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_0.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 1,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_1.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 2,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_2.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 3,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_3.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 4,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_4.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 5,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_5.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 6,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_6.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 7,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_7.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 8,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_8.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 9,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_9.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 10,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_10.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 11,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_11.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 12,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_12.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 13,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_13.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 14,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_14.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 15,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_15.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 16,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_16.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 17,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_17.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 18,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_18.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 19,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_19.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 20,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_20.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 21,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_21.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 22,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_22.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 23,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_23.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 24,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_24.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 25,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_25.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 26,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_26.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 27,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_27.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 28,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_28.png",
+        "width": 1024,
+        "height": 110
+      },
+      {
+        "group": 6,
+        "number": 29,
+        "axis_x": 512,
+        "axis_y": -347,
+        "ticks": 2,
+        "flip": "H",
+        "trans": "none",
+        "img_ref": "6_29.png",
+        "width": 1024,
+        "height": 110
+      }
+    ],
+    "10": [
+      {
+        "group": 7,
+        "number": 0,
+        "axis_x": 512,
+        "axis_y": -236,
+        "ticks": 32,
+        "flip": "",
+        "trans": "as32d256",
+        "img_ref": "7_0.png",
+        "width": 1024,
+        "height": 218
+      },
+      {
+        "group": 7,
+        "number": 0,
+        "axis_x": 512,
+        "axis_y": -236,
+        "ticks": 32,
+        "flip": "",
+        "trans": "as160d256",
+        "img_ref": "7_0.png",
+        "width": 1024,
+        "height": 218
+      }
+    ],
+    "11": [
+      {
+        "group": 9,
+        "number": 1,
+        "axis_x": -254,
+        "axis_y": -271,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as64d256",
+        "img_ref": "9_1.png",
+        "width": 258,
+        "height": 209
+      },
+      {
+        "group": 9,
+        "number": 1,
+        "axis_x": -254,
+        "axis_y": -271,
+        "ticks": 3,
+        "flip": "",
+        "trans": "as192d256",
+        "img_ref": "9_1.png",
+        "width": 258,
+        "height": 209
+      }
+    ],
+    "240": [
+      {
+        "group": 240,
+        "number": 0,
+        "axis_x": 315,
+        "axis_y": 286,
+        "ticks": 3200,
+        "flip": "",
+        "trans": "none",
+        "img_ref": "240_0.png",
+        "width": 598,
+        "height": 322
+      }
+    ],
+    "241": [
+      {
+        "group": 241,
+        "number": 0,
+        "axis_x": 315,
+        "axis_y": 286,
+        "ticks": 48,
+        "flip": "",
+        "trans": "as192d256",
+        "img_ref": "241_0.png",
+        "width": 598,
+        "height": 322
+      },
+      {
+        "group": 241,
+        "number": 0,
+        "axis_x": 315,
+        "axis_y": 286,
+        "ticks": 8,
+        "flip": "",
+        "trans": "as32d256",
+        "img_ref": "241_0.png",
+        "width": 598,
+        "height": 322
+      }
+    ],
+    "242": [
+      {
+        "group": 241,
+        "number": 1,
+        "axis_x": 315,
+        "axis_y": 286,
+        "ticks": 8,
+        "flip": "",
+        "trans": "as32d256",
+        "img_ref": "241_1.png",
+        "width": 598,
+        "height": 322
+      },
+      {
+        "group": 241,
+        "number": 1,
+        "axis_x": 315,
+        "axis_y": 286,
+        "ticks": 64,
+        "flip": "",
+        "trans": "as192d256",
+        "img_ref": "241_1.png",
+        "width": 598,
+        "height": 322
+      }
+    ]
+  }
+}

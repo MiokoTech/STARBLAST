@@ -11,8 +11,12 @@ Base version using BvN 3.7
 - [ ] Multiplayer - LAN - ONLINE
 - [ ] Addition of a wider state fighter
 - [ ] New Modes
+- [ ] Docs
 - [ ] Support Gamepad Controller
 - [ ] Finish
 
-## offcial repository
+## Offcial repository
 [Bleach Vs Naruto 5Dplay](https://github.com/5DPLAY-Game-Studio/BleachVsNaruto)
+
+## Reference
+[IKEMEN GO Engine](https://github.com/ikemen-engine/Ikemen-GO)

@@ -3,9 +3,11 @@ package net.play5d.game.bvn.ui
    import flash.display.Sprite;
    import net.play5d.game.bvn.GameConfig;
    import net.play5d.game.bvn.MainGame;
+   import net.play5d.game.bvn.ctrl.GameRender;
    import net.play5d.game.bvn.ctrl.game_ctrls.GameCtrl;
    import net.play5d.game.bvn.events.GameEvent;
    import net.play5d.game.bvn.events.SetBtnEvent;
+   import net.play5d.game.bvn.input.GameInputer;
    
    public class PauseDialog extends Sprite
    {
@@ -34,12 +36,14 @@ package net.play5d.game.bvn.ui
             "label":"CONTINUE",
             "cn":"继续游戏"
          }],2);
+         _btnGroup._isSubMenu = true;
          _btnGroup.addEventListener("SELECT",btnGroupSelectHandler);
          addChild(_btnGroup);
       }
       
       public function destory() : void
       {
+         GameRender.remove(render, this);
          if(_btnGroup)
          {
             _btnGroup.removeEventListener("SELECT",btnGroupSelectHandler);
@@ -63,6 +67,9 @@ package net.play5d.game.bvn.ui
          this.visible = true;
          _btnGroup.keyEnable = true;
          _btnGroup.setArrowIndex(2);
+         GameRender.add(render, this);
+         GameInputer.focus();
+         GameInputer.enabled = true;
       }
       
       public function hide() : Boolean
@@ -74,7 +81,24 @@ package net.play5d.game.bvn.ui
          }
          this.visible = false;
          _btnGroup.keyEnable = false;
+         GameRender.remove(render, this);
          return true;
+      }
+
+      private function render() : void
+      {
+         if(!visible) return;
+         if(GameUI.showingDialog()) return;
+         if(_moveList && _moveList.isShowing()) return;
+
+         if(_btnGroup)
+         {
+            _btnGroup.render();
+         }
+         if(GameInputer.back(1))
+         {
+            GameCtrl.I.resume(true);
+         }
       }
       
       private function btnGroupSelectHandler(param1:SetBtnEvent) : void

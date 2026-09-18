@@ -5,6 +5,7 @@ import os
 import struct
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
+from PIL import Image
 
 class SffHeader:
     """Header file SFF."""
@@ -43,6 +44,8 @@ class SffReader:
         self.filepath = filepath
         self.header = SffHeader()
         self.sprites: List[SpriteEntry] = []
+        self.palettes: List[bytes] = []
+        self.pal_map: Dict[Tuple[int, int], int] = {}
 
     def read_header(self, f) -> None:
         raw_header = f.read(512)
@@ -81,6 +84,95 @@ class SffReader:
             self.header.first_sprite_offset = spr_ofs
         else:
             raise ValueError(f"Versi SFF {ver_hi} tidak didukung.")
+
+    def read_palette_table(self, f) -> None:
+        self.palettes = []
+        self.pal_map = {}
+        ver_hi = self.header.version[3]
+        if ver_hi == 2:
+            self._read_palette_table_v2(f)
+
+    def _read_palette_table_v2(self, f) -> None:
+        f.seek(self.header.first_palette_offset)
+        raw_headers = [f.read(16) for _ in range(self.header.num_palettes)]
+
+        for i, raw in enumerate(raw_headers):
+            if len(raw) < 16:
+                break
+            group, number, cols, link, ofs, pl_size = struct.unpack("<HHHHII", raw)
+            self.pal_map[(group, number)] = i
+
+            if pl_size == 0:
+                if link < len(self.palettes):
+                    self.palettes.append(self.palettes[link])
+                else:
+                    self.palettes.append(bytes(1024))
+            else:
+                f.seek(self.header.lofs + ofs)
+                pal_raw = f.read(pl_size)
+                pal_flat = bytearray(1024)
+                num_colors = min(len(pal_raw) // 4, 256)
+                for c_idx in range(num_colors):
+                    r = pal_raw[c_idx * 4]
+                    g = pal_raw[c_idx * 4 + 1]
+                    b = pal_raw[c_idx * 4 + 2]
+                    a = pal_raw[c_idx * 4 + 3]
+                    if self.header.version[2] == 0:
+                        a = 0 if c_idx == 0 else 255
+                    pal_flat[c_idx * 4 : c_idx * 4 + 4] = bytes([r, g, b, a])
+                self.palettes.append(bytes(pal_flat))
+
+    @staticmethod
+    def decode_rle8(rle_data: bytes, expected_len: int) -> bytes:
+        p = bytearray(expected_len)
+        i = 0
+        j = 0
+        rle_len = len(rle_data)
+        while j < expected_len and i < rle_len:
+            d = rle_data[i]
+            i += 1
+            n = 1
+            if (d & 0xC0) == 0x40:
+                n = d & 0x3F
+                if i < rle_len:
+                    d = rle_data[i]
+                    i += 1
+                else:
+                    d = 0
+            end_j = min(j + n, expected_len)
+            p[j:end_j] = bytes([d]) * (end_j - j)
+            j = end_j
+        return bytes(p)
+
+    def get_sprite_image(self, spr: SpriteEntry, f) -> Optional[Image.Image]:
+        if spr.is_linked:
+            return None
+
+        ver_hi = self.header.version[3]
+        if ver_hi == 2:
+            if spr.format == 2:
+                f.seek(spr.real_offset)
+                uncompressed_len = struct.unpack("<I", f.read(4))[0]
+                rle_data = f.read(spr.size - 4)
+                indices = self.decode_rle8(rle_data, uncompressed_len)
+                pal_bytes = self.palettes[spr.pal_idx] if spr.pal_idx < len(self.palettes) else bytes(1024)
+                img = Image.frombytes("P", (spr.width, spr.height), indices)
+                img.putpalette(pal_bytes, rawmode="RGBA")
+                return img.convert("RGBA")
+            elif spr.format == 10:
+                f.seek(spr.real_offset + 4)
+                data = f.read(spr.size - 4)
+                if data.startswith(b"\x89PNG\r\n\x1a\n"):
+                    img = Image.open(io.BytesIO(data))
+                    pal_bytes = self.palettes[spr.pal_idx] if spr.pal_idx < len(self.palettes) else bytes(1024)
+                    img.putpalette(pal_bytes, rawmode="RGBA")
+                    return img.convert("RGBA")
+            elif spr.format in (11, 12):
+                f.seek(spr.real_offset + 4)
+                data = f.read(spr.size - 4)
+                if data.startswith(b"\x89PNG\r\n\x1a\n"):
+                    return Image.open(io.BytesIO(data)).convert("RGBA")
+        return None
 
     def read_sprite_table(self, f) -> None:
         self.sprites = []
@@ -169,44 +261,34 @@ class SffReader:
     ) -> int:
         os.makedirs(out_dir, exist_ok=True)
         meta_list = []
-        exported_bytes_cache: Dict[int, bytes] = {}
+        exported_images: Dict[int, Image.Image] = {}
         count = 0
 
         with open(self.filepath, "rb") as f:
             self.read_header(f)
+            self.read_palette_table(f)
             self.read_sprite_table(f)
 
             for spr in self.sprites:
                 if filter_group is not None and spr.group != filter_group:
                     continue
 
-                png_data: Optional[bytes] = None
+                img: Optional[Image.Image] = None
 
                 if spr.is_linked:
-                    if spr.link in exported_bytes_cache:
-                        png_data = exported_bytes_cache[spr.link]
+                    if spr.link in exported_images:
+                        img = exported_images[spr.link]
                     else:
                         print(f"[!] Peringatan: Linked sprite {spr.index} (link={spr.link}) tidak ditemukan dalam cache.")
                 else:
-                    ver_hi = self.header.version[3]
-                    if ver_hi == 2:
-                        if spr.format in (10, 11, 12):
-                            f.seek(spr.real_offset + 4)
-                            data = f.read(spr.size - 4)
-                            if data.startswith(b"\x89PNG\r\n\x1a\n"):
-                                png_data = data
-                            else:
-                                print(f"[!] Peringatan: Sprite {spr.group},{spr.number} bukan data PNG valid.")
-                        else:
-                            print(f"[!] Peringatan: Format kompresi {spr.format} belum didukung untuk ekspor langsung.")
+                    img = self.get_sprite_image(spr, f)
 
-                if png_data:
-                    exported_bytes_cache[spr.index] = png_data
+                if img:
+                    exported_images[spr.index] = img
 
                     filename = f"{spr.group}_{spr.number}.png"
                     out_path = os.path.join(out_dir, filename)
-                    with open(out_path, "wb") as out_f:
-                        out_f.write(png_data)
+                    img.save(out_path, format="PNG", compress_level=1)
 
                     count += 1
                     meta_list.append({

@@ -46,6 +46,8 @@ package net.play5d.game.bvn.ui.select
       
       public var touchHoverItem:SelectFighterItem;
       
+      public var lastCancelledFighterId:String = null;
+      
       private var _playerType:int;
       
       public function SelecterItemUI(param1:int = 1)
@@ -222,6 +224,7 @@ package net.play5d.game.bvn.ui.select
          {
             if(selectVO)
             {
+               lastCancelledFighterId = selectVO.fuzhu;
                selectVO.fuzhu = null;
             }
             if(group)
@@ -236,20 +239,27 @@ package net.play5d.game.bvn.ui.select
                switch(selectTimes)
                {
                   case 0:
+                     lastCancelledFighterId = selectVO.fighter1;
                      selectVO.fighter1 = null;
+                     if(group)
+                     {
+                        group.removeFighterAt(0);
+                     }
                      break;
                   case 1:
+                     lastCancelledFighterId = selectVO.fighter2;
                      selectVO.fighter2 = null;
+                     if(group)
+                     {
+                        group.removeFighterAt(1);
+                     }
                      break;
                   case 2:
+                     lastCancelledFighterId = selectVO.fighter3;
                      selectVO.fighter3 = null;
                      break;
                }
             }
-         }
-         if(group)
-         {
-            group.removeLastFighter();
          }
          enabled = true;
          updateRandom();
