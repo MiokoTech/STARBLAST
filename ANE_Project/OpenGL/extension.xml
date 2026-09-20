@@ -1,0 +1,12 @@
+<extension xmlns="http://ns.adobe.com/air/extension/50.0">
+    <id>com.miokotech.opengl</id>
+    <versionNumber>1.0.0</versionNumber>
+    <platforms>
+        <platform name="Android-ARM">
+            <applicationDeployment>
+                <nativeLibrary>GameOpenGL.jar</nativeLibrary>
+                <initializer>com.miokotech.opengl.OpenGLExtension</initializer>
+            </applicationDeployment>
+        </platform>
+    </platforms>
+</extension>
