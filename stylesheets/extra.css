@@ -1,0 +1,227 @@
+/* ==========================================================================
+   STARBLAST Documentation — Ultra-Clean Minimalist Dark Theme
+   Compact typography inspired by Linear, Vercel, and Apple Developer
+   ========================================================================== */
+
+:root {
+  --sb-font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --sb-font-mono: 'JetBrains Mono', SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  --sb-border: rgba(255, 255, 255, 0.08);
+  --sb-card-bg: rgba(255, 255, 255, 0.02);
+  --sb-card-hover-bg: rgba(255, 255, 255, 0.05);
+  --sb-accent: #38bdf8;
+}
+
+/* --------------------------------------------------------------------------
+   Typography & Compact Sizing
+   -------------------------------------------------------------------------- */
+html {
+  font-size: 14.5px;
+}
+
+body, .md-typeset {
+  font-family: var(--sb-font-sans);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.md-typeset h1 {
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.25;
+  margin-bottom: 0.6rem;
+}
+
+.md-typeset h2 {
+  font-size: 1.22rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin-top: 1.8rem;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px solid var(--sb-border);
+}
+
+.md-typeset h3 {
+  font-size: 1.02rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: 1.4rem;
+}
+
+.md-typeset h4 {
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+.md-typeset code, .md-typeset kbd, .md-typeset pre {
+  font-family: var(--sb-font-mono);
+  font-size: 0.82rem;
+}
+
+/* --------------------------------------------------------------------------
+   Minimalist Hero Header (Compact & Text-Only)
+   -------------------------------------------------------------------------- */
+.sb-minimal-hero {
+  padding: 1.5rem 0 1.2rem 0;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--sb-border);
+}
+
+.sb-minimal-hero h1 {
+  font-size: 1.7rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  margin: 0 0 0.4rem 0;
+}
+
+.sb-minimal-hero p.lead {
+  font-size: 0.96rem;
+  line-height: 1.6;
+  color: var(--md-default-fg-color--light);
+  margin: 0 0 1.2rem 0;
+  max-width: 600px;
+}
+
+.sb-chip-group {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.2rem;
+}
+
+.sb-chip {
+  display: inline-block;
+  padding: 0.2rem 0.55rem;
+  border-radius: 5px;
+  font-size: 0.74rem;
+  font-weight: 500;
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-border);
+  color: var(--md-default-fg-color--light);
+}
+
+.sb-action-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.sb-action-btn {
+  display: inline-block;
+  padding: 0.45rem 0.95rem;
+  border-radius: 6px;
+  font-size: 0.84rem;
+  font-weight: 500;
+  text-decoration: none !important;
+  transition: all 0.15s ease;
+}
+
+.sb-action-btn.primary {
+  background: #ffffff;
+  color: #000000 !important;
+}
+
+.sb-action-btn.primary:hover {
+  background: #e2e8f0;
+  transform: translateY(-1px);
+}
+
+.sb-action-btn.outline {
+  border: 1px solid var(--sb-border);
+  background: var(--sb-card-bg);
+  color: var(--md-typeset-color) !important;
+}
+
+.sb-action-btn.outline:hover {
+  background: var(--sb-card-hover-bg);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* --------------------------------------------------------------------------
+   Minimalist Cards & Grid
+   -------------------------------------------------------------------------- */
+.md-typeset .grid.cards > ul > li {
+  border-radius: 8px;
+  border: 1px solid var(--sb-border);
+  background: var(--sb-card-bg);
+  box-shadow: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease, transform 0.15s ease;
+  padding: 1rem;
+}
+
+.md-typeset .grid.cards > ul > li:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--sb-card-hover-bg);
+  transform: translateY(-1px);
+}
+
+.md-typeset .grid.cards > ul > li h3,
+.md-typeset .grid.cards > ul > li p strong {
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* --------------------------------------------------------------------------
+   Admonitions & Tables
+   -------------------------------------------------------------------------- */
+.md-typeset .admonition {
+  border-radius: 6px;
+  border-left-width: 3px;
+  box-shadow: none;
+  border-top: 1px solid var(--sb-border);
+  border-right: 1px solid var(--sb-border);
+  border-bottom: 1px solid var(--sb-border);
+  background: var(--sb-card-bg);
+  font-size: 0.88rem;
+  margin: 1rem 0;
+}
+
+.md-typeset table:not([class]) {
+  border: 1px solid var(--sb-border);
+  border-radius: 6px;
+  box-shadow: none;
+  font-size: 0.84rem;
+  margin: 1.2rem 0;
+}
+
+.md-typeset table:not([class]) th {
+  background: var(--sb-card-bg);
+  font-weight: 600;
+  border-bottom: 1px solid var(--sb-border);
+  padding: 0.6rem 0.85rem;
+}
+
+.md-typeset table:not([class]) td {
+  padding: 0.55rem 0.85rem;
+  border-top: 1px solid var(--sb-border);
+}
+
+/* --------------------------------------------------------------------------
+   Code Blocks & Tabs
+   -------------------------------------------------------------------------- */
+.md-typeset .tabbed-set {
+  border-radius: 6px;
+  border: 1px solid var(--sb-border);
+  margin: 1rem 0;
+}
+
+.md-typeset .tabbed-labels {
+  background: var(--sb-card-bg);
+  border-bottom: 1px solid var(--sb-border);
+  font-size: 0.82rem;
+}
+
+.md-typeset .tabbed-content {
+  border: none;
+  background: transparent;
+}
+
+.md-typeset pre > code {
+  border-radius: 5px;
+  font-size: 0.82rem;
+}
