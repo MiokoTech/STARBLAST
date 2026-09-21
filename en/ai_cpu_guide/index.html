@@ -673,10 +673,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ranges-move-button-mapping" class="md-nav__link">
+  <a href="#move-action-mapping-in-ranges-state-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Ranges] Move &amp; Button Mapping
+        Move &amp; Action Mapping in [Ranges] &amp; [State -1]
       
     </span>
   </a>
@@ -820,10 +820,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#ranges-move-button-mapping" class="md-nav__link">
+  <a href="#move-action-mapping-in-ranges-state-1" class="md-nav__link">
     <span class="md-ellipsis">
       
-        [Ranges] Move &amp; Button Mapping
+        Move &amp; Action Mapping in [Ranges] &amp; [State -1]
       
     </span>
   </a>
@@ -995,7 +995,7 @@
 </tbody>
 </table>
 <hr />
-<h2 id="ranges-move-button-mapping"><code>[Ranges]</code> Move &amp; Button Mapping</h2>
+<h2 id="move-action-mapping-in-ranges-state-1">Move &amp; Action Mapping in <code>[Ranges]</code> &amp; <code>[State -1]</code></h2>
 <table>
 <thead>
 <tr>
@@ -1028,7 +1028,7 @@
 <tr>
 <td style="text-align: left;"><code>zhao1</code></td>
 <td style="text-align: left;"><code>W + J</code></td>
-<td style="text-align: left;">Upward special strike (<code>zh1mian</code>).</td>
+<td style="text-align: left;">Upward special strike / Anti-Air (<code>zh1mian</code>).</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>zhao2</code></td>
@@ -1059,6 +1059,36 @@
 <td style="text-align: left;"><code>bishaSUPER</code></td>
 <td style="text-align: left;"><code>S + I</code></td>
 <td style="text-align: left;">Full 3-Bar Qi Ultimate Finisher (<code>cbsmian</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>assist</code></td>
+<td style="text-align: left;"><code>O</code></td>
+<td style="text-align: left;">Summons chosen striker assist for tactical support attack.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ghostStep</code></td>
+<td style="text-align: left;"><code>L</code></td>
+<td style="text-align: left;">High-speed Flash Step / Shunpo invulnerable dodge.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>downJump</code></td>
+<td style="text-align: left;"><code>S + K</code></td>
+<td style="text-align: left;">Air Recovery / Combo Break when hit or airborne.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>waiKai</code></td>
+<td style="text-align: left;"><code>J + K</code></td>
+<td style="text-align: left;">Standard Transformation / Bankai / Awakening.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>waiKaiW</code></td>
+<td style="text-align: left;"><code>W + J+K</code></td>
+<td style="text-align: left;">Upward variant Transformation / Awakening.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>waiKaiS</code></td>
+<td style="text-align: left;"><code>S + J+K</code></td>
+<td style="text-align: left;">Downward variant Transformation / Awakening.</td>
 </tr>
 </tbody>
 </table>
@@ -1097,7 +1127,7 @@
 <td style="text-align: left;"><code>trigger_hit</code></td>
 <td style="text-align: left;"><code>movehit</code></td>
 <td style="text-align: left;">Boolean</td>
-<td style="text-align: left;">Evaluates <code>true</code> only if previous attack connected (<em>hit-confirm</em>).</td>
+<td style="text-align: left;"><code>true</code> only if previous attack connected (<em>hit-confirm</em>).</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>trigger_qi</code></td>
@@ -1112,10 +1142,40 @@
 <td style="text-align: left;">Minimum required stamina/dash energy (0 - 100).</td>
 </tr>
 <tr>
+<td style="text-align: left;"><code>trigger_hp</code></td>
+<td style="text-align: left;"><code>life</code>, <code>p1life</code></td>
+<td style="text-align: left;">Expr / Number</td>
+<td style="text-align: left;">Self remaining HP ratio (e.g.: <code>&lt; 0.3</code> or <code>&lt; 30</code> for Desperation).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>trigger_target_hp</code></td>
+<td style="text-align: left;"><code>p2life</code></td>
+<td style="text-align: left;">Expr / Number</td>
+<td style="text-align: left;">Target remaining HP ratio (e.g.: <code>&lt; 0.2</code> or <code>&lt; 20</code> to execute finisher).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>trigger_target_air</code></td>
+<td style="text-align: left;"><code>p2air</code></td>
+<td style="text-align: left;">1 / -1 / Bool</td>
+<td style="text-align: left;"><code>1</code> if target is airborne, <code>-1</code> if target is on ground.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>trigger_target_state</code></td>
+<td style="text-align: left;"><code>p2state</code></td>
+<td style="text-align: left;">String / Int</td>
+<td style="text-align: left;">Target status: <code>down</code> (knockdown), <code>guard</code> (blocking), <code>hurt</code>, <code>attack</code>.</td>
+</tr>
+<tr>
 <td style="text-align: left;"><code>p2movetype</code></td>
 <td style="text-align: left;"><code>p2movetype</code></td>
 <td style="text-align: left;">String</td>
 <td style="text-align: left;"><code>A</code> if target opponent is currently executing an attack.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>cooldown</code></td>
+<td style="text-align: left;"><code>cd</code>, <code>delay</code></td>
+<td style="text-align: left;">Integer</td>
+<td style="text-align: left;">Frame cooldown after triggering before rule can fire again (anti-spam).</td>
 </tr>
 <tr>
 <td style="text-align: left;"><code>priority</code></td>
@@ -1191,6 +1251,26 @@
 </span><span id="__span-5-38"><a id="__codelineno-5-38" name="__codelineno-5-38" href="#__codelineno-5-38"></a><span class="na">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">defense</span>
 </span><span id="__span-5-39"><a id="__codelineno-5-39" name="__codelineno-5-39" href="#__codelineno-5-39"></a><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">330</span>
 </span><span id="__span-5-40"><a id="__codelineno-5-40" name="__codelineno-5-40" href="#__codelineno-5-40"></a><span class="na">chance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0.92</span>
+</span><span id="__span-5-41"><a id="__codelineno-5-41" name="__codelineno-5-41" href="#__codelineno-5-41"></a>
+</span><span id="__span-5-42"><a id="__codelineno-5-42" name="__codelineno-5-42" href="#__codelineno-5-42"></a><span class="c1">; 5. Desperation Awakening: Transform when HP &lt; 30% and Qi is Full</span>
+</span><span id="__span-5-43"><a id="__codelineno-5-43" name="__codelineno-5-43" href="#__codelineno-5-43"></a><span class="k">[State -1, Desperation_Awakening]</span>
+</span><span id="__span-5-44"><a id="__codelineno-5-44" name="__codelineno-5-44" href="#__codelineno-5-44"></a><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Desperation_DevilTrigger</span>
+</span><span id="__span-5-45"><a id="__codelineno-5-45" name="__codelineno-5-45" href="#__codelineno-5-45"></a><span class="na">trigger_hp</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&lt; 0.3</span>
+</span><span id="__span-5-46"><a id="__codelineno-5-46" name="__codelineno-5-46" href="#__codelineno-5-46"></a><span class="na">trigger_qi</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">300</span>
+</span><span id="__span-5-47"><a id="__codelineno-5-47" name="__codelineno-5-47" href="#__codelineno-5-47"></a><span class="na">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">waiKai</span>
+</span><span id="__span-5-48"><a id="__codelineno-5-48" name="__codelineno-5-48" href="#__codelineno-5-48"></a><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">400</span>
+</span><span id="__span-5-49"><a id="__codelineno-5-49" name="__codelineno-5-49" href="#__codelineno-5-49"></a><span class="na">cooldown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">300</span>
+</span><span id="__span-5-50"><a id="__codelineno-5-50" name="__codelineno-5-50" href="#__codelineno-5-50"></a><span class="na">chance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">1.0</span>
+</span><span id="__span-5-51"><a id="__codelineno-5-51" name="__codelineno-5-51" href="#__codelineno-5-51"></a>
+</span><span id="__span-5-52"><a id="__codelineno-5-52" name="__codelineno-5-52" href="#__codelineno-5-52"></a><span class="c1">; 6. Okizeme Assist: Summon Striker when Opponent is Knocked Down</span>
+</span><span id="__span-5-53"><a id="__codelineno-5-53" name="__codelineno-5-53" href="#__codelineno-5-53"></a><span class="k">[State -1, Okizeme_Assist_Trap]</span>
+</span><span id="__span-5-54"><a id="__codelineno-5-54" name="__codelineno-5-54" href="#__codelineno-5-54"></a><span class="na">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">Striker_Okizeme_Trap</span>
+</span><span id="__span-5-55"><a id="__codelineno-5-55" name="__codelineno-5-55" href="#__codelineno-5-55"></a><span class="na">trigger_target_state</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">down</span>
+</span><span id="__span-5-56"><a id="__codelineno-5-56" name="__codelineno-5-56" href="#__codelineno-5-56"></a><span class="na">trigger_dist_x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0, 160</span>
+</span><span id="__span-5-57"><a id="__codelineno-5-57" name="__codelineno-5-57" href="#__codelineno-5-57"></a><span class="na">action</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">assist</span>
+</span><span id="__span-5-58"><a id="__codelineno-5-58" name="__codelineno-5-58" href="#__codelineno-5-58"></a><span class="na">priority</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">270</span>
+</span><span id="__span-5-59"><a id="__codelineno-5-59" name="__codelineno-5-59" href="#__codelineno-5-59"></a><span class="na">cooldown</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">180</span>
+</span><span id="__span-5-60"><a id="__codelineno-5-60" name="__codelineno-5-60" href="#__codelineno-5-60"></a><span class="na">chance</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">0.85</span>
 </span></code></pre></div>
 <hr />
 <h2 id="ai-tuning-tips">AI Tuning Tips</h2>
