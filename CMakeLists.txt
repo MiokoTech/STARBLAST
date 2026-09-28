@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
     src
+    src/render
     src/audio
     src/input
     src/platform/android
@@ -15,6 +16,11 @@ add_library(starblast SHARED
     # Platform Layer
     src/platform/android/android_native_app_glue.c
     src/platform/android/main_android.cpp
+
+    # Rendering Layer
+    src/render/gl_renderer.cpp
+    src/render/sprite_renderer.cpp
+    src/render/texture_manager.cpp
 
     # Input Layer
     src/input/virtual_pad.cpp
