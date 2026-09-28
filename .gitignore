@@ -1,10 +1,12 @@
-scripts/
-release_app/
-tools/mugen
-tooos/menu
-tools/__pycache__/
-tools/modules/__pycache__/
+.gradle/
+build/
+app/build/
+.cxx/
+local.properties
+*.iml
 
-Ikemen-GO
-scratch/
-*.orig
+# old
+android_app/
+ANE_Project/
+libs/
+tools/
