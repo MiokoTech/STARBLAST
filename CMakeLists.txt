@@ -6,6 +6,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include_directories(
     src
+    src/core
     src/render
     src/audio
     src/input
@@ -23,10 +24,13 @@ add_library(starblast SHARED
     src/render/texture_manager.cpp
 
     # Input Layer
-    src/input/virtual_pad.cpp
+    src/input/pad_manager.cpp
 
     # Audio Layer
     src/audio/audio_engine.cpp
+
+    # Fighter Core Logic
+    src/core/command_manager.cpp
 
 )
 
